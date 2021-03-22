@@ -46,7 +46,7 @@ template <typename fp>
 int test(device *dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa, int m, int n,
          int kl, int ku, fp alpha, fp beta, int incx, int incy, int lda) {
     // Catch asynchronous exceptions.
-    auto exception_handler = [](exception_list exceptions) {
+    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const &e : exceptions) {
             try {
                 std::rethrow_exception(e);
@@ -54,7 +54,7 @@ int test(device *dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
             catch (exception const &e) {
                 std::cout << "Caught asynchronous SYCL exception during GBMV:\n"
                           << e.what() << std::endl
-                          << "OpenCL status: " << e.get_cl_code() << std::endl;
+                          << "OpenCL status: " << e.what() << std::endl;
             }
         }
     };
@@ -123,7 +123,7 @@ int test(device *dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
     catch (exception const &e) {
         std::cout << "Caught synchronous SYCL exception during GBMV:\n"
                   << e.what() << std::endl
-                  << "OpenCL status: " << e.get_cl_code() << std::endl;
+                  << "OpenCL status: " << e.what() << std::endl;
     }
 
     catch (const oneapi::mkl::unimplemented &e) {

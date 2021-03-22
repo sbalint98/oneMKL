@@ -44,6 +44,7 @@
 
 #define POISSON_ARGS 0.5
 
+using namespace cl;
 template <typename Distr, typename Engine>
 class statistics_test {
 public:
@@ -54,16 +55,16 @@ public:
         std::vector<Type> r(n_gen);
 
         try {
-            sycl::buffer<Type, 1> r_buffer(r.data(), r.size());
+            cl::sycl::buffer<Type, 1> r_buffer(r.data(), r.size());
 
             Engine engine(queue, SEED);
             Distr distr(args...);
             oneapi::mkl::rng::generate(distr, engine, n_gen, r_buffer);
         }
-        catch (sycl::exception const& e) {
+        catch (cl::sycl::exception const& e) {
             std::cout << "Caught synchronous SYCL exception during generation:\n"
                       << e.what() << std::endl
-                      << "OpenCL status: " << e.get_cl_code() << std::endl;
+                      << "OpenCL status: " << e.what() << std::endl;
         }
         catch (const oneapi::mkl::unimplemented& e) {
             status = test_skipped;
@@ -87,9 +88,9 @@ public:
         using Type = typename Distr::result_type;
 
 #ifdef CALL_RT_API
-        auto ua = sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue);
+        auto ua = cl::sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue);
 #else
-        auto ua = sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue.get_queue());
+        auto ua = cl::sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue.get_queue());
 #endif
         std::vector<Type, decltype(ua)> r(n_gen, ua);
 
@@ -102,7 +103,7 @@ public:
         catch (sycl::exception const& e) {
             std::cout << "Caught synchronous SYCL exception during generation:\n"
                       << e.what() << std::endl
-                      << "OpenCL status: " << e.get_cl_code() << std::endl;
+                      << "OpenCL status: " << e.what() << std::endl;
         }
         catch (const oneapi::mkl::unimplemented& e) {
             status = test_skipped;
