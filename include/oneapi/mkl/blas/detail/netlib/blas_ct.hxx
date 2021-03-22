@@ -743,7 +743,7 @@ void gemm(backend_selector<backend::netlib> selector, transpose transa, transpos
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
-
+#ifdef NOT_HIPSYCL
 void gemm(backend_selector<backend::netlib> selector, transpose transa, transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,
@@ -767,7 +767,7 @@ void gemm(backend_selector<backend::netlib> selector, transpose transa, transpos
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
-
+#endif
 void syr2(backend_selector<backend::netlib> selector, uplo upper_lower, std::int64_t n, float alpha,
           cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
           std::int64_t incy, cl::sycl::buffer<float, 1> &a, std::int64_t lda) {

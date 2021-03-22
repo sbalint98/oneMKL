@@ -96,7 +96,7 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
         });
     });
 }
-
+#ifdef NOT_HIPSYCL
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
           int64_t k, half alpha, cl::sycl::buffer<half, 1> &a, int64_t lda,
           cl::sycl::buffer<half, 1> &b, int64_t ldb, half beta, cl::sycl::buffer<half, 1> &c,
@@ -140,7 +140,6 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
         });
     });
 }
-
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
           int64_t k, float alpha, cl::sycl::buffer<half, 1> &a, int64_t lda,
           cl::sycl::buffer<half, 1> &b, int64_t ldb, float beta, cl::sycl::buffer<float, 1> &c,
@@ -173,7 +172,7 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
         });
     });
 }
-
+#endif
 void hemm(cl::sycl::queue &queue, side left_right, uplo upper_lower, int64_t m, int64_t n,
           std::complex<float> alpha, cl::sycl::buffer<std::complex<float>, 1> &a, int64_t lda,
           cl::sycl::buffer<std::complex<float>, 1> &b, int64_t ldb, std::complex<float> beta,

@@ -46,7 +46,7 @@ ONEMKL_EXPORT void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                         cl::sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb,
                         std::complex<double> beta, cl::sycl::buffer<std::complex<double>, 1> &c,
                         std::int64_t ldc);
-
+#ifdef NOT_HIPSYCL
 ONEMKL_EXPORT void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                         oneapi::mkl::transpose transb, std::int64_t m, std::int64_t n,
                         std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,
@@ -58,7 +58,7 @@ ONEMKL_EXPORT void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                         std::int64_t k, float alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,
                         cl::sycl::buffer<half, 1> &b, std::int64_t ldb, float beta,
                         cl::sycl::buffer<float, 1> &c, std::int64_t ldc);
-
+#endif
 ONEMKL_EXPORT void symm(cl::sycl::queue &queue, oneapi::mkl::side left_right,
                         oneapi::mkl::uplo upper_lower, std::int64_t m, std::int64_t n, float alpha,
                         cl::sycl::buffer<float, 1> &a, std::int64_t lda,
