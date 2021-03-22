@@ -413,7 +413,7 @@ static inline void gemm(backend_selector<backend::BACKEND> selector, transpose t
                         std::int64_t lda, cl::sycl::buffer<std::complex<double>, 1> &b,
                         std::int64_t ldb, std::complex<double> beta,
                         cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc);
-
+#ifdef NOT_HIPSYCL
 static inline void gemm(backend_selector<backend::BACKEND> selector, transpose transa,
                         transpose transb, std::int64_t m, std::int64_t n, std::int64_t k,
                         half alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,
@@ -425,7 +425,7 @@ static inline void gemm(backend_selector<backend::BACKEND> selector, transpose t
                         float alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,
                         cl::sycl::buffer<half, 1> &b, std::int64_t ldb, float beta,
                         cl::sycl::buffer<float, 1> &c, std::int64_t ldc);
-
+#endif
 static inline void herk(backend_selector<backend::BACKEND> selector, uplo upper_lower,
                         transpose trans, std::int64_t n, std::int64_t k, float alpha,
                         cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda, float beta,

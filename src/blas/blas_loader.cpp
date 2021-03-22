@@ -877,7 +877,7 @@ void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, 
     function_tables[libkey].column_major_zgemm_sycl(queue, transa, transb, m, n, k, alpha, a, lda,
                                                     b, ldb, beta, c, ldc);
 }
-
+#ifdef NOT_HIPSYCL
 void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,
@@ -893,7 +893,7 @@ void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, 
     function_tables[libkey].column_major_gemm_f16f16f32_sycl(queue, transa, transb, m, n, k, alpha,
                                                              a, lda, b, ldb, beta, c, ldc);
 }
-
+#endif
 void hemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, side left_right, uplo upper_lower,
           std::int64_t m, std::int64_t n, std::complex<float> alpha,
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
@@ -3495,7 +3495,7 @@ void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, 
     function_tables[libkey].row_major_zgemm_sycl(queue, transa, transb, m, n, k, alpha, a, lda, b,
                                                  ldb, beta, c, ldc);
 }
-
+#ifdef NOT_HIPSYCL
 void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,
@@ -3511,7 +3511,7 @@ void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa, 
     function_tables[libkey].row_major_gemm_f16f16f32_sycl(queue, transa, transb, m, n, k, alpha, a,
                                                           lda, b, ldb, beta, c, ldc);
 }
-
+#endif
 void hemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, side left_right, uplo upper_lower,
           std::int64_t m, std::int64_t n, std::complex<float> alpha,
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
