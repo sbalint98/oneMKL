@@ -29,14 +29,18 @@ namespace mklcpu {
 namespace column_major {
 
 #define CBLASMAJOR CblasColMajor
+#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level2.cxx"
+#endif
 #undef CBLASMAJOR
 
 } // namespace column_major
 namespace row_major {
 
 #define CBLASMAJOR CblasRowMajor
+#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level2.cxx"
+#endif
 #undef CBLASMAJOR
 
 } // namespace row_major

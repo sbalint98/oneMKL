@@ -21,7 +21,6 @@
 
 #include "mklcpu_common.hpp"
 #include "oneapi/mkl/blas/detail/mklcpu/onemkl_blas_mklcpu.hpp"
-
 namespace oneapi {
 namespace mkl {
 namespace blas {
@@ -29,14 +28,18 @@ namespace mklcpu {
 namespace column_major {
 
 #define CBLASMAJOR CblasColMajor
+#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_batch.cxx"
+#endif
 #undef CBLASMAJOR
 
 } // namespace column_major
 namespace row_major {
 
 #define CBLASMAJOR CblasRowMajor
+#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_batch.cxx"
+#endif
 #undef CBLASMAJOR
 
 } // namespace row_major
