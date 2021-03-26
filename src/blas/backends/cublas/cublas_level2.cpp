@@ -16,7 +16,10 @@
 *  limitations under the License.
 *
 **************************************************************************/
+#ifndef __HIPSYCL__
 #include <CL/sycl/detail/pi.hpp>
+#endif
+
 #include "cublas_helper.hpp"
 #include "cublas_scope_handle.hpp"
 #include "oneapi/mkl/exceptions.hpp"

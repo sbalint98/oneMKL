@@ -20,9 +20,9 @@
 #include "cublas_scope_handle.hpp"
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/blas/detail/cublas/onemkl_blas_cublas.hpp"
-
+#ifndef __HIPSYCL__
 #include <CL/sycl/detail/pi.hpp>
-
+#endif
 namespace oneapi {
 namespace mkl {
 namespace blas {
