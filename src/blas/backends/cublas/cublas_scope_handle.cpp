@@ -17,12 +17,16 @@
 *
 **************************************************************************/
 #include "cublas_scope_handle.hpp"
+#ifndef __HIPSYCL__
 #include <CL/sycl/detail/common.hpp>
+#include <cuda.h>
+#endif
 
 namespace oneapi {
 namespace mkl {
 namespace blas {
 namespace cublas {
+
 
 cublas_handle::~cublas_handle() noexcept(false) {
     for (auto &handle_pair : cublas_handle_mapper_) {
@@ -39,6 +43,7 @@ cublas_handle::~cublas_handle() noexcept(false) {
     }
     cublas_handle_mapper_.clear();
 }
+
 /**
  * Inserts a new element in the map if its key is unique. This new element
  * is constructed in place using args as the arguments for the construction
@@ -47,11 +52,14 @@ cublas_handle::~cublas_handle() noexcept(false) {
  * the one being emplaced (keys in a map container are unique).
  */
 thread_local cublas_handle CublasScopedContextHandler::handle_helper = cublas_handle{};
-
+#ifdef __HIPSYCL__
+CublasScopedContextHandler::CublasScopedContextHandler(cl::sycl::queue queue, cl::sycl::interop_handle ih) : interop_h(ih){}
+#else
 CublasScopedContextHandler::CublasScopedContextHandler(cl::sycl::queue queue) {
     placedContext_ = queue.get_context();
     auto device = queue.get_device();
     auto desired = cl::sycl::get_native<cl::sycl::backend::cuda>(placedContext_);
+
     auto cudaDevice = cl::sycl::get_native<cl::sycl::backend::cuda>(device);
     CUresult err;
     CUDA_ERROR_FUNC(cuCtxGetCurrent, err, &original_);
@@ -71,12 +79,15 @@ CublasScopedContextHandler::CublasScopedContextHandler(cl::sycl::queue queue) {
         needToRecover_ = !(original_ == nullptr && isPrimary);
     }
 }
+#endif
 
 CublasScopedContextHandler::~CublasScopedContextHandler() noexcept(false) {
+    #ifndef __HIPSYCL__  
     if (needToRecover_) {
         CUresult err;
         CUDA_ERROR_FUNC(cuCtxSetCurrent, err, original_);
     }
+    #endif
 }
 
 void ContextCallback(void *userData) {
@@ -97,10 +108,19 @@ void ContextCallback(void *userData) {
 }
 
 cublasHandle_t CublasScopedContextHandler::get_handle(const cl::sycl::queue &queue) {
+    #ifndef __HIPSYCL__
     auto piPlacedContext_ = reinterpret_cast<pi_context>(placedContext_.get());
+    #else
+    cl::sycl::device device = queue.get_device();
+    int current_device = interop_h.get_native_device<cl::sycl::backend::cuda>();
+    #endif
     CUstream streamId = get_stream(queue);
     cublasStatus_t err;
+    #ifndef __HIPSYCL__
     auto it = handle_helper.cublas_handle_mapper_.find(piPlacedContext_);
+    #else
+    auto it = handle_helper.cublas_handle_mapper_.find(current_device);
+    #endif
     if (it != handle_helper.cublas_handle_mapper_.end()) {
         if (it->second == nullptr) {
             handle_helper.cublas_handle_mapper_.erase(it);
@@ -120,29 +140,36 @@ cublasHandle_t CublasScopedContextHandler::get_handle(const cl::sycl::queue &que
             }
         }
     }
-
     cublasHandle_t handle;
 
     CUBLAS_ERROR_FUNC(cublasCreate, err, &handle);
     CUBLAS_ERROR_FUNC(cublasSetStream, err, handle, streamId);
 
     auto insert_iter = handle_helper.cublas_handle_mapper_.insert(
+        #ifdef __HIPSYCL__
+        std::make_pair(current_device, new std::atomic<cublasHandle_t>(handle)));
+        #else
         std::make_pair(piPlacedContext_, new std::atomic<cublasHandle_t>(handle)));
-
+        #endif
+    #ifndef __HIPSYCL__
     auto ptr = &(insert_iter.first->second);
 
     sycl::detail::pi::contextSetExtendedDeleter(placedContext_, ContextCallback, ptr);
-
+    #endif
     return handle;
 }
-
+#ifndef __HIPSYCL__
 CUstream CublasScopedContextHandler::get_stream(const cl::sycl::queue &queue) {
     return cl::sycl::get_native<cl::sycl::backend::cuda>(queue);
 }
 cl::sycl::context CublasScopedContextHandler::get_context(const cl::sycl::queue &queue) {
     return queue.get_context();
 }
-
+#else
+CUstream CublasScopedContextHandler::get_stream(const cl::sycl::queue &queue) {
+    return interop_h.get_native_queue<cl::sycl::backend::cuda>();
+}
+#endif
 } // namespace cublas
 } // namespace blas
 } // namespace mkl
