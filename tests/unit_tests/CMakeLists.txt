@@ -109,7 +109,9 @@ foreach(domain ${TARGET_DOMAINS})
       ONEMKL::SYCL::SYCL
       ${${domain}_TEST_LIST_CT}
   )
-
+  if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
+    add_sycl_to_target(TARGET test_main_${domain}_ct)
+  endif()
   string(TOUPPER ${domain} DOMAIN_PREFIX)
 
   if(BUILD_SHARED_LIBS)
@@ -130,5 +132,8 @@ foreach(domain ${TARGET_DOMAINS})
     PROPERTIES TEST_PREFIX ${DOMAIN_PREFIX}/CT/
     DISCOVERY_TIMEOUT 30
   )
+  if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
+    add_sycl_to_target(TARGET test_main_${domain}_rt)
+  endif()
 
 endforeach()
