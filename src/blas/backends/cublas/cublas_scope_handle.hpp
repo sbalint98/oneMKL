@@ -19,9 +19,11 @@
 #ifndef _MKL_BLAS_CUBLAS_SCOPED_HANDLE_HPP_
 #define _MKL_BLAS_CUBLAS_SCOPED_HANDLE_HPP_
 #include <CL/sycl.hpp>
+#ifndef __HIPSYCL__
 #include <CL/sycl/backend/cuda.hpp>
 #include <CL/sycl/context.hpp>
 #include <CL/sycl/detail/pi.hpp>
+#endif
 #include <atomic>
 #include <memory>
 #include <thread>
@@ -32,11 +34,13 @@ namespace mkl {
 namespace blas {
 namespace cublas {
 
+#ifndef __HIPSYCL__
 struct cublas_handle {
     using handle_container_t = std::unordered_map<pi_context, std::atomic<cublasHandle_t> *>;
     handle_container_t cublas_handle_mapper_{};
     ~cublas_handle() noexcept(false);
 };
+#endif
 
 /**
 * @brief NVIDIA advise for handle creation:
@@ -65,12 +69,15 @@ the handle must be destroyed when the context goes out of scope. This will bind 
 **/
 
 class CublasScopedContextHandler {
+    #ifndef __HIPSYCL__
     CUcontext original_;
     cl::sycl::context placedContext_;
     bool needToRecover_;
     static thread_local cublas_handle handle_helper;
+    #endif
     CUstream get_stream(const cl::sycl::queue &queue);
     cl::sycl::context get_context(const cl::sycl::queue &queue);
+
 
 public:
     CublasScopedContextHandler(cl::sycl::queue queue);
@@ -86,11 +93,18 @@ public:
     cublasHandle_t get_handle(const cl::sycl::queue &queue);
     // This is a work-around function for reinterpret_casting the memory. This
     // will be fixed when SYCL-2020 has been implemented for Pi backend.
+    #ifdef __HIPSYCL__
     template <typename T, typename U>
+    inline T get_mem(cl::sycl::interop_handle ih, U acc) {
+        return reinterpret_cast<T>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
+    }
+    #else
+    template <typename T, typename U >
     inline T get_mem(cl::sycl::interop_handler ih, U acc) {
         CUdeviceptr cudaPtr = ih.get_mem<cl::sycl::backend::cuda>(acc);
         return reinterpret_cast<T>(cudaPtr);
     }
+    #endif
 };
 
 } // namespace cublas
