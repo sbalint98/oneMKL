@@ -68,6 +68,7 @@ endif()
 option(ENABLE_CUBLAS_BACKEND "" OFF)
 option(ENABLE_CURAND_BACKEND "" OFF)
 option(ENABLE_NETLIB_BACKEND "" OFF)
+set(ONEMKL_SYCL_IMPLEMENTATION "dpc++" CACHE STRING "Specifiy the SYCL implementation against which oneMKL should be built")
 
 ## Domains
 set(DOMAINS_LIST "")
@@ -128,7 +129,19 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 if(WIN32)
   add_library(ONEMKL::SYCL::SYCL INTERFACE IMPORTED)
 else()
-  find_package(Compiler REQUIRED)
+  # Find necessary packages
+  if (ONEMKL_SYCL_IMPLEMENTATION STREQUAL "hipSYCL")
+    message(STATUS "Looking for hipSYCL")
+    find_package(hipSYCL CONFIG REQUIRED)
+    set(USE_ADD_SYCL_TO_TARGET_INTEGRATION true)
+    add_library(ONEMKL::SYCL::SYCL INTERFACE IMPORTED)
+  elseif(ONEMKL_SYCL_IMPLEMENTATION STREQUAL "dpc++")
+    message(STATUS "Looking for dpc++")
+    set(USE_ADD_SYCL_TO_TARGET_INTEGRATION false)
+    find_package(Compiler REQUIRED)
+  else()
+    message(FATAL_ERROR "SYCL implementation ${ONEMKL_SYCL_IMPLEMENTATION} is not known")
+  endif()
 endif()
 
 # Add source directory and output to bin/
