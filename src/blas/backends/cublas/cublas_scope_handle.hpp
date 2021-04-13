@@ -40,6 +40,12 @@ struct cublas_handle {
     handle_container_t cublas_handle_mapper_{};
     ~cublas_handle() noexcept(false);
 };
+#else
+struct cublas_handle {
+    using handle_container_t = std::unordered_map<int, std::atomic<cublasHandle_t>* >;
+    handle_container_t cublas_handle_mapper_{};
+    ~cublas_handle() noexcept(false);
+};
 #endif
 
 /**
@@ -69,19 +75,24 @@ the handle must be destroyed when the context goes out of scope. This will bind 
 **/
 
 class CublasScopedContextHandler {
-    #ifndef __HIPSYCL__
+    #ifdef __HIPSYCL__
+    cl::sycl::interop_handle interop_h;
+    #else
     CUcontext original_;
+    bool needToRecover_;
     cl::sycl::context placedContext_;
     bool needToRecover_;
-    static thread_local cublas_handle handle_helper;
     #endif
+    static thread_local cublas_handle handle_helper;
+
     CUstream get_stream(const cl::sycl::queue &queue);
     cl::sycl::context get_context(const cl::sycl::queue &queue);
 
 
 public:
     CublasScopedContextHandler(cl::sycl::queue queue);
-
+    explicit CublasScopedContextHandler(cl::sycl::queue queue, cl::sycl::interop_handle ih);
+    
     ~CublasScopedContextHandler() noexcept(false);
     /**
    * @brief get_handle: creates the handle by implicitly impose the advice
