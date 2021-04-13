@@ -27,14 +27,10 @@ namespace mkl {
 namespace blas {
 namespace mklcpu {
 namespace column_major {
-#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level1.cxx"
-#endif
 } // namespace column_major
 namespace row_major {
-#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level1.cxx"
-#endif
 } // namespace row_major
 } // namespace mklcpu
 } // namespace blas

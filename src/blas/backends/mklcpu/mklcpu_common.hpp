@@ -41,12 +41,31 @@ namespace mklcpu {
 //  compiler. Otherwise, it falls back to single_task.
 template <typename K, typename H, typename F>
 static inline auto host_task_internal(H &cgh, F f, int) -> decltype(cgh.run_on_host_intel(f)) {
+    #ifdef __HIPSYCL__
+    auto wrapped_f = [=](){
+    #ifndef SYCL_DEVICE_ONLY
+        f();
+    #endif
+    };
+    return cgh.run_on_host_intel(wrapped_f);
+    #else
     return cgh.run_on_host_intel(f);
+    #endif
 }
 
 template <typename K, typename H, typename F>
 static inline void host_task_internal(H &cgh, F f, long) {
+    #ifdef __HIPSYCL__
+    auto wrapped_f = [=](){
+    #ifndef SYCL_DEVICE_ONLY
+        f();
+    #endif
+    };
+    cgh.template single_task<K>(wrapped_f);
+    #else
     cgh.template single_task<K>(f);
+    #endif
+    
 }
 
 template <typename K, typename H, typename F>

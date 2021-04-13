@@ -31,9 +31,7 @@ namespace column_major {
 #define CBLASMAJOR CblasColMajor
 #define MKLMAJOR   MKL_COL_MAJOR
 
-#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level3.cxx"
-#endif
 
 #undef CBLASMAJOR
 #undef MKLMAJOR
@@ -44,9 +42,7 @@ namespace row_major {
 #define CBLASMAJOR CblasRowMajor
 #define MKLMAJOR   MKL_ROW_MAJOR
 
-#ifdef HIPSYCL_PLATFORM_CPU
 #include "mklcpu_level3.cxx"
-#endif
 
 #undef CBLASMAJOR
 #undef MKLMAJOR
