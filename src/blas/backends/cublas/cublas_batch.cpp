@@ -48,9 +48,8 @@ inline void gemm_batch(Func func, cl::sycl::queue &queue, transpose transa, tran
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
- {
         #endif
 
             auto handle = sc.get_handle(queue);
@@ -135,9 +134,8 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose t
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
- {
         #endif
 
             auto handle = sc.get_handle(queue);
@@ -190,9 +188,8 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose *
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
- {
         #endif
 
             auto handle = sc.get_handle(queue);

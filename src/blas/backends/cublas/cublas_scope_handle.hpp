@@ -79,7 +79,6 @@ class CublasScopedContextHandler {
     cl::sycl::interop_handle interop_h;
     #else
     CUcontext original_;
-    bool needToRecover_;
     cl::sycl::context placedContext_;
     bool needToRecover_;
     #endif

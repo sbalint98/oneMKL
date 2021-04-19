@@ -347,7 +347,7 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -393,7 +393,7 @@ void sdsdot(cl::sycl::queue &queue, int64_t n, float sb, cl::sycl::buffer<float,
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -438,7 +438,7 @@ inline void rotmg(Func func, cl::sycl::queue &queue, cl::sycl::buffer<T, 1> &d1,
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -492,7 +492,7 @@ inline void iamax(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -542,7 +542,7 @@ inline void swap(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -587,7 +587,7 @@ inline void iamin(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -637,7 +637,7 @@ inline void nrm2(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -689,7 +689,7 @@ inline cl::sycl::event asum(Func func, cl::sycl::queue &queue, int64_t n, const 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -731,7 +731,7 @@ inline cl::sycl::event scal(Func func, cl::sycl::queue &queue, int64_t n, T1 a, 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -773,7 +773,7 @@ inline cl::sycl::event axpy(Func func, cl::sycl::queue &queue, int64_t n, T alph
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -814,7 +814,7 @@ inline cl::sycl::event rotg(Func func, cl::sycl::queue &queue, T1 *a, T1 *b, T2 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -857,7 +857,7 @@ inline cl::sycl::event rotm(Func func, cl::sycl::queue &queue, int64_t n, T *x, 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -898,7 +898,7 @@ inline cl::sycl::event copy(Func func, cl::sycl::queue &queue, int64_t n, const 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -940,7 +940,7 @@ inline cl::sycl::event dot(Func func, cl::sycl::queue &queue, int64_t n, const T
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -986,7 +986,7 @@ inline cl::sycl::event rot(Func func, cl::sycl::queue &queue, int64_t n, T1 *x, 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -1028,7 +1028,7 @@ cl::sycl::event sdsdot(cl::sycl::queue &queue, int64_t n, float sb, const float 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -1055,11 +1055,6 @@ inline cl::sycl::event rotmg(Func func, cl::sycl::queue &queue, T *d1, T *d2, T 
                              const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     cudaPointerAttributes attrib;
     cudaError_t err_rt;
-    err_rt = cudaPointerGetAttributes(&attrib, d1);
-    err_rt = cudaPointerGetAttributes(&attrib, d2);
-    err_rt = cudaPointerGetAttributes(&attrib, x1);
-    //err_rt = cudaPointerGetAttributes(&attrib, &y1);
-    err_rt = cudaPointerGetAttributes(&attrib, param);
     using cuDataType = typename CudaEquivalentType<T>::Type;
     auto done = queue.submit([&](cl::sycl::handler &cgh) {
             int64_t num_events = dependencies.size();
@@ -1070,7 +1065,7 @@ inline cl::sycl::event rotmg(Func func, cl::sycl::queue &queue, T *d1, T *d2, T 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
             auto handle = sc.get_handle(queue);
@@ -1119,7 +1114,7 @@ inline cl::sycl::event iamax(Func func, cl::sycl::queue &queue, int64_t n, const
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -1164,7 +1159,7 @@ inline cl::sycl::event swap(Func func, cl::sycl::queue &queue, int64_t n, T *x, 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -1213,7 +1208,7 @@ inline cl::sycl::event iamin(Func func, cl::sycl::queue &queue, int64_t n, const
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
@@ -1259,7 +1254,7 @@ inline cl::sycl::event nrm2(Func func, cl::sycl::queue &queue, int64_t n, const 
         cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
         auto sc = CublasScopedContextHandler(queue,ih);
         #else
-        cgh.hipSYCL_enqueue_custom_operation([=](cl::sycl::interop_handle ih) {
+        cgh.interop_task([=](cl::sycl::interop_handler ih) {
         auto sc = CublasScopedContextHandler(queue);
         #endif
 
