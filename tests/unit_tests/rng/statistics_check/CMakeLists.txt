@@ -31,7 +31,7 @@ if(BUILD_SHARED_LIBS)
       PUBLIC ${CMAKE_BINARY_DIR}/bin
   )
   if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-    add_sycl_to_target(TARGET rng_statistics_rt)
+    add_sycl_to_target(TARGET rng_statistics_rt SOURCES ${STATS_CHECK_SOURCES})
   else()
     target_link_libraries(rng_statistics_rt PUBLIC ONEMKL::SYCL::SYCL)
   endif()
@@ -47,7 +47,7 @@ target_include_directories(rng_statistics_ct
     PUBLIC ${CMAKE_BINARY_DIR}/bin
 )
 if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-  add_sycl_to_target(TARGET rng_statistics_ct)
+  add_sycl_to_target(TARGET rng_statistics_ct SOURCES ${STATS_CHECK_SOURCES})
 else()
   target_link_libraries(rng_statistics_ct PUBLIC ONEMKL::SYCL::SYCL)
 endif()

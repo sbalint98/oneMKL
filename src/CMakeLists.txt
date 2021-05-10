@@ -48,9 +48,6 @@ if(BUILD_SHARED_LIBS)
            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
            $<INSTALL_INTERFACE:include>
   )
-  if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-    add_sycl_to_target(TARGET onemkl)
-  endif()
   set_target_properties(onemkl PROPERTIES
     SOVERSION ${PROJECT_VERSION_MAJOR}
   )

@@ -38,7 +38,7 @@ set_target_properties(onemkl_rng PROPERTIES
   POSITION_INDEPENDENT_CODE ON
 )
 if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-  add_sycl_to_target(TARGET onemkl_rng)
+  add_sycl_to_target(TARGET onemkl_rng SOURCES rng_loader.cpp)
 else()
   target_link_libraries(onemkl_rng PUBLIC ONEMKL::SYCL::SYCL)
 endif()

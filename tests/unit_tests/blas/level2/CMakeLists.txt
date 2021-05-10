@@ -32,7 +32,7 @@ if(BUILD_SHARED_LIBS)
       PUBLIC ${CBLAS_INCLUDE}
   )
   if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-    add_sycl_to_target(TARGET blas_level2_rt)
+    add_sycl_to_target(TARGET blas_level2_rt SOURCES ${L2_SOURCES})
   else()
     target_link_libraries(blas_level2_rt PUBLIC ONEMKL::SYCL::SYCL)
   endif()
@@ -49,7 +49,7 @@ target_include_directories(blas_level2_ct
     PUBLIC ${CBLAS_INCLUDE}
 )
 if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-  add_sycl_to_target(TARGET blas_level2_ct)
+  add_sycl_to_target(TARGET blas_level2_ct SOURCES ${L2_SOURCES})
 else()
   target_link_libraries(blas_level2_ct PUBLIC ONEMKL::SYCL::SYCL)
 endif()
