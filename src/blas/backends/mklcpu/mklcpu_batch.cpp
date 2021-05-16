@@ -21,7 +21,6 @@
 
 #include "mklcpu_common.hpp"
 #include "oneapi/mkl/blas/detail/mklcpu/onemkl_blas_mklcpu.hpp"
-
 namespace oneapi {
 namespace mkl {
 namespace blas {

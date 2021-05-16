@@ -51,6 +51,7 @@ namespace rng {
 //
 // Supported parallelization methods:
 //      skip_ahead
+using namespace cl;
 class philox4x32x10 {
 public:
     static constexpr std::uint64_t default_seed = 0;
