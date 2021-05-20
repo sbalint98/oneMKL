@@ -6,8 +6,11 @@
 #include <CL/sycl.hpp>
 #include <CL/sycl/detail/pi.hpp>
 #include "oneapi/mkl/types.hpp"
+#ifndef __HIPSYCL__
 #include "cublas_scope_handle.hpp"
-
+#else
+#include "cublas_scope_handle_hipsycl.hpp"
+#endif
 namespace oneapi {
 namespace mkl {
 namespace blas {
@@ -18,6 +21,13 @@ static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> dec
     cgh.interop_task([f, queue](cl::sycl::interop_handler ih){
         auto sc = CublasScopedContextHandler(queue, ih);
         f(sc);
+    });
+}
+
+template <typename H, typename F>
+static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> decltype(cgh.hipSYCL_enqueue_custom_operation(f)) {
+    cgh.hipSYCL_enqueue_custom_operation([f](cl::sycl::interop_handle ih){
+        f(ih);
     });
 }
 
