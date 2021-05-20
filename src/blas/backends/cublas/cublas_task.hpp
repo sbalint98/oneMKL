@@ -4,9 +4,9 @@
 #include <cuda.h>
 #include <complex>
 #include <CL/sycl.hpp>
+#include <CL/sycl/detail/pi.hpp>
 #include "oneapi/mkl/types.hpp"
 #include "cublas_scope_handle.hpp"
-#include <CL/sycl/detail/pi.hpp>
 
 namespace oneapi {
 namespace mkl {
