@@ -18,7 +18,6 @@
 **************************************************************************/
 #include "cublas_helper.hpp"
 #include "cublas_task.hpp"
-
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/blas/detail/cublas/onemkl_blas_cublas.hpp"
 

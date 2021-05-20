@@ -18,7 +18,6 @@
 **************************************************************************/
 #include "cublas_helper.hpp"
 #include "cublas_task.hpp"
-
 #include "cublas_task.hpp"
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/blas/detail/cublas/onemkl_blas_cublas.hpp"
@@ -316,9 +315,12 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
         onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler sc) {
             auto handle = sc.get_handle(queue);
 <<<<<<< HEAD
+<<<<<<< HEAD
             auto x_ = sc.get_mem<cuDataType1 *>(ih, x_acc);
             auto y_ = sc.get_mem<cuDataType1 *>(ih, y_acc);
 =======
+=======
+>>>>>>> 4d65cfd... [cublas] introduce onemkl_cublas_host_task
 
             // By default the pointer mode is the CUBLAS_POINTER_MODE_HOST
             // when the data is on buffer, it must be set to
@@ -328,7 +330,10 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
             // cublasSetPointerMode(handle, CUBLAS_POINTER_MODE_DEVICE);
             auto x_ = sc.get_mem<cuDataType1 *>(x_acc);
             auto y_ = sc.get_mem<cuDataType1 *>(y_acc);
+<<<<<<< HEAD
 >>>>>>> [cublas] introduce onemkl_cublas_host_task
+=======
+>>>>>>> 4d65cfd... [cublas] introduce onemkl_cublas_host_task
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, n, x_, incx, y_, incy, (cuDataType2 *)&c,
                               (cuDataType3 *)&s);
