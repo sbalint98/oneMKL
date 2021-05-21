@@ -18,7 +18,6 @@
 **************************************************************************/
 #include "cublas_helper.hpp"
 #include "cublas_task.hpp"
-
 #include "cublas_task.hpp"
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/blas/detail/cublas/onemkl_blas_cublas.hpp"
@@ -315,12 +314,6 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
         onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler sc) {
             auto handle = sc.get_handle(queue);
-            // By default the pointer mode is the CUBLAS_POINTER_MODE_HOST
-            // when the data is on buffer, it must be set to
-            // CUBLAS_POINTER_MODE_DEVICE mode otherwise it causes the segmentation
-            // fault. When it is set to device it is users responsibility to
-            // synchronise as the function is completely asynchronous.
-            // cublasSetPointerMode(handle, CUBLAS_POINTER_MODE_DEVICE);
             auto x_ = sc.get_mem<cuDataType1 *>(x_acc);
             auto y_ = sc.get_mem<cuDataType1 *>(y_acc);
             cublasStatus_t err;
