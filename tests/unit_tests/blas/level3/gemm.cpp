@@ -71,7 +71,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
     // Call DPC++ GEMM.
 
     // Catch asynchronous exceptions.
-    auto exception_handler = [](exception_list exceptions) {
+    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const& e : exceptions) {
             try {
                 std::rethrow_exception(e);
@@ -79,7 +79,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
             catch (exception const& e) {
                 std::cout << "Caught asynchronous SYCL exception during GEMM:\n"
                           << e.what() << std::endl
-                          << "OpenCL status: " << e.get_cl_code() << std::endl;
+                          << "OpenCL status: " << e.what() << std::endl;
             }
         }
     };
@@ -124,7 +124,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
     catch (exception const& e) {
         std::cout << "Caught synchronous SYCL exception during GEMM:\n"
                   << e.what() << std::endl
-                  << "OpenCL status: " << e.get_cl_code() << std::endl;
+                  << "OpenCL status: " << e.what() << std::endl;
     }
 
     catch (const oneapi::mkl::unimplemented& e) {
@@ -144,7 +144,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
 
 class GemmTests
         : public ::testing::TestWithParam<std::tuple<cl::sycl::device*, oneapi::mkl::layout>> {};
-
+#ifdef NOT_HIPSYCL
 TEST_P(GemmTests, HalfHalfFloatPrecision) {
     float alpha(2.0);
     float beta(3.0);
@@ -178,7 +178,7 @@ TEST_P(GemmTests, RealHalfPrecision) {
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::trans,
         oneapi::mkl::transpose::trans, 79, 83, 91, 103, 105, 106, alpha, beta)));
 }
-
+#endif
 TEST_P(GemmTests, RealSinglePrecision) {
     float alpha(2.0);
     float beta(3.0);
