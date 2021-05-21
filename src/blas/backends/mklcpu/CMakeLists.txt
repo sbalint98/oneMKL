@@ -27,7 +27,7 @@ set(SOURCES fp16.hpp mklcpu_common.hpp
 add_library(${LIB_NAME})
 add_library(${LIB_OBJ} OBJECT ${SOURCES})
 if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-  add_sycl_to_target(TARGET ${LIB_OBJ} ${SOURCES})
+  add_sycl_to_target(TARGET ${LIB_OBJ} SOURCES ${SOURCES})
 endif()
 
 target_include_directories(${LIB_OBJ}

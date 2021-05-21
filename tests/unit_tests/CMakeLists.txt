@@ -58,9 +58,11 @@ foreach(domain ${TARGET_DOMAINS})
 
   add_executable(test_main_${domain}_ct main_test.cpp)
   target_include_directories(test_main_${domain}_ct PUBLIC ${GTEST_INCLUDE_DIR})
-  target_compile_options(test_main_${domain}_ct PRIVATE -fsycl)
+  
   if (USE_ADD_SYCL_TO_TARGET_INTEGRATION)
-    add_sycl_to_target(TARGET test_main_${domain}_ct SOURCES t main_test.cpp)
+    add_sycl_to_target(TARGET test_main_${domain}_ct SOURCES main_test.cpp)
+  else()
+    target_compile_options(test_main_${domain}_ct PRIVATE -fsycl)
   endif()
 
   if(BUILD_SHARED_LIBS)
