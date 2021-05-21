@@ -45,6 +45,13 @@ static inline auto host_task_internal(H &cgh, F f, int) -> decltype(cgh.run_on_h
 }
 
 template <typename K, typename H, typename F>
+static inline auto host_task_internal(H &cgh, F f, int) -> decltype(cgh.hipSYCL_enqueue_custom_operation(f)) {
+    #ifndef SYCL_DEVICE_ONLY
+    return cgh.hipSYCL_enqueue_custom_operation(f);
+    #endif
+}
+
+template <typename K, typename H, typename F>
 static inline void host_task_internal(H &cgh, F f, long) {
     cgh.template single_task<K>(f);
 }
