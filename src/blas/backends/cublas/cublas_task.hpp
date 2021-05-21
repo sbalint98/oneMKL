@@ -19,6 +19,7 @@ namespace mkl {
 namespace blas {
 namespace cublas {
 
+#ifdef __HIPSYCL__
 template <typename H, typename F>
 static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
     cgh.interop_task([f, queue](cl::sycl::interop_handler ih){
@@ -26,15 +27,15 @@ static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
         f(sc);
     });
 }
-
+#else
 template <typename H, typename F>
-static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> decltype(cgh.hipSYCL_enqueue_custom_operation(f)) {
-    cgh.hipSYCL_enqueue_custom_operation([f, queue](cl::sycl::interop_handle ih){
+static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> decltype(cgh.interop_task(f)) {
+    cgh.interop_task([f, queue](cl::sycl::interop_handler ih){
         auto sc = CublasScopedContextHandler(queue, ih);
         f(sc);
     });
 }
-
+#endif
 template <typename H, typename F>
 static inline void onemkl_cublas_host_task(H &cgh, cl::sycl::queue queue, F f) {
     (void)host_task_internal(cgh, queue, f);
