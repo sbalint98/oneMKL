@@ -68,7 +68,10 @@ endif()
 option(ENABLE_CUBLAS_BACKEND "" OFF)
 option(ENABLE_CURAND_BACKEND "" OFF)
 option(ENABLE_NETLIB_BACKEND "" OFF)
-set(ONEMKL_SYCL_IMPLEMENTATION "dpc++" CACHE STRING "Specifiy the SYCL implementation against which oneMKL should be built")
+option(DISABLE_HALF_RUTINES "" OFF)
+option(ONEMKL_SYCL_IMPLEMENTATION "" "dpc++")
+
+
 
 ## Domains
 set(DOMAINS_LIST "")
@@ -126,12 +129,13 @@ if(WIN32)
   add_library(ONEMKL::SYCL::SYCL INTERFACE IMPORTED)
 else()
   # Find necessary packages
-  if (ONEMKL_SYCL_IMPLEMENTATION STREQUAL "hipSYCL")
+  if (${ONEMKL_SYCL_IMPLEMENTATION} STREQUAL "hipSYCL")
     message(STATUS "Looking for hipSYCL")
     find_package(hipSYCL CONFIG REQUIRED)
     set(USE_ADD_SYCL_TO_TARGET_INTEGRATION true)
+    set(DISABLE_HALF_RUTINES ON)
     add_library(ONEMKL::SYCL::SYCL INTERFACE IMPORTED)
-  elseif(ONEMKL_SYCL_IMPLEMENTATION STREQUAL "dpc++")
+  elseif(${ONEMKL_SYCL_IMPLEMENTATION} STREQUAL "dpc++")
     message(STATUS "Looking for dpc++")
     set(USE_ADD_SYCL_TO_TARGET_INTEGRATION false)
     find_package(Compiler REQUIRED)
