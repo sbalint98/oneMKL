@@ -29,7 +29,7 @@ static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> dec
 
 template <typename H, typename F>
 static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> decltype(cgh.hipSYCL_enqueue_custom_operation(f)) {
-    cgh.hipSYCL_enqueue_custom_operation([f](cl::sycl::interop_handle ih){
+    cgh.hipSYCL_enqueue_custom_operation([f, queue](cl::sycl::interop_handle ih){
         auto sc = CublasScopedContextHandler(queue, ih);
         f(sc);
     });
