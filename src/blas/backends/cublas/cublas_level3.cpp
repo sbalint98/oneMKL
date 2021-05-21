@@ -107,11 +107,7 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         gemm(CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, CUDADATATYPE_C, queue, transa,      \
              transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);                              \
     }
-<<<<<<< Updated upstream
-#ifdef NOT_HIPSYCL
-=======
-#ifndef DISABLE_HALF_RUTINES
->>>>>>> Stashed changes
+
 GEMM_EX_LAUNCHER(half, half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
 GEMM_EX_LAUNCHER(half, half, half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
 #endif
@@ -467,11 +463,7 @@ GEMM_LAUNCHER_USM(std::complex<float>, cublasCgemm)
 GEMM_LAUNCHER_USM(std::complex<double>, cublasZgemm)
 
 #undef GEMM_LAUNCHER_USM
-<<<<<<< Updated upstream
-#ifdef NOT_HIPSYCL
-=======
-#ifndef DISABLE_HALF_RUTINES
->>>>>>> Stashed changes
+
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
                      std::int64_t n, std::int64_t k, half alpha, const half *a, std::int64_t lda,
                      const half *b, std::int64_t ldb, half beta, half *c, std::int64_t ldc,
@@ -866,11 +858,7 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         gemm(CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, CUDADATATYPE_C, queue, transa,      \
              transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);                              \
     }
-<<<<<<< Updated upstream
-#ifdef NOT_HIPSYCL
-=======
-#ifndef DISABLE_HALF_RUTINES
->>>>>>> Stashed changes
+
 GEMM_EX_LAUNCHER(half, half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
 GEMM_EX_LAUNCHER(half, half, half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
 #endif
@@ -1075,11 +1063,7 @@ GEMM_LAUNCHER_USM(std::complex<float>, cublasCgemm)
 GEMM_LAUNCHER_USM(std::complex<double>, cublasZgemm)
 
 #undef GEMM_LAUNCHER_USM
-<<<<<<< Updated upstream
-#ifdef NOT_HIPSYCL
-=======
-#ifndef DISABLE_HALF_RUTINES
->>>>>>> Stashed changes
+
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
                      std::int64_t n, std::int64_t k, half alpha, const half *a, std::int64_t lda,
                      const half *b, std::int64_t ldb, half beta, half *c, std::int64_t ldc,
