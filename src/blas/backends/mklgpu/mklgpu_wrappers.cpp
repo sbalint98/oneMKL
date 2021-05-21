@@ -148,8 +148,10 @@ extern "C" ONEMKL_EXPORT blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::mklgpu::column_major::gemm,
     oneapi::mkl::blas::mklgpu::column_major::gemm,
     oneapi::mkl::blas::mklgpu::column_major::gemm,
+#ifndef DISABLE_HALF_RUTINES
     oneapi::mkl::blas::mklgpu::column_major::gemm,
     oneapi::mkl::blas::mklgpu::column_major::gemm,
+#endif
     oneapi::mkl::blas::mklgpu::column_major::hemm,
     oneapi::mkl::blas::mklgpu::column_major::hemm,
     oneapi::mkl::blas::mklgpu::column_major::herk,
@@ -479,8 +481,10 @@ extern "C" ONEMKL_EXPORT blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::mklgpu::row_major::gemm,
     oneapi::mkl::blas::mklgpu::row_major::gemm,
     oneapi::mkl::blas::mklgpu::row_major::gemm,
+#ifndef DISABLE_HALF_RUTINES
     oneapi::mkl::blas::mklgpu::row_major::gemm,
     oneapi::mkl::blas::mklgpu::row_major::gemm,
+#endif
     oneapi::mkl::blas::mklgpu::row_major::hemm,
     oneapi::mkl::blas::mklgpu::row_major::hemm,
     oneapi::mkl::blas::mklgpu::row_major::herk,

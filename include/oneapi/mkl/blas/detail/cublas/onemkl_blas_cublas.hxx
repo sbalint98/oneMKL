@@ -496,7 +496,7 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda,
           cl::sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb, std::complex<double> beta,
           cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc);
-
+#ifndef DISABLE_HALF_RUTINES
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
           std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,
@@ -506,7 +506,7 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64
           std::int64_t n, std::int64_t k, float alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, float beta,
           cl::sycl::buffer<float, 1> &c, std::int64_t ldc);
-
+#endif
 void hemm(cl::sycl::queue &queue, side left_right, uplo upper_lower, std::int64_t m, std::int64_t n,
           std::complex<float> alpha, cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda,
           cl::sycl::buffer<std::complex<float>, 1> &b, std::int64_t ldb, std::complex<float> beta,
