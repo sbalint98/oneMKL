@@ -396,7 +396,7 @@ ONEMKL_EXPORT void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, tran
                         std::int64_t lda, cl::sycl::buffer<std::complex<double>, 1> &b,
                         std::int64_t ldb, std::complex<double> beta,
                         cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc);
-#ifdef NOT_HIPSYCL
+#ifndef DISABLE_HALF_RUTINES
 ONEMKL_EXPORT void gemm(oneapi::mkl::device libkey, cl::sycl::queue &queue, transpose transa,
                         transpose transb, std::int64_t m, std::int64_t n, std::int64_t k,
                         half alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,
