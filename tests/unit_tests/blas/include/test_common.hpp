@@ -27,9 +27,10 @@
 #include <type_traits>
 
 #include <CL/sycl.hpp>
+#include "oneapi/mkl/detail/config.hpp"
 
 namespace std {
-#ifdef NOT_HIPSYCL
+#ifdef ENABLE_HALF_ROUTINES
 static cl::sycl::half abs(cl::sycl::half v) {
     if (v < cl::sycl::half(0))
         return -v;
@@ -142,7 +143,7 @@ template <>
 uint8_t rand_scalar() {
     return std::rand() % 128;
 }
-#ifdef NOT_HIPSYCL
+#ifdef ENABLE_HALF_ROUTINES
 template <>
 half rand_scalar() {
     return half(std::rand() % 32000) / half(32000) - half(0.5);

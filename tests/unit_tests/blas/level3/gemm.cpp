@@ -144,7 +144,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
 
 class GemmTests
         : public ::testing::TestWithParam<std::tuple<cl::sycl::device*, oneapi::mkl::layout>> {};
-#ifdef NOT_HIPSYCL
+#ifdef ENABLE_HALF_ROUTINES
 TEST_P(GemmTests, HalfHalfFloatPrecision) {
     float alpha(2.0);
     float beta(3.0);
