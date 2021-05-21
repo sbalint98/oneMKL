@@ -148,7 +148,7 @@ extern "C" ONEMKL_EXPORT blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::mklcpu::column_major::gemm,
     oneapi::mkl::blas::mklcpu::column_major::gemm,
     oneapi::mkl::blas::mklcpu::column_major::gemm,
-    #ifndef DISABLE_HALF_RUTINES
+    #ifdef ENABLE_HALF_ROUTINES
     oneapi::mkl::blas::mklcpu::column_major::gemm,
     oneapi::mkl::blas::mklcpu::column_major::gemm,
     #endif
@@ -481,7 +481,7 @@ extern "C" ONEMKL_EXPORT blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::mklcpu::row_major::gemm,
     oneapi::mkl::blas::mklcpu::row_major::gemm,
     oneapi::mkl::blas::mklcpu::row_major::gemm,
-    #ifndef DISABLE_HALF_RUTINES
+    #ifdef ENABLE_HALF_ROUTINES
     oneapi::mkl::blas::mklcpu::row_major::gemm,
     oneapi::mkl::blas::mklcpu::row_major::gemm,
     #endif

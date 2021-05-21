@@ -779,7 +779,7 @@ void cgemmt(cl::sycl::queue &queue, MKL_LAYOUT layout, MKL_UPLO upper_lower, MKL
             cl::sycl::buffer<std::complex<float>, 1> &a, int64_t lda,
             cl::sycl::buffer<std::complex<float>, 1> &b, int64_t ldb, std::complex<float> beta,
             cl::sycl::buffer<std::complex<float>, 1> &c, int64_t ldc);
-#ifndef DISABLE_HALF_RUTINES
+#ifdef ENABLE_HALF_ROUTINES
 void hgemm(cl::sycl::queue &queue, MKL_LAYOUT layout, MKL_TRANSPOSE transa, MKL_TRANSPOSE transb,
            int64_t m, int64_t n, int64_t k, half alpha, cl::sycl::buffer<half, 1> &a, int64_t lda,
            cl::sycl::buffer<half, 1> &b, int64_t ldb, half beta, cl::sycl::buffer<half, 1> &c,

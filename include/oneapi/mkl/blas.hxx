@@ -261,7 +261,7 @@ static inline void gemm(cl::sycl::queue &queue, transpose transa, transpose tran
                  c, ldc);
     gemm_postcondition(queue, transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);
 }
-#ifndef DISABLE_HALF_RUTINES
+#ifdef ENABLE_HALF_ROUTINES
 static inline void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
                         std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
                         std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,

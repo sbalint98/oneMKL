@@ -25,7 +25,7 @@
 #cmakedefine ENABLE_MKLCPU_BACKEND
 #cmakedefine ENABLE_MKLGPU_BACKEND
 #cmakedefine ENABLE_NETLIB_BACKEND
-#cmakedefine DISABLE_HALF_RUTINES
+#cmakedefine ENABLE_HALF_ROUTINES
 #cmakedefine BUILD_SHARED_LIBS
 
 #endif

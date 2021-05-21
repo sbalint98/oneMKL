@@ -568,7 +568,7 @@ typedef struct {
                                     cl::sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb,
                                     std::complex<double> beta,
                                     cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc);
-#ifndef DISABLE_HALF_RUTINES
+#ifdef ENABLE_HALF_ROUTINES
     void (*column_major_hgemm_sycl)(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                                     oneapi::mkl::transpose transb, std::int64_t m, std::int64_t n,
                                     std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
@@ -2090,7 +2090,7 @@ typedef struct {
                                  cl::sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb,
                                  std::complex<double> beta,
                                  cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc);
-#ifndef DISABLE_HALF_RUTINES
+#ifdef ENABLE_HALF_ROUTINES
     void (*row_major_hgemm_sycl)(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                                  oneapi::mkl::transpose transb, std::int64_t m, std::int64_t n,
                                  std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,

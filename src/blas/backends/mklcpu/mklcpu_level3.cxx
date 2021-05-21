@@ -96,7 +96,7 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
         });
     });
 }
-#ifndef DISABLE_HALF_RUTINES
+#ifdef ENABLE_HALF_ROUTINES
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
           int64_t k, half alpha, cl::sycl::buffer<half, 1> &a, int64_t lda,
           cl::sycl::buffer<half, 1> &b, int64_t ldb, half beta, cl::sycl::buffer<half, 1> &c,
