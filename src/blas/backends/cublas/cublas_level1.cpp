@@ -315,11 +315,6 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
         onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler sc) {
             auto handle = sc.get_handle(queue);
-<<<<<<< HEAD
-            auto x_ = sc.get_mem<cuDataType1 *>(ih, x_acc);
-            auto y_ = sc.get_mem<cuDataType1 *>(ih, y_acc);
-=======
-
             // By default the pointer mode is the CUBLAS_POINTER_MODE_HOST
             // when the data is on buffer, it must be set to
             // CUBLAS_POINTER_MODE_DEVICE mode otherwise it causes the segmentation
@@ -328,7 +323,6 @@ inline void rot(Func func, cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<T
             // cublasSetPointerMode(handle, CUBLAS_POINTER_MODE_DEVICE);
             auto x_ = sc.get_mem<cuDataType1 *>(x_acc);
             auto y_ = sc.get_mem<cuDataType1 *>(y_acc);
->>>>>>> [cublas] introduce onemkl_cublas_host_task
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, n, x_, incx, y_, incy, (cuDataType2 *)&c,
                               (cuDataType3 *)&s);
