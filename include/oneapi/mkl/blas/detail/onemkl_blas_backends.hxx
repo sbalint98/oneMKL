@@ -46,7 +46,7 @@ ONEMKL_EXPORT void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                         cl::sycl::buffer<std::complex<double>, 1> &b, std::int64_t ldb,
                         std::complex<double> beta, cl::sycl::buffer<std::complex<double>, 1> &c,
                         std::int64_t ldc);
-#ifdef NOT_HIPSYCL
+#ifndef DISABLE_HALF_RUTINES
 ONEMKL_EXPORT void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa,
                         oneapi::mkl::transpose transb, std::int64_t m, std::int64_t n,
                         std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a, std::int64_t lda,

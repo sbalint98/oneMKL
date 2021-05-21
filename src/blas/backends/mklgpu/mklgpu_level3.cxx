@@ -56,7 +56,7 @@ void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::tr
                               ::mkl::cblas_convert(transb), m, n, k, alpha, a, lda, b, ldb, beta, c,
                               ldc);
 }
-#ifdef NOT_HIPSYCL
+#ifndef DISABLE_HALF_RUTINES
 void gemm(cl::sycl::queue &queue, oneapi::mkl::transpose transa, oneapi::mkl::transpose transb,
           std::int64_t m, std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
           std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,

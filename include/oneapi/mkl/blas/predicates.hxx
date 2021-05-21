@@ -1518,7 +1518,7 @@ inline void gemm_postcondition(cl::sycl::queue &queue, transpose transa, transpo
 #endif
 }
 
-#ifdef NOT_HIPSYCL
+#ifndef DISABLE_HALF_RUTINES
 inline void gemm_precondition(cl::sycl::queue &queue, transpose transa, transpose transb,
                               std::int64_t m, std::int64_t n, std::int64_t k, half alpha,
                               cl::sycl::buffer<half, 1> &a, std::int64_t lda,
@@ -4750,7 +4750,7 @@ inline void gemm_postcondition(cl::sycl::queue &queue, transpose transa, transpo
     /* add postchecks to queue here for input args.  */
 #endif
 }
-#ifdef NOT_HIPSYCL
+#ifndef DISABLE_HALF_RUTINES
 inline void gemm_precondition(cl::sycl::queue &queue, transpose transa, transpose transb,
                               std::int64_t m, std::int64_t n, std::int64_t k, half alpha,
                               const half *a, std::int64_t lda, const half *b, std::int64_t ldb,
