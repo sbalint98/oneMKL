@@ -24,8 +24,9 @@ set(SOURCES cublas_level1.cpp
                 cublas_level2.cpp 
                 cublas_level3.cpp 
                 cublas_batch.cpp 
-                cublas_extensions.cpp 
-                cublas_scope_handle.cpp 
+                cublas_extensions.cpp
+                $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},dpc++>:cublas_scope_handle.cpp >
+                $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},hipsycl>:cublas_scope_handle_hipsycl.cpp >
                 $<$<BOOL:${BUILD_SHARED_LIBS}>: mkl_blas_cublas_wrappers.cpp>)
 add_library(${LIB_NAME})
 add_library(${LIB_OBJ} OBJECT ${SOURCES})
@@ -33,6 +34,7 @@ add_library(${LIB_OBJ} OBJECT ${SOURCES})
 target_include_directories(${LIB_OBJ}
   PRIVATE ${PROJECT_SOURCE_DIR}/include
           ${PROJECT_SOURCE_DIR}/src
+          ${PROJECT_BINARY_DIR}/bin
 )
 target_compile_options(${LIB_OBJ} PRIVATE ${ONEMKL_BUILD_COPT})
 target_link_libraries(${LIB_OBJ} PUBLIC ONEMKL::SYCL::SYCL ONEMKL::cuBLAS::cuBLAS)
