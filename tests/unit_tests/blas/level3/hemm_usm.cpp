@@ -47,7 +47,7 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::side left_right,
          oneapi::mkl::uplo upper_lower, int m, int n, int lda, int ldb, int ldc, fp alpha,
          fp beta) {
     // Catch asynchronous exceptions.
-    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
+    auto exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const& e : exceptions) {
             try {
                 std::rethrow_exception(e);

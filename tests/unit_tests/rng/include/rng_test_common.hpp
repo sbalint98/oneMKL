@@ -79,7 +79,7 @@ public:
     // method to call any tests, switch between rt and ct
     template <typename... Args>
     int operator()(cl::sycl::device* dev, Args... args) {
-        cl::sycl::async_handler exception_handler = [](cl::sycl::exception_list exceptions) {
+        auto exception_handler = [](cl::sycl::exception_list exceptions) {
             for (std::exception_ptr const& e : exceptions) {
                 try {
                     std::rethrow_exception(e);

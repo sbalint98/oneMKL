@@ -64,7 +64,7 @@ int test(device *dev, oneapi::mkl::layout layout, int m, int n, fp alpha, int in
     // Call DPC++ GERU.
 
     // Catch asynchronous exceptions.
-    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
+    auto exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const &e : exceptions) {
             try {
                 std::rethrow_exception(e);

@@ -46,7 +46,7 @@ template <typename fp>
 int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::uplo upper_lower,
          oneapi::mkl::transpose transa, oneapi::mkl::diag unit_nonunit, int n, int incx, int lda) {
     // Catch asynchronous exceptions.
-    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
+    auto exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const& e : exceptions) {
             try {
                 std::rethrow_exception(e);

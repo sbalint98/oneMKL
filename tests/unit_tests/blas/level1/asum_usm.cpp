@@ -44,7 +44,7 @@ namespace {
 template <typename fp, typename fp_res>
 int test(device* dev, oneapi::mkl::layout layout, int64_t N, int64_t incx) {
     // Catch asynchronous exceptions.
-    cl::sycl::async_handler exception_handler = [](exception_list exceptions) {
+    auto exception_handler = [](exception_list exceptions) {
         for (std::exception_ptr const& e : exceptions) {
             try {
                 std::rethrow_exception(e);
