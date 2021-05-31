@@ -55,13 +55,13 @@ public:
         std::vector<Type> r(n_gen);
 
         try {
-            cl::sycl::buffer<Type, 1> r_buffer(r.data(), r.size());
+            sycl::buffer<Type, 1> r_buffer(r.data(), r.size());
 
             Engine engine(queue, SEED);
             Distr distr(args...);
             oneapi::mkl::rng::generate(distr, engine, n_gen, r_buffer);
         }
-        catch (cl::sycl::exception const& e) {
+        catch (sycl::exception const& e) {
             std::cout << "Caught synchronous SYCL exception during generation:\n"
                       << e.what() << std::endl
                       << "OpenCL status: " << e.what() << std::endl;
@@ -88,9 +88,9 @@ public:
         using Type = typename Distr::result_type;
 
 #ifdef CALL_RT_API
-        auto ua = cl::sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue);
+        auto ua = sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue);
 #else
-        auto ua = cl::sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue.get_queue());
+        auto ua = sycl::usm_allocator<Type, sycl::usm::alloc::shared, 64>(queue.get_queue());
 #endif
         std::vector<Type, decltype(ua)> r(n_gen, ua);
 
