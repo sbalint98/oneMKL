@@ -29,7 +29,7 @@ static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
 }
 #else
 template <typename H, typename F>
-static inline auto host_task_internal(H &cgh, cl::sycl::queue queue, F f) -> decltype(cgh.interop_task(f)) {
+static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
     cgh.interop_task([f, queue](cl::sycl::interop_handler ih){
         auto sc = CublasScopedContextHandler(queue, ih);
         f(sc);
