@@ -63,6 +63,7 @@ class CublasScopedContextHandler {
     cl::sycl::interop_handle interop_h;
     static thread_local cublas_handle handle_helper;
     cl::sycl::context get_context(const cl::sycl::queue &queue);
+    CUstream get_stream(const cl::sycl::queue &queue);
 
 public:
     CublasScopedContextHandler(cl::sycl::queue queue, cl::sycl::interop_handle& ih);
