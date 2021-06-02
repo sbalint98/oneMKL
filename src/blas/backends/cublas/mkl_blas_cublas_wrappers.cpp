@@ -147,10 +147,8 @@ extern "C" blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::cublas::column_major::gemm,
     oneapi::mkl::blas::cublas::column_major::gemm,
     oneapi::mkl::blas::cublas::column_major::gemm,
-#ifdef ENABLE_HALF_ROUTINES
     oneapi::mkl::blas::cublas::column_major::gemm,
     oneapi::mkl::blas::cublas::column_major::gemm,
-#endif
     oneapi::mkl::blas::cublas::column_major::hemm,
     oneapi::mkl::blas::cublas::column_major::hemm,
     oneapi::mkl::blas::cublas::column_major::herk,
@@ -480,10 +478,8 @@ extern "C" blas_function_table_t mkl_blas_table = {
     oneapi::mkl::blas::cublas::row_major::gemm,
     oneapi::mkl::blas::cublas::row_major::gemm,
     oneapi::mkl::blas::cublas::row_major::gemm,
-#ifdef ENABLE_HALF_ROUTINES
     oneapi::mkl::blas::cublas::row_major::gemm,
     oneapi::mkl::blas::cublas::row_major::gemm,
-#endif
     oneapi::mkl::blas::cublas::row_major::hemm,
     oneapi::mkl::blas::cublas::row_major::hemm,
     oneapi::mkl::blas::cublas::row_major::herk,
