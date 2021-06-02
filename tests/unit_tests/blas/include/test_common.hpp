@@ -30,14 +30,14 @@
 #include "oneapi/mkl/detail/config.hpp"
 
 namespace std {
-#ifdef ENABLE_HALF_ROUTINES
+//#ifdef ENABLE_HALF_ROUTINES
 static cl::sycl::half abs(cl::sycl::half v) {
     if (v < cl::sycl::half(0))
         return -v;
     else
         return v;
 }
-#endif
+//#endif
 } // namespace std
 
 // Complex helpers.
@@ -143,12 +143,12 @@ template <>
 uint8_t rand_scalar() {
     return std::rand() % 128;
 }
-#ifdef ENABLE_HALF_ROUTINES
+//#ifdef ENABLE_HALF_ROUTINES
 template <>
-half rand_scalar() {
-    return half(std::rand() % 32000) / half(32000) - half(0.5);
+cl::sycl::half rand_scalar() {
+    return cl::sycl::half(std::rand() % 32000) / cl::sycl::half(32000) - cl::sycl::half(0.5);
 }
-#endif
+//#endif
 template <typename fp>
 static fp rand_scalar(int mag) {
     fp tmp = fp(mag) + fp(std::rand()) / fp(RAND_MAX) - fp(0.5);

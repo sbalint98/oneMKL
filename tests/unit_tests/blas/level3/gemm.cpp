@@ -144,41 +144,39 @@ int test(device* dev, oneapi::mkl::layout layout, oneapi::mkl::transpose transa,
 
 class GemmTests
         : public ::testing::TestWithParam<std::tuple<cl::sycl::device*, oneapi::mkl::layout>> {};
-#ifdef ENABLE_HALF_ROUTINES
 TEST_P(GemmTests, HalfHalfFloatPrecision) {
     float alpha(2.0);
     float beta(3.0);
-    EXPECT_TRUEORSKIP((test<half, float>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, float>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::nontrans,
         oneapi::mkl::transpose::nontrans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, float>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, float>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::nontrans,
         oneapi::mkl::transpose::trans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, float>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, float>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::trans,
         oneapi::mkl::transpose::nontrans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, float>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, float>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::trans,
         oneapi::mkl::transpose::trans, 79, 83, 91, 103, 105, 106, alpha, beta)));
 }
 
 TEST_P(GemmTests, RealHalfPrecision) {
-    half alpha(2.0);
-    half beta(3.0);
-    EXPECT_TRUEORSKIP((test<half, half>(
+    cl::sycl::half alpha(2.0);
+    cl::sycl::half beta(3.0);
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, cl::sycl::half>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::nontrans,
         oneapi::mkl::transpose::nontrans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, half>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, cl::sycl::half>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::nontrans,
         oneapi::mkl::transpose::trans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, half>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, cl::sycl::half>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::trans,
         oneapi::mkl::transpose::nontrans, 79, 83, 91, 103, 105, 106, alpha, beta)));
-    EXPECT_TRUEORSKIP((test<half, half>(
+    EXPECT_TRUEORSKIP((test<cl::sycl::half, cl::sycl::half>(
         std::get<0>(GetParam()), std::get<1>(GetParam()), oneapi::mkl::transpose::trans,
         oneapi::mkl::transpose::trans, 79, 83, 91, 103, 105, 106, alpha, beta)));
 }
-#endif
 TEST_P(GemmTests, RealSinglePrecision) {
     float alpha(2.0);
     float beta(3.0);
