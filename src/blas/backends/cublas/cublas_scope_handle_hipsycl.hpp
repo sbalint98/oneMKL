@@ -19,10 +19,6 @@
 #ifndef _MKL_BLAS_CUBLAS_SCOPED_HANDLE_HPP_
 #define _MKL_BLAS_CUBLAS_SCOPED_HANDLE_HPP_
 #include <CL/sycl.hpp>
-#include <CL/sycl/backend/cuda.hpp>
-#include <CL/sycl/context.hpp>
-#include <CL/sycl/detail/pi.hpp>
-#include <atomic>
 #include <memory>
 #include <thread>
 #include <unordered_map>
@@ -33,7 +29,7 @@ namespace blas {
 namespace cublas {
 
 struct cublas_handle {
-    using handle_container_t = std::unordered_map<pi_context, std::atomic<cublasHandle_t> *>;
+    using handle_container_t = std::unordered_map<int, std::atomic<cublasHandle_t>* >;
     handle_container_t cublas_handle_mapper_{};
     ~cublas_handle() noexcept(false);
 };
@@ -48,7 +44,6 @@ According to NVIDIA:
 http://docs.nvidia.com/cuda/cublas/index.html#thread-safety2changeme
 3)	It is neither required nor recommended that different handles be used for different streams on the same device,
  using the same host thread.
-
 However, the 3 above advises are for using cuda runtime API. The NVIDIA runtime API creates a default context for users. 
 The createHandle function in cuBLAS uses the context located on top of the stack for each thread. Then, the cuBLAS routine 
 uses this context for resource allocation/access. Calling a cuBLAS function with a handle created for context A and 
@@ -65,32 +60,21 @@ the handle must be destroyed when the context goes out of scope. This will bind 
 **/
 
 class CublasScopedContextHandler {
-    CUcontext original_;
-    cl::sycl::context placedContext_;
-    bool needToRecover_;
-    cl::sycl::interop_handler& ih;
+    cl::sycl::interop_handle interop_h;
     static thread_local cublas_handle handle_helper;
-    CUstream get_stream(const cl::sycl::queue &queue);
     cl::sycl::context get_context(const cl::sycl::queue &queue);
+    CUstream get_stream(const cl::sycl::queue &queue);
 
 public:
-    CublasScopedContextHandler(cl::sycl::queue queue, cl::sycl::interop_handler& ih);
+    CublasScopedContextHandler(cl::sycl::queue queue, cl::sycl::interop_handle& ih);
 
-    ~CublasScopedContextHandler() noexcept(false);
-    /**
-   * @brief get_handle: creates the handle by implicitly impose the advice
-   * given by nvidia for creating a cublas_handle. (e.g. one cuStream per device
-   * per thread).
-   * @param queue sycl queue.
-   * @return cublasHandle_t a handle to construct cublas routines
-   */
     cublasHandle_t get_handle(const cl::sycl::queue &queue);
+
     // This is a work-around function for reinterpret_casting the memory. This
     // will be fixed when SYCL-2020 has been implemented for Pi backend.
-    template <typename T, typename U>
-    inline T get_mem(U acc) {
-        CUdeviceptr cudaPtr = ih.get_mem<cl::sycl::backend::cuda>(acc);
-        return reinterpret_cast<T>(cudaPtr);
+    template<typename T, typename U>
+    inline T get_mem( U acc) {
+        return reinterpret_cast<T>(interop_h.get_native_mem<cl::sycl::backend::cuda>(acc));
     }
 };
 

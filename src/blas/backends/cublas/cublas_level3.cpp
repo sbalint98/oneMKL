@@ -16,9 +16,9 @@
 *  limitations under the License.
 *
 **************************************************************************/
-#include <CL/sycl/detail/pi.hpp>
 #include "cublas_helper.hpp"
-#include "cublas_scope_handle.hpp"
+#include "cublas_task.hpp"
+
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/blas/detail/cublas/onemkl_blas_cublas.hpp"
 
@@ -41,12 +41,11 @@ inline void gemm(Func func, cl::sycl::queue &queue, transpose transa, transpose 
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_operation(transa),
                               get_cublas_operation(transb), m, n, k, (cuDataType *)&alpha, a_, lda,
@@ -85,12 +84,12 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType_A *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType_B *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType_C *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType_A *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType_B *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType_C *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_operation(transa),
                               get_cublas_operation(transb), m, n, k, (cuDataType_C *)&alpha, a_,
@@ -99,6 +98,7 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         });
     });
 }
+#ifdef ENABLE_HALF_ROUTINES
 
 #define GEMM_EX_LAUNCHER(TYPE_A, TYPE_B, TYPE_C, CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, \
                          CUDADATATYPE_C)                                                         \
@@ -109,9 +109,18 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         gemm(CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, CUDADATATYPE_C, queue, transa,      \
              transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);                              \
     }
-
-GEMM_EX_LAUNCHER(half, half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
-GEMM_EX_LAUNCHER(half, half, half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
+#else
+#define GEMM_EX_LAUNCHER(TYPE_A, TYPE_B, TYPE_C, CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, \
+                         CUDADATATYPE_C)                                                         \
+    void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,  \
+              int64_t k, TYPE_C alpha, cl::sycl::buffer<TYPE_A, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE_B, 1> &b, int64_t ldb, TYPE_C beta,                          \
+              cl::sycl::buffer<TYPE_C, 1> &c, int64_t ldc) {                                     \
+              throw unimplemented("blas", "gemm", "half is disabled");                           \
+    }
+#endif
+GEMM_EX_LAUNCHER(cl::sycl::half, cl::sycl::half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
+GEMM_EX_LAUNCHER(cl::sycl::half, cl::sycl::half, cl::sycl::half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
 
 #undef GEMM_EX_LAUNCHER
 
@@ -126,12 +135,12 @@ inline void symm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_side_mode(left_right),
                               get_cublas_fill_mode(upper_lower), m, n, (cuDataType *)&alpha, a_,
@@ -166,12 +175,12 @@ inline void hemm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_side_mode(left_right),
                               get_cublas_fill_mode(upper_lower), m, n, (cuDataType *)&alpha, a_,
@@ -201,11 +210,11 @@ inline void syrk(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_fill_mode(upper_lower),
                               get_cublas_operation(trans), n, k, (cuDataType *)&alpha, a_, lda,
@@ -238,11 +247,11 @@ inline void herk(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_fill_mode(upper_lower),
                               get_cublas_operation(trans), n, k, (cuScalarType *)&alpha, a_, lda,
@@ -274,12 +283,12 @@ inline void syr2k(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_fill_mode(upper_lower),
                               get_cublas_operation(trans), n, k, (cuDataType *)&alpha, a_, lda, b_,
@@ -315,12 +324,12 @@ inline void her2k(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
-            auto c_ = sc.get_mem<cuDataType *>(ih, c_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
+            auto c_ = sc.get_mem<cuDataType *>(c_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_fill_mode(upper_lower),
                               get_cublas_operation(trans), n, k, (cuDataType *)&alpha, a_, lda, b_,
@@ -356,11 +365,11 @@ inline void trmm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_side_mode(left_right),
                               get_cublas_fill_mode(upper_lower), get_cublas_operation(trans),
@@ -393,11 +402,11 @@ inline void trsm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
-            auto a_ = sc.get_mem<cuDataType *>(ih, a_acc);
-            auto b_ = sc.get_mem<cuDataType *>(ih, b_acc);
+
+            auto a_ = sc.get_mem<cuDataType *>(a_acc);
+            auto b_ = sc.get_mem<cuDataType *>(b_acc);
             cublasStatus_t err;
             CUBLAS_ERROR_FUNC(func, err, handle, get_cublas_side_mode(left_right),
                               get_cublas_fill_mode(upper_lower), get_cublas_operation(trans),
@@ -435,9 +444,9 @@ inline cl::sycl::event gemm(Func func, cl::sycl::queue &queue, transpose transa,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<const cuDataType *>(b);
             auto c_ = reinterpret_cast<cuDataType *>(c);
@@ -465,14 +474,12 @@ GEMM_LAUNCHER_USM(std::complex<float>, cublasCgemm)
 GEMM_LAUNCHER_USM(std::complex<double>, cublasZgemm)
 
 #undef GEMM_LAUNCHER_USM
-
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
-                     std::int64_t n, std::int64_t k, half alpha, const half *a, std::int64_t lda,
-                     const half *b, std::int64_t ldb, half beta, half *c, std::int64_t ldc,
+                     std::int64_t n, std::int64_t k, cl::sycl::half alpha, const cl::sycl::half *a, std::int64_t lda,
+                     const cl::sycl::half *b, std::int64_t ldb, cl::sycl::half beta, cl::sycl::half *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     throw unimplemented("blas", "gemm", "for column_major layout");
 }
-
 template <typename Func, typename T>
 inline cl::sycl::event symm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_lower,
                             int64_t m, int64_t n, T alpha, const T *a, int64_t lda, const T *b,
@@ -485,9 +492,9 @@ inline cl::sycl::event symm(Func func, cl::sycl::queue &queue, side left_right, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<const cuDataType *>(b);
             auto c_ = reinterpret_cast<cuDataType *>(c);
@@ -528,9 +535,9 @@ inline cl::sycl::event hemm(Func func, cl::sycl::queue &queue, side left_right, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<const cuDataType *>(b);
             auto c_ = reinterpret_cast<cuDataType *>(c);
@@ -568,9 +575,9 @@ inline cl::sycl::event syrk(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto c_ = reinterpret_cast<cuDataType *>(c);
             cublasStatus_t err;
@@ -611,9 +618,9 @@ inline cl::sycl::event herk(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto c_ = reinterpret_cast<cuDataType *>(c);
             cublasStatus_t err;
@@ -651,9 +658,9 @@ inline cl::sycl::event syr2k(Func func, cl::sycl::queue &queue, uplo upper_lower
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<const cuDataType *>(b);
             auto c_ = reinterpret_cast<cuDataType *>(c);
@@ -695,9 +702,9 @@ inline cl::sycl::event her2k(Func func, cl::sycl::queue &queue, uplo upper_lower
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<const cuDataType *>(b);
             auto c_ = reinterpret_cast<cuDataType *>(c);
@@ -741,9 +748,9 @@ inline cl::sycl::event trmm(Func func, cl::sycl::queue &queue, side left_right, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<cuDataType *>(b);
             cublasStatus_t err;
@@ -783,9 +790,9 @@ inline cl::sycl::event trsm(Func func, cl::sycl::queue &queue, side left_right, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        cgh.interop_task([=](cl::sycl::interop_handler ih) {
-            auto sc = CublasScopedContextHandler(queue);
+        onemkl_cublas_host_task(cgh, queue,[=](CublasScopedContextHandler& sc) {
             auto handle = sc.get_handle(queue);
+
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto b_ = reinterpret_cast<cuDataType *>(b);
             cublasStatus_t err;
@@ -860,10 +867,8 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         gemm(CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, CUDADATATYPE_C, queue, transa,      \
              transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);                              \
     }
-
-GEMM_EX_LAUNCHER(half, half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
-GEMM_EX_LAUNCHER(half, half, half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
-
+GEMM_EX_LAUNCHER(cl::sycl::half, cl::sycl::half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
+GEMM_EX_LAUNCHER(cl::sycl::half, cl::sycl::half, cl::sycl::half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
 #undef GEMM_EX_LAUNCHER
 
 template <typename Func, typename T>
@@ -1065,14 +1070,12 @@ GEMM_LAUNCHER_USM(std::complex<float>, cublasCgemm)
 GEMM_LAUNCHER_USM(std::complex<double>, cublasZgemm)
 
 #undef GEMM_LAUNCHER_USM
-
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, std::int64_t m,
-                     std::int64_t n, std::int64_t k, half alpha, const half *a, std::int64_t lda,
-                     const half *b, std::int64_t ldb, half beta, half *c, std::int64_t ldc,
+                     std::int64_t n, std::int64_t k, cl::sycl::half alpha, const cl::sycl::half *a, std::int64_t lda,
+                     const cl::sycl::half *b, std::int64_t ldb, cl::sycl::half beta, cl::sycl::half *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     throw unimplemented("blas", "gemm", "for row_major layout");
 }
-
 template <typename Func, typename T>
 inline cl::sycl::event symm(Func func, cl::sycl::queue &queue, side left_right, uplo upper_lower,
                             int64_t m, int64_t n, T alpha, const T *a, int64_t lda, const T *b,
