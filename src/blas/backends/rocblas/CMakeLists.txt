@@ -17,29 +17,28 @@
 #
 #=========================================================================
 
-set(LIB_NAME onemkl_blas_cublas)
+set(LIB_NAME onemkl_blas_rocblas)
 set(LIB_OBJ ${LIB_NAME}_obj)
-find_package(cuBLAS REQUIRED)
-set(SOURCES cublas_level1.cpp 
-                cublas_level2.cpp 
-                cublas_level3.cpp 
-                cublas_batch.cpp 
-                cublas_extensions.cpp 
-                $<$<BOOL:${BUILD_SHARED_LIBS}>: mkl_blas_cublas_wrappers.cpp>
-                $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},dpc++>:cublas_scope_handle.cpp >
-                $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},hipsycl>:cublas_scope_handle_hipsycl.cpp >
-                $<$<BOOL:${BUILD_SHARED_LIBS}>: cublas_wrappers.cpp>)
+find_package(rocblas REQUIRED)
+set(SOURCES rocblas_level1.cpp 
+                rocblas_level2.cpp 
+                rocblas_level3.cpp 
+                rocblas_batch.cpp 
+                rocblas_extensions.cpp
+                #$<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},dpc++>:rocblas_scope_handle.cpp >
+                $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},hipsycl>:rocblas_scope_handle_hipsycl.cpp >
+                $<$<BOOL:${BUILD_SHARED_LIBS}>: mkl_blas_rocblas_wrappers.cpp>)
 add_library(${LIB_NAME})
 add_library(${LIB_OBJ} OBJECT ${SOURCES})
 
 target_include_directories(${LIB_OBJ}
   PRIVATE ${PROJECT_SOURCE_DIR}/include
-          ${PROJECT_SOURCE_DIR}/src/include
           ${PROJECT_SOURCE_DIR}/src
+          ${PROJECT_BINARY_DIR}/bin
 )
 target_compile_options(${LIB_OBJ} PRIVATE ${ONEMKL_BUILD_COPT})
-target_link_libraries(${LIB_OBJ} PUBLIC ONEMKL::SYCL::SYCL ONEMKL::cuBLAS::cuBLAS)
-target_compile_features(${LIB_OBJ} PUBLIC cxx_std_11)
+target_link_libraries(${LIB_OBJ} PUBLIC ONEMKL::SYCL::SYCL roc::rocblas)
+target_compile_features(${LIB_OBJ} PUBLIC cxx_std_17)
 set_target_properties(${LIB_OBJ} PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
 
