@@ -117,7 +117,7 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
               int64_t k, TYPE_C alpha, cl::sycl::buffer<TYPE_A, 1> &a, int64_t lda,              \
               cl::sycl::buffer<TYPE_B, 1> &b, int64_t ldb, TYPE_C beta,                          \
               cl::sycl::buffer<TYPE_C, 1> &c, int64_t ldc) {                                     \
-              throw unimplemented("blas", "gemm", "half is disabled");                           \
+        throw unimplemented("blas", "gemm", "half is disabled");                                 \
     }
 #endif
 
