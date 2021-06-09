@@ -99,6 +99,7 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         });
     });
 }
+#ifdef ENABLE_HALF_ROUTINES
 
 #define GEMM_EX_LAUNCHER(TYPE_A, TYPE_B, TYPE_C, CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, \
                          CUDADATATYPE_C)                                                         \
@@ -109,6 +110,16 @@ inline void gemm(Func func, DATATYPE_A DT_A, DATATYPE_B DT_B, DATATYPE_C DT_C,
         gemm(CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, CUDADATATYPE_C, queue, transa,      \
              transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc);                              \
     }
+#else
+#define GEMM_EX_LAUNCHER(TYPE_A, TYPE_B, TYPE_C, CUBLAS_ROUTINE, CUDADATATYPE_A, CUDADATATYPE_B, \
+                         CUDADATATYPE_C)                                                         \
+    void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,  \
+              int64_t k, TYPE_C alpha, cl::sycl::buffer<TYPE_A, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE_B, 1> &b, int64_t ldb, TYPE_C beta,                          \
+              cl::sycl::buffer<TYPE_C, 1> &c, int64_t ldc) {                                     \
+              throw unimplemented("blas", "gemm", "half is disabled");                           \
+    }
+#endif
 
 GEMM_EX_LAUNCHER(half, half, float, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_32F)
 GEMM_EX_LAUNCHER(half, half, half, cublasGemmEx, CUDA_R_16F, CUDA_R_16F, CUDA_R_16F)
