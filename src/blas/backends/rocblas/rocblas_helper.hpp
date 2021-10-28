@@ -204,6 +204,10 @@ template <>
 struct CudaEquivalentType<std::complex<double>> {
     using Type = rocblas_double_complex;
 };
+template <>
+struct CudaEquivalentType<half> {
+    using Type = rocblas_half;
+};
 
 } // namespace rocblas
 } // namespace blas
