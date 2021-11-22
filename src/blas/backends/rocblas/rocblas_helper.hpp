@@ -19,7 +19,7 @@
 
 /**
  * @file mkl_blas_rocblas.cpp : contains the implementation of all the routines
- * for CUDA backend
+ * for rocBLAS backend
  */
 #ifndef _MKL_BLAS_ROCBLAS_HELPER_HPP_
 #define _MKL_BLAS_ROCBLAS_HELPER_HPP_

@@ -88,7 +88,7 @@ inline void backend_selector_precondition<backend::rocblas>(cl::sycl::queue& que
         static_cast<unsigned int>(queue.get_device().get_info<cl::sycl::info::device::vendor_id>());
     if (!(queue.get_device().is_gpu() && vendor_id == AMD_ID)) {
         throw unsupported_device("",
-                                 "backend_selector<backend::" + backend_map[backend::cublas] + ">",
+                                 "backend_selector<backend::" + backend_map[backend::rocblas] + ">",
                                  queue.get_device());
     }
 #endif
