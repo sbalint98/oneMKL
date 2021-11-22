@@ -21,7 +21,7 @@ namespace rocblas {
 #ifdef __HIPSYCL__
 template <typename H, typename F>
 static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
-    cgh.hipSYCL_enqueue_custom_operation([f, queue](cl::sycl::interop_handle ih){
+    cgh.hipSYCL_enqueue_custom_operation([f, queue](cl::sycl::interop_handle ih) {
         auto sc = RocblasScopedContextHandler(queue, ih);
         f(sc);
     });
@@ -29,7 +29,7 @@ static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
 #else
 template <typename H, typename F>
 static inline void host_task_internal(H &cgh, cl::sycl::queue queue, F f) {
-    cgh.interop_task([f, queue](cl::sycl::interop_handler ih){
+    cgh.interop_task([f, queue](cl::sycl::interop_handler ih) {
         auto sc = RocblasScopedContextHandler(queue, ih);
         f(sc);
     });

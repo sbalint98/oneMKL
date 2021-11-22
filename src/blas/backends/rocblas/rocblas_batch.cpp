@@ -29,7 +29,7 @@ namespace rocblas {
 namespace column_major {
 
 // Buffer APIs
- 
+
 void copy_batch(cl::sycl::queue &queue, int64_t n, cl::sycl::buffer<float, 1> &x, int64_t incx,
                 int64_t stridex, cl::sycl::buffer<float, 1> &y, int64_t incy, int64_t stridey,
                 int64_t batch_size) {
@@ -155,7 +155,7 @@ inline void gemm_batch(Func func, cl::sycl::queue &queue, transpose transa, tran
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto b_acc = b.template get_access<cl::sycl::access::mode::read>(cgh);
         auto c_acc = c.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -163,20 +163,20 @@ inline void gemm_batch(Func func, cl::sycl::queue &queue, transpose transa, tran
             auto c_ = sc.get_mem<cuDataType *>(c_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(transa),
-                              get_rocblas_operation(transb), m, n, k, (cuDataType *)&alpha, a_, lda,
-                              stride_a, b_, ldb, stride_b, (cuDataType *)&beta, c_, ldc, stride_c,
-                              batch_size);
+                               get_rocblas_operation(transb), m, n, k, (cuDataType *)&alpha, a_,
+                               lda, stride_a, b_, ldb, stride_b, (cuDataType *)&beta, c_, ldc,
+                               stride_c, batch_size);
         });
     });
 }
 
-#define GEMM_STRIDED_BATCH_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                          \
+#define GEMM_STRIDED_BATCH_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                         \
     void gemm_batch(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,         \
                     int64_t n, int64_t k, TYPE alpha, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,   \
                     int64_t stride_a, cl::sycl::buffer<TYPE, 1> &b, int64_t ldb, int64_t stride_b, \
                     TYPE beta, cl::sycl::buffer<TYPE, 1> &c, int64_t ldc, int64_t stride_c,        \
                     int64_t batch_size) {                                                          \
-        gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, b,     \
+        gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, b,    \
                    ldb, stride_b, beta, c, ldc, stride_c, batch_size);                             \
     }
 
@@ -508,7 +508,7 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose t
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -516,22 +516,23 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose t
             auto c_ = reinterpret_cast<cuDataType *>(c);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(transa),
-                              get_rocblas_operation(transb), m, n, k, (cuDataType *)&alpha, a_, lda,
-                              stride_a, b_, ldb, stride_b, (cuDataType *)&beta, c_, ldc, stride_c,
-                              batch_size);
+                               get_rocblas_operation(transb), m, n, k, (cuDataType *)&alpha, a_,
+                               lda, stride_a, b_, ldb, stride_b, (cuDataType *)&beta, c_, ldc,
+                               stride_c, batch_size);
         });
     });
     return done;
 }
 
-#define GEMM_STRIDED_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                      \
-    cl::sycl::event gemm_batch(                                                                    \
-        cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,          \
-        int64_t k, TYPE alpha, const TYPE *a, int64_t lda, int64_t stride_a, const TYPE *b,        \
-        int64_t ldb, int64_t stride_b, TYPE beta, TYPE *c, int64_t ldc, int64_t stride_c,          \
-        int64_t batch_size, const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
-        return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, \
-                          b, ldb, stride_b, beta, c, ldc, stride_c, batch_size, dependencies);     \
+#define GEMM_STRIDED_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                              \
+    cl::sycl::event gemm_batch(                                                             \
+        cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,   \
+        int64_t k, TYPE alpha, const TYPE *a, int64_t lda, int64_t stride_a, const TYPE *b, \
+        int64_t ldb, int64_t stride_b, TYPE beta, TYPE *c, int64_t ldc, int64_t stride_c,   \
+        int64_t batch_size, const cl::sycl::vector_class<cl::sycl::event> &dependencies) {  \
+        return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda,   \
+                          stride_a, b, ldb, stride_b, beta, c, ldc, stride_c, batch_size,   \
+                          dependencies);                                                    \
     }
 
 GEMM_STRIDED_BATCH_LAUNCHER_USM(half, rocblas_hgemm_strided_batched)
@@ -557,7 +558,7 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose *
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             int64_t offset = 0;
@@ -567,10 +568,10 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose *
                 auto **b_ = reinterpret_cast<const cuDataType **>(b);
                 auto **c_ = reinterpret_cast<cuDataType **>(c);
                 ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(transa[i]),
-                                  get_rocblas_operation(transb[i]), (int)m[i], (int)n[i], (int)k[i],
-                                  (cuDataType *)&alpha[i], a_ + offset, (int)lda[i], b_ + offset,
-                                  (int)ldb[i], (cuDataType *)&beta[i], c_ + offset, (int)ldc[i],
-                                  (int)group_size[i]);
+                                   get_rocblas_operation(transb[i]), (int)m[i], (int)n[i],
+                                   (int)k[i], (cuDataType *)&alpha[i], a_ + offset, (int)lda[i],
+                                   b_ + offset, (int)ldb[i], (cuDataType *)&beta[i], c_ + offset,
+                                   (int)ldc[i], (int)group_size[i]);
                 offset += group_size[i];
             }
         });
@@ -579,13 +580,13 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose *
 }
 
 #define GEMM_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
-    cl::sycl::event gemm_batch(cl::sycl::queue &queue, transpose *transa, transpose *transb,     \
-                               int64_t *m, int64_t *n, int64_t *k, TYPE *alpha, const TYPE **a,  \
-                               int64_t *lda, const TYPE **b, int64_t *ldb, TYPE *beta, TYPE **c, \
-                               int64_t *ldc, int64_t group_count, int64_t *group_size,           \
-                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {    \
+    cl::sycl::event gemm_batch(cl::sycl::queue &queue, transpose *transa, transpose *transb,      \
+                               int64_t *m, int64_t *n, int64_t *k, TYPE *alpha, const TYPE **a,   \
+                               int64_t *lda, const TYPE **b, int64_t *ldb, TYPE *beta, TYPE **c,  \
+                               int64_t *ldc, int64_t group_count, int64_t *group_size,            \
+                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
         return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, b, ldb, \
-                          beta, c, ldc, group_count, group_size, dependencies);                  \
+                          beta, c, ldc, group_count, group_size, dependencies);                   \
     }
 
 GEMM_BATCH_LAUNCHER_USM(half, rocblas_hgemm_batched)
@@ -595,7 +596,6 @@ GEMM_BATCH_LAUNCHER_USM(std::complex<float>, rocblas_cgemm_batched)
 GEMM_BATCH_LAUNCHER_USM(std::complex<double>, rocblas_zgemm_batched)
 
 #undef GEMM_BATCH_LAUNCHER_USM
-
 
 cl::sycl::event trsm_batch(cl::sycl::queue &queue, side left_right, uplo upper_lower,
                            transpose trans, diag unit_diag, int64_t m, int64_t n, float alpha,
@@ -631,7 +631,6 @@ cl::sycl::event trsm_batch(cl::sycl::queue &queue, side left_right, uplo upper_l
     throw unimplemented("blas", "trsm_batch", "for column_major layout");
 }
 
-
 template <typename Func, typename T>
 inline cl::sycl::event trsm_batch(Func func, cl::sycl::queue &queue, side *left_right,
                                   uplo *upper_lower, transpose *trans, diag *unit_diag, int64_t *m,
@@ -655,11 +654,11 @@ inline cl::sycl::event trsm_batch(Func func, cl::sycl::queue &queue, side *left_
                 auto **a_ = reinterpret_cast<const cuDataType **>(a);
                 auto **b_ = reinterpret_cast<cuDataType **>(b);
                 ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_side_mode(left_right[i]),
-                                  get_rocblas_fill_mode(upper_lower[i]),
-                                  get_rocblas_operation(trans[i]),
-                                  get_rocblas_diag_type(unit_diag[i]), (int)m[i], (int)n[i],
-                                  (cuDataType *)&alpha[i], a_ + offset, (int)lda[i], b_ + offset,
-                                  (int)ldb[i], (int)group_size[i]);
+                                   get_rocblas_fill_mode(upper_lower[i]),
+                                   get_rocblas_operation(trans[i]),
+                                   get_rocblas_diag_type(unit_diag[i]), (int)m[i], (int)n[i],
+                                   (cuDataType *)&alpha[i], a_ + offset, (int)lda[i], b_ + offset,
+                                   (int)ldb[i], (int)group_size[i]);
                 offset += group_size[i];
             }
         });
@@ -668,13 +667,13 @@ inline cl::sycl::event trsm_batch(Func func, cl::sycl::queue &queue, side *left_
 }
 
 #define TRSM_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event trsm_batch(cl::sycl::queue &queue, side *left_right, uplo *upper_lower,       \
-                               transpose *trans, diag *unit_diag, int64_t *m, int64_t *n,         \
-                               TYPE *alpha, const TYPE **a, int64_t *lda, TYPE **b, int64_t *ldb, \
-                               int64_t group_count, int64_t *group_size,                          \
-                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event trsm_batch(cl::sycl::queue &queue, side *left_right, uplo *upper_lower,        \
+                               transpose *trans, diag *unit_diag, int64_t *m, int64_t *n,          \
+                               TYPE *alpha, const TYPE **a, int64_t *lda, TYPE **b, int64_t *ldb,  \
+                               int64_t group_count, int64_t *group_size,                           \
+                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return trsm_batch(ROCBLAS_ROUTINE, queue, left_right, upper_lower, trans, unit_diag, m, n, \
-                          alpha, a, lda, b, ldb, group_count, group_size, dependencies);          \
+                          alpha, a, lda, b, ldb, group_count, group_size, dependencies);           \
     }
 
 TRSM_BATCH_LAUNCHER_USM(float, rocblas_strsm_batched)
@@ -745,9 +744,9 @@ cl::sycl::event syrk_batch(cl::sycl::queue &queue, uplo upper_lower, transpose t
                            int64_t batch_size,
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     throw unimplemented("blas", "syrk_batch", "for column_major layout");
- }
- 
- } // namespace column_major
+}
+
+} // namespace column_major
 namespace row_major {
 
 // Buffer APIs
@@ -873,13 +872,13 @@ inline void gemm_batch(Func func, cl::sycl::queue &queue, transpose transa, tran
     throw unimplemented("blas", "gemm_batch", "for row_major layout");
 }
 
-#define GEMM_STRIDED_BATCH_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                          \
+#define GEMM_STRIDED_BATCH_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                         \
     void gemm_batch(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,         \
                     int64_t n, int64_t k, TYPE alpha, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,   \
                     int64_t stride_a, cl::sycl::buffer<TYPE, 1> &b, int64_t ldb, int64_t stride_b, \
                     TYPE beta, cl::sycl::buffer<TYPE, 1> &c, int64_t ldc, int64_t stride_c,        \
                     int64_t batch_size) {                                                          \
-        gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, b,     \
+        gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, b,    \
                    ldb, stride_b, beta, c, ldc, stride_c, batch_size);                             \
     }
 GEMM_STRIDED_BATCH_LAUNCHER(half, rocblas_hgemm_strided_batched)
@@ -1207,14 +1206,15 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose t
     throw unimplemented("blas", "gemm_batch", "for row_major layout");
 }
 
-#define GEMM_STRIDED_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                      \
-    cl::sycl::event gemm_batch(                                                                    \
-        cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,          \
-        int64_t k, TYPE alpha, const TYPE *a, int64_t lda, int64_t stride_a, const TYPE *b,        \
-        int64_t ldb, int64_t stride_b, TYPE beta, TYPE *c, int64_t ldc, int64_t stride_c,          \
-        int64_t batch_size, const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
-        return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, stride_a, \
-                          b, ldb, stride_b, beta, c, ldc, stride_c, batch_size, dependencies);     \
+#define GEMM_STRIDED_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                              \
+    cl::sycl::event gemm_batch(                                                             \
+        cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,   \
+        int64_t k, TYPE alpha, const TYPE *a, int64_t lda, int64_t stride_a, const TYPE *b, \
+        int64_t ldb, int64_t stride_b, TYPE beta, TYPE *c, int64_t ldc, int64_t stride_c,   \
+        int64_t batch_size, const cl::sycl::vector_class<cl::sycl::event> &dependencies) {  \
+        return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda,   \
+                          stride_a, b, ldb, stride_b, beta, c, ldc, stride_c, batch_size,   \
+                          dependencies);                                                    \
     }
 
 GEMM_STRIDED_BATCH_LAUNCHER_USM(half, rocblas_hgemm_strided_batched)
@@ -1235,13 +1235,13 @@ inline cl::sycl::event gemm_batch(Func func, cl::sycl::queue &queue, transpose *
 }
 
 #define GEMM_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
-    cl::sycl::event gemm_batch(cl::sycl::queue &queue, transpose *transa, transpose *transb,     \
-                               int64_t *m, int64_t *n, int64_t *k, TYPE *alpha, const TYPE **a,  \
-                               int64_t *lda, const TYPE **b, int64_t *ldb, TYPE *beta, TYPE **c, \
-                               int64_t *ldc, int64_t group_count, int64_t *group_size,           \
-                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {    \
+    cl::sycl::event gemm_batch(cl::sycl::queue &queue, transpose *transa, transpose *transb,      \
+                               int64_t *m, int64_t *n, int64_t *k, TYPE *alpha, const TYPE **a,   \
+                               int64_t *lda, const TYPE **b, int64_t *ldb, TYPE *beta, TYPE **c,  \
+                               int64_t *ldc, int64_t group_count, int64_t *group_size,            \
+                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
         return gemm_batch(ROCBLAS_ROUTINE, queue, transa, transb, m, n, k, alpha, a, lda, b, ldb, \
-                          beta, c, ldc, group_count, group_size, dependencies);                  \
+                          beta, c, ldc, group_count, group_size, dependencies);                   \
     }
 
 GEMM_BATCH_LAUNCHER_USM(half, rocblas_hgemm_batched)
@@ -1296,13 +1296,13 @@ inline cl::sycl::event trsm_batch(Func func, cl::sycl::queue &queue, side *left_
 }
 
 #define TRSM_BATCH_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event trsm_batch(cl::sycl::queue &queue, side *left_right, uplo *upper_lower,       \
-                               transpose *trans, diag *unit_diag, int64_t *m, int64_t *n,         \
-                               TYPE *alpha, const TYPE **a, int64_t *lda, TYPE **b, int64_t *ldb, \
-                               int64_t group_count, int64_t *group_size,                          \
-                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event trsm_batch(cl::sycl::queue &queue, side *left_right, uplo *upper_lower,        \
+                               transpose *trans, diag *unit_diag, int64_t *m, int64_t *n,          \
+                               TYPE *alpha, const TYPE **a, int64_t *lda, TYPE **b, int64_t *ldb,  \
+                               int64_t group_count, int64_t *group_size,                           \
+                               const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return trsm_batch(ROCBLAS_ROUTINE, queue, left_right, upper_lower, trans, unit_diag, m, n, \
-                          alpha, a, lda, b, ldb, group_count, group_size, dependencies);          \
+                          alpha, a, lda, b, ldb, group_count, group_size, dependencies);           \
     }
 
 TRSM_BATCH_LAUNCHER_USM(float, rocblas_strsm_batched)
@@ -1373,8 +1373,8 @@ cl::sycl::event syrk_batch(cl::sycl::queue &queue, uplo upper_lower, transpose t
                            int64_t batch_size,
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     throw unimplemented("blas", "syrk_batch", "for row_major layout");
- }
- 
+}
+
 } // namespace row_major
 } // namespace rocblas
 } // namespace blas

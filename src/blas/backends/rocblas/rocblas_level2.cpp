@@ -40,7 +40,7 @@ inline void gemv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -48,16 +48,16 @@ inline void gemv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(trans), m, n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
 #define GEMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
-    void gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, TYPE alpha, \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,   \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {     \
+    void gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, TYPE alpha,  \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,    \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {      \
         gemv(ROCBLAS_ROUTINE, queue, trans, m, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -78,7 +78,7 @@ inline void gbmv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -86,18 +86,18 @@ inline void gbmv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(trans), m, n, kl, ku,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
-#define GBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define GBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, int64_t kl,           \
               int64_t ku, TYPE alpha, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,                   \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy) {                                                                      \
-        gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy);   \
+        gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy);  \
     }
 
 GBMV_LAUNCHER(float, rocblas_sgbmv)
@@ -116,24 +116,24 @@ inline void ger(Func func, cl::sycl::queue &queue, int64_t m, int64_t n, T alpha
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
-            ROCBLAS_ERROR_FUNC(func, err, handle, m, n, (cuDataType *)&alpha, x_, incx, y_, incy, a_,
-                              lda);
+            ROCBLAS_ERROR_FUNC(func, err, handle, m, n, (cuDataType *)&alpha, x_, incx, y_, incy,
+                               a_, lda);
         });
     });
 }
 
-#define GER_LAUNCHER(EXT, TYPE, ROCBLAS_ROUTINE)                                             \
+#define GER_LAUNCHER(EXT, TYPE, ROCBLAS_ROUTINE)                                            \
     void ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,                 \
                   cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
                   int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda);                  \
+        ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda);                 \
     }
 
 GER_LAUNCHER(, float, rocblas_sger)
@@ -154,7 +154,7 @@ inline void hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -162,16 +162,16 @@ inline void hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n, k,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
 #define HBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                    \
-    void hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,      \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,         \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {           \
+    void hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,       \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,          \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {            \
         hbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -189,7 +189,7 @@ inline void hemv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -197,16 +197,16 @@ inline void hemv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
 #define HEMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                 \
-    void hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,              \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,      \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {        \
+    void hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,               \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,       \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {         \
         hemv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -225,23 +225,23 @@ inline void her(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuScalarType *)&alpha, x_, incx, a_, lda);
+                               (cuScalarType *)&alpha, x_, incx, a_, lda);
         });
     });
 }
 
-#define HER_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                     \
+#define HER_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                    \
     void her(cl::sycl::queue &queue, uplo upper_lower, int64_t n, SCALAR_TYPE alpha,             \
              cl::sycl::buffer<DATA_TYPE, 1> &x, int64_t incx, cl::sycl::buffer<DATA_TYPE, 1> &a, \
              int64_t lda) {                                                                      \
-        her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);                      \
+        her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);                     \
     }
 
 HER_LAUNCHER(float, std::complex<float>, rocblas_cher)
@@ -259,7 +259,7 @@ inline void her2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -267,16 +267,16 @@ inline void her2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
         });
     });
 }
 
-#define HER2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HER2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);   \
+        her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);  \
     }
 
 HER2_LAUNCHER(std::complex<float>, rocblas_cher2)
@@ -294,7 +294,7 @@ inline void hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -302,16 +302,16 @@ inline void hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
+                               (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
         });
     });
 }
 
-#define HPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define HPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,                     \
               cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, \
               cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {                                        \
-        hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);             \
+        hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);            \
     }
 
 HPMV_LAUNCHER(std::complex<float>, rocblas_chpmv)
@@ -328,22 +328,22 @@ inline void hpr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuScalarType *)&alpha, x_, incx, a_);
+                               (cuScalarType *)&alpha, x_, incx, a_);
         });
     });
 }
 
-#define HPR_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                       \
+#define HPR_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                      \
     void hpr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, SCALAR_TYPE alpha,               \
              cl::sycl::buffer<DATA_TYPE, 1> &x, int64_t incx, cl::sycl::buffer<DATA_TYPE, 1> &a) { \
-        hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                             \
+        hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                            \
     }
 
 HPR_LAUNCHER(float, std::complex<float>, rocblas_chpr)
@@ -361,7 +361,7 @@ inline void hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -369,16 +369,16 @@ inline void hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_);
         });
     });
 }
 
-#define HPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void hpr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a) {                             \
-        hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);        \
+        hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);       \
     }
 
 HPR2_LAUNCHER(std::complex<float>, rocblas_chpr2)
@@ -396,7 +396,7 @@ inline void sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -404,16 +404,16 @@ inline void sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n, k,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
 #define SBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                    \
-    void sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,      \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,         \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {           \
+    void sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,       \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,          \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {            \
         sbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -432,7 +432,7 @@ inline void symv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -440,16 +440,16 @@ inline void symv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
 }
 
 #define SYMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                 \
-    void symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,              \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,      \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {        \
+    void symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,               \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,       \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {         \
         symv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -466,23 +466,23 @@ inline void syr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, a_, lda);
         });
     });
 }
 
-#define SYR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SYR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
              cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &a, \
              int64_t lda) {                                                            \
-        syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);            \
+        syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);           \
     }
 
 SYR_LAUNCHER(float, rocblas_ssyr)
@@ -502,7 +502,7 @@ inline void syr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -510,16 +510,16 @@ inline void syr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
         });
     });
 }
 
-#define SYR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SYR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);   \
+        syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);  \
     }
 
 SYR2_LAUNCHER(float, rocblas_ssyr2)
@@ -540,7 +540,7 @@ inline void spmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -548,16 +548,16 @@ inline void spmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
+                               (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
         });
     });
 }
 
-#define SPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define SPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,                     \
               cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, \
               cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {                                        \
-        spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);             \
+        spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);            \
     }
 
 SPMV_LAUNCHER(float, rocblas_sspmv)
@@ -573,22 +573,22 @@ inline void spr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, a_);
+                               (cuDataType *)&alpha, x_, incx, a_);
         });
     });
 }
 
-#define SPR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                               \
+#define SPR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
     void spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,            \
              cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &a) { \
-        spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                   \
+        spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                  \
     }
 
 SPR_LAUNCHER(float, rocblas_sspr)
@@ -606,7 +606,7 @@ inline void spr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
         auto a_acc = a.template get_access<cl::sycl::access::mode::read_write>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read>(cgh);
         auto y_acc = y.template get_access<cl::sycl::access::mode::read>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
@@ -614,16 +614,16 @@ inline void spr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
             auto y_ = sc.get_mem<cuDataType *>(y_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_);
         });
     });
 }
 
-#define SPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void spr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a) {                             \
-        spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);        \
+        spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);       \
     }
 
 SPR2_LAUNCHER(float, rocblas_sspr2)
@@ -640,23 +640,23 @@ inline void tbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
-                              a_, lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
+                               a_, lda, x_, incx);
         });
     });
 }
 
 #define TBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                \
-    void tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,   \
-              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,             \
-              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                \
+    void tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,    \
+              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                 \
         tbmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx); \
     }
 
@@ -676,23 +676,23 @@ inline void tbsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
-                              a_, lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
+                               a_, lda, x_, incx);
         });
     });
 }
 
 #define TBSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                \
-    void tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,   \
-              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,             \
-              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                \
+    void tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,    \
+              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                 \
         tbsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx); \
     }
 
@@ -712,24 +712,24 @@ inline void tpmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, x_, incx);
         });
     });
 }
 
-#define TPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
+#define TPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
     void tpmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag, \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x,     \
               int64_t incx) {                                                            \
-        tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);       \
+        tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);      \
     }
 
 TPMV_LAUNCHER(float, rocblas_stpmv)
@@ -748,24 +748,24 @@ inline void tpsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, x_, incx);
         });
     });
 }
 
-#define TPSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
+#define TPSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
     void tpsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag, \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x,     \
               int64_t incx) {                                                            \
-        tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);       \
+        tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);      \
     }
 
 TPSV_LAUNCHER(float, rocblas_stpsv)
@@ -784,24 +784,24 @@ inline void trmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, lda, x_, incx);
         });
     });
 }
 
-#define TRMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
+#define TRMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                      \
     void trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,          \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x, \
               int64_t incx) {                                                                     \
-        trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);           \
+        trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);          \
     }
 
 TRMV_LAUNCHER(float, rocblas_strmv)
@@ -820,24 +820,24 @@ inline void trsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     queue.submit([&](cl::sycl::handler &cgh) {
         auto a_acc = a.template get_access<cl::sycl::access::mode::read>(cgh);
         auto x_acc = x.template get_access<cl::sycl::access::mode::read_write>(cgh);
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = sc.get_mem<cuDataType *>(a_acc);
             auto x_ = sc.get_mem<cuDataType *>(x_acc);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, lda, x_, incx);
         });
     });
 }
 
-#define TRSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
+#define TRSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                      \
     void trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,          \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x, \
               int64_t incx) {                                                                     \
-        trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);           \
+        trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);          \
     }
 
 TRSV_LAUNCHER(float, rocblas_strsv)
@@ -861,7 +861,7 @@ inline cl::sycl::event gemv(Func func, cl::sycl::queue &queue, transpose trans, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -869,20 +869,20 @@ inline cl::sycl::event gemv(Func func, cl::sycl::queue &queue, transpose trans, 
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(trans), m, n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define GEMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,        \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,         \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return gemv(ROCBLAS_ROUTINE, queue, trans, m, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                             \
+                    dependencies);                                                              \
     }
 
 GEMV_LAUNCHER_USM(float, rocblas_sgemv)
@@ -903,7 +903,7 @@ inline cl::sycl::event gbmv(Func func, cl::sycl::queue &queue, transpose trans, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -911,20 +911,20 @@ inline cl::sycl::event gbmv(Func func, cl::sycl::queue &queue, transpose trans, 
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_operation(trans), m, n, kl, ku,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define GBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,          \
-                         int64_t kl, int64_t ku, TYPE alpha, const TYPE *a, int64_t lda,         \
-                         const TYPE *x, int64_t incx, TYPE beta, TYPE *y, int64_t incy,          \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,           \
+                         int64_t kl, int64_t ku, TYPE alpha, const TYPE *a, int64_t lda,          \
+                         const TYPE *x, int64_t incx, TYPE beta, TYPE *y, int64_t incy,           \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                         \
+                    incy, dependencies);                                                          \
     }
 
 GBMV_LAUNCHER_USM(float, rocblas_sgbmv)
@@ -944,25 +944,25 @@ inline cl::sycl::event ger(Func func, cl::sycl::queue &queue, int64_t m, int64_t
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
             auto x_ = reinterpret_cast<const cuDataType *>(x);
             auto y_ = reinterpret_cast<const cuDataType *>(y);
             rocblas_status err;
-            ROCBLAS_ERROR_FUNC(func, err, handle, m, n, (cuDataType *)&alpha, x_, incx, y_, incy, a_,
-                              lda);
+            ROCBLAS_ERROR_FUNC(func, err, handle, m, n, (cuDataType *)&alpha, x_, incx, y_, incy,
+                               a_, lda);
         });
     });
     return done;
 }
 
 #define GER_LAUNCHER_USM(EXT, TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,          \
-                             const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                             int64_t lda,                                                       \
-                             const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,           \
+                             const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                             int64_t lda,                                                        \
+                             const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda, dependencies); \
     }
 
@@ -986,7 +986,7 @@ inline cl::sycl::event hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -994,20 +994,20 @@ inline cl::sycl::event hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n, k,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define HBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,       \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,        \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return hbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                       \
+                    incy, dependencies);                                                        \
     }
 
 HBMV_LAUNCHER_USM(std::complex<float>, rocblas_chbmv)
@@ -1026,7 +1026,7 @@ inline cl::sycl::event hemv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -1034,20 +1034,20 @@ inline cl::sycl::event hemv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define HEMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,      \
-                         TYPE *y, int64_t incy,                                                   \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,       \
+                         TYPE *y, int64_t incy,                                                    \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return hemv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                                \
+                    dependencies);                                                                 \
     }
 
 HEMV_LAUNCHER_USM(std::complex<float>, rocblas_chemv)
@@ -1068,24 +1068,24 @@ inline cl::sycl::event her(Func func, cl::sycl::queue &queue, uplo upper_lower, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
             auto x_ = reinterpret_cast<const cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuScalarType *)&alpha, x_, incx, a_, lda);
+                               (cuScalarType *)&alpha, x_, incx, a_, lda);
         });
     });
     return done;
 }
 
 #define HER_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                 \
-    cl::sycl::event her(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                     \
-                        const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a, \
-                        int64_t lda,                                                             \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event her(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                      \
+                        const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a,  \
+                        int64_t lda,                                                              \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda, dependencies); \
     }
 
@@ -1105,7 +1105,7 @@ inline cl::sycl::event her2(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
@@ -1113,19 +1113,19 @@ inline cl::sycl::event her2(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<const cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
         });
     });
     return done;
 }
 
 #define HER2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
-                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                         int64_t lda,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
+                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                         int64_t lda,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda, \
-                    dependencies);                                                          \
+                    dependencies);                                                           \
     }
 
 HER2_LAUNCHER_USM(std::complex<float>, rocblas_cher2)
@@ -1144,7 +1144,7 @@ inline cl::sycl::event hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -1152,19 +1152,19 @@ inline cl::sycl::event hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
+                               (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
         });
     });
     return done;
 }
 
 #define HPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,     \
-                         int64_t incy,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,      \
+                         int64_t incy,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy, \
-                    dependencies);                                                           \
+                    dependencies);                                                            \
     }
 
 HPMV_LAUNCHER_USM(std::complex<float>, rocblas_chpmv)
@@ -1184,24 +1184,24 @@ inline cl::sycl::event hpr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
             auto x_ = reinterpret_cast<const cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuScalarType *)&alpha, x_, incx, a_);
+                               (cuScalarType *)&alpha, x_, incx, a_);
         });
     });
     return done;
 }
 
-#define HPR_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                 \
+#define HPR_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                \
     cl::sycl::event hpr(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                     \
                         const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a, \
                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
-        return hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies);      \
+        return hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies);     \
     }
 
 HPR_LAUNCHER_USM(float, std::complex<float>, rocblas_chpr)
@@ -1220,7 +1220,7 @@ inline cl::sycl::event hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
@@ -1228,17 +1228,17 @@ inline cl::sycl::event hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<const cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_);
         });
     });
     return done;
 }
 
-#define HPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
     cl::sycl::event hpr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
                          const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
-        return hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,      \
+        return hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,     \
                     dependencies);                                                          \
     }
 
@@ -1259,7 +1259,7 @@ inline cl::sycl::event sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -1267,20 +1267,20 @@ inline cl::sycl::event sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n, k,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define SBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,       \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,        \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return sbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                       \
+                    incy, dependencies);                                                        \
     }
 
 SBMV_LAUNCHER_USM(float, rocblas_ssbmv)
@@ -1300,7 +1300,7 @@ inline cl::sycl::event symv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -1308,20 +1308,20 @@ inline cl::sycl::event symv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
-                              incy);
+                               (cuDataType *)&alpha, a_, lda, x_, incx, (cuDataType *)&beta, y_,
+                               incy);
         });
     });
     return done;
 }
 
 #define SYMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,      \
-                         TYPE *y, int64_t incy,                                                   \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,       \
+                         TYPE *y, int64_t incy,                                                    \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return symv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                                \
+                    dependencies);                                                                 \
     }
 
 SYMV_LAUNCHER_USM(float, rocblas_ssymv)
@@ -1340,23 +1340,23 @@ inline cl::sycl::event syr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
             auto x_ = reinterpret_cast<const cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, a_, lda);
         });
     });
     return done;
 }
 
 #define SYR_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                        const TYPE *x, int64_t incx, TYPE *a, int64_t lda,                       \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                        const TYPE *x, int64_t incx, TYPE *a, int64_t lda,                        \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda, dependencies); \
     }
 
@@ -1378,7 +1378,7 @@ inline cl::sycl::event syr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
@@ -1386,19 +1386,19 @@ inline cl::sycl::event syr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<const cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_, lda);
         });
     });
     return done;
 }
 
 #define SYR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
-                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                         int64_t lda,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
+                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                         int64_t lda,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda, \
-                    dependencies);                                                          \
+                    dependencies);                                                           \
     }
 
 SYR2_LAUNCHER_USM(float, rocblas_ssyr2)
@@ -1420,7 +1420,7 @@ inline cl::sycl::event spmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
@@ -1428,19 +1428,19 @@ inline cl::sycl::event spmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
+                               (cuDataType *)&alpha, a_, x_, incx, (cuDataType *)&beta, y_, incy);
         });
     });
     return done;
 }
 
 #define SPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,     \
-                         int64_t incy,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,      \
+                         int64_t incy,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy, \
-                    dependencies);                                                           \
+                    dependencies);                                                            \
     }
 
 SPMV_LAUNCHER_USM(float, rocblas_sspmv)
@@ -1459,23 +1459,23 @@ inline cl::sycl::event spr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
             auto x_ = reinterpret_cast<const cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, a_);
+                               (cuDataType *)&alpha, x_, incx, a_);
         });
     });
     return done;
 }
 
 #define SPR_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                        const TYPE *x, int64_t incx, TYPE *a,                               \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                        const TYPE *x, int64_t incx, TYPE *a,                                \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies); \
     }
 
@@ -1495,7 +1495,7 @@ inline cl::sycl::event spr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<cuDataType *>(a);
@@ -1503,17 +1503,17 @@ inline cl::sycl::event spr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
             auto y_ = reinterpret_cast<const cuDataType *>(y);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower), n,
-                              (cuDataType *)&alpha, x_, incx, y_, incy, a_);
+                               (cuDataType *)&alpha, x_, incx, y_, incy, a_);
         });
     });
     return done;
 }
 
-#define SPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
     cl::sycl::event spr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
                          const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
-        return spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,      \
+        return spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,     \
                     dependencies);                                                          \
     }
 
@@ -1534,27 +1534,27 @@ inline cl::sycl::event tbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
-                              a_, lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
+                               a_, lda, x_, incx);
         });
     });
     return done;
 }
 
 #define TBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,              \
-                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,       \
-                         TYPE *x, int64_t incx,                                                  \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,               \
+                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,        \
+                         TYPE *x, int64_t incx,                                                   \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return tbmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx, \
-                    dependencies);                                                               \
+                    dependencies);                                                                \
     }
 
 TBMV_LAUNCHER_USM(float, rocblas_stbmv)
@@ -1576,27 +1576,27 @@ inline cl::sycl::event tbsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
-                              a_, lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, k,
+                               a_, lda, x_, incx);
         });
     });
     return done;
 }
 
 #define TBSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,              \
-                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,       \
-                         TYPE *x, int64_t incx,                                                  \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,               \
+                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,        \
+                         TYPE *x, int64_t incx,                                                   \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return tbsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx, \
-                    dependencies);                                                               \
+                    dependencies);                                                                \
     }
 
 TBSV_LAUNCHER_USM(float, rocblas_stbsv)
@@ -1617,25 +1617,25 @@ inline cl::sycl::event tpmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, x_, incx);
         });
     });
     return done;
 }
 
-#define TPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                           \
+#define TPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                          \
     cl::sycl::event tpmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,       \
                          diag unit_diag, int64_t n, const TYPE *a, TYPE *x, int64_t incx, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {   \
-        return tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx,  \
+        return tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx, \
                     dependencies);                                                        \
     }
 
@@ -1657,25 +1657,25 @@ inline cl::sycl::event tpsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, x_, incx);
         });
     });
     return done;
 }
 
-#define TPSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                           \
+#define TPSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                          \
     cl::sycl::event tpsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,       \
                          diag unit_diag, int64_t n, const TYPE *a, TYPE *x, int64_t incx, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {   \
-        return tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx,  \
+        return tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx, \
                     dependencies);                                                        \
     }
 
@@ -1697,27 +1697,27 @@ inline cl::sycl::event trmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, lda, x_, incx);
         });
     });
     return done;
 }
 
 #define TRMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                               \
-    cl::sycl::event trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,           \
-                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,      \
-                         int64_t incx,                                                        \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
+    cl::sycl::event trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,            \
+                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,       \
+                         int64_t incx,                                                         \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
         return trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx, \
-                    dependencies);                                                            \
+                    dependencies);                                                             \
     }
 
 TRMV_LAUNCHER_USM(float, rocblas_strmv)
@@ -1738,27 +1738,27 @@ inline cl::sycl::event trsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
         for (int64_t i = 0; i < num_events; i++) {
             cgh.depends_on(dependencies[i]);
         }
-        onemkl_rocblas_host_task(cgh, queue,[=](RocblasScopedContextHandler& sc) {
+        onemkl_rocblas_host_task(cgh, queue, [=](RocblasScopedContextHandler &sc) {
             auto handle = sc.get_handle(queue);
 
             auto a_ = reinterpret_cast<const cuDataType *>(a);
             auto x_ = reinterpret_cast<cuDataType *>(x);
             rocblas_status err;
             ROCBLAS_ERROR_FUNC(func, err, handle, get_rocblas_fill_mode(upper_lower),
-                              get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n, a_,
-                              lda, x_, incx);
+                               get_rocblas_operation(trans), get_rocblas_diag_type(unit_diag), n,
+                               a_, lda, x_, incx);
         });
     });
     return done;
 }
 
 #define TRSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                               \
-    cl::sycl::event trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,           \
-                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,      \
-                         int64_t incx,                                                        \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
+    cl::sycl::event trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,            \
+                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,       \
+                         int64_t incx,                                                         \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
         return trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx, \
-                    dependencies);                                                            \
+                    dependencies);                                                             \
     }
 
 TRSV_LAUNCHER_USM(float, rocblas_strsv)
@@ -1781,9 +1781,9 @@ inline void gemv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
 }
 
 #define GEMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
-    void gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, TYPE alpha, \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,   \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {     \
+    void gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, TYPE alpha,  \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,    \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {      \
         gemv(ROCBLAS_ROUTINE, queue, trans, m, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -1801,12 +1801,12 @@ inline void gbmv(Func func, cl::sycl::queue &queue, transpose trans, int64_t m, 
     throw unimplemented("blas", "gbmv", "for row_major layout");
 }
 
-#define GBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define GBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n, int64_t kl,           \
               int64_t ku, TYPE alpha, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,                   \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy) {                                                                      \
-        gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy);   \
+        gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, incy);  \
     }
 
 GBMV_LAUNCHER(float, rocblas_sgbmv)
@@ -1822,11 +1822,11 @@ inline void ger(Func func, cl::sycl::queue &queue, int64_t m, int64_t n, T alpha
     throw unimplemented("blas", "ger", "for row_major layout");
 }
 
-#define GER_LAUNCHER(EXT, TYPE, ROCBLAS_ROUTINE)                                             \
+#define GER_LAUNCHER(EXT, TYPE, ROCBLAS_ROUTINE)                                            \
     void ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,                 \
                   cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
                   int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda);                  \
+        ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda);                 \
     }
 
 GER_LAUNCHER(, float, rocblas_sger)
@@ -1845,9 +1845,9 @@ inline void hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
 }
 
 #define HBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                    \
-    void hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,      \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,         \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {           \
+    void hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,       \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,          \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {            \
         hbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -1863,9 +1863,9 @@ inline void hemv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
 }
 
 #define HEMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                 \
-    void hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,              \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,      \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {        \
+    void hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,               \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,       \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {         \
         hemv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -1880,11 +1880,11 @@ inline void her(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     throw unimplemented("blas", "her", "for row_major layout");
 }
 
-#define HER_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                     \
+#define HER_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                    \
     void her(cl::sycl::queue &queue, uplo upper_lower, int64_t n, SCALAR_TYPE alpha,             \
              cl::sycl::buffer<DATA_TYPE, 1> &x, int64_t incx, cl::sycl::buffer<DATA_TYPE, 1> &a, \
              int64_t lda) {                                                                      \
-        her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);                      \
+        her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);                     \
     }
 
 HER_LAUNCHER(float, std::complex<float>, rocblas_cher)
@@ -1899,11 +1899,11 @@ inline void her2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "her2", "for row_major layout");
 }
 
-#define HER2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HER2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);   \
+        her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);  \
     }
 
 HER2_LAUNCHER(std::complex<float>, rocblas_cher2)
@@ -1918,11 +1918,11 @@ inline void hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "hpmv", "for row_major layout");
 }
 
-#define HPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define HPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,                     \
               cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, \
               cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {                                        \
-        hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);             \
+        hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);            \
     }
 
 HPMV_LAUNCHER(std::complex<float>, rocblas_chpmv)
@@ -1936,10 +1936,10 @@ inline void hpr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     throw unimplemented("blas", "hpr", "for row_major layout");
 }
 
-#define HPR_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                       \
+#define HPR_LAUNCHER(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                      \
     void hpr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, SCALAR_TYPE alpha,               \
              cl::sycl::buffer<DATA_TYPE, 1> &x, int64_t incx, cl::sycl::buffer<DATA_TYPE, 1> &a) { \
-        hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                             \
+        hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                            \
     }
 
 HPR_LAUNCHER(float, std::complex<float>, rocblas_chpr)
@@ -1954,11 +1954,11 @@ inline void hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "hpr2", "for row_major layout");
 }
 
-#define HPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void hpr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a) {                             \
-        hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);        \
+        hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);       \
     }
 
 HPR2_LAUNCHER(std::complex<float>, rocblas_chpr2)
@@ -1974,9 +1974,9 @@ inline void sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
 }
 
 #define SBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                    \
-    void sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,      \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,         \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {           \
+    void sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k, TYPE alpha,       \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,          \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {            \
         sbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -1993,9 +1993,9 @@ inline void symv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
 }
 
 #define SYMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                 \
-    void symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,              \
-              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,      \
-              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {        \
+    void symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,               \
+              cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x,       \
+              int64_t incx, TYPE beta, cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {         \
         symv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy); \
     }
 
@@ -2010,11 +2010,11 @@ inline void syr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     throw unimplemented("blas", "syr", "for row_major layout");
 }
 
-#define SYR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SYR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
              cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &a, \
              int64_t lda) {                                                            \
-        syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);            \
+        syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda);           \
     }
 
 SYR_LAUNCHER(float, rocblas_ssyr)
@@ -2031,11 +2031,11 @@ inline void syr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "syr2", "for row_major layout");
 }
 
-#define SYR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SYR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a, int64_t lda) {                \
-        syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);   \
+        syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda);  \
     }
 
 SYR2_LAUNCHER(float, rocblas_ssyr2)
@@ -2053,11 +2053,11 @@ inline void spmv(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "spmv", "for row_major layout");
 }
 
-#define SPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                        \
+#define SPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
     void spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,                     \
               cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x, int64_t incx, TYPE beta, \
               cl::sycl::buffer<TYPE, 1> &y, int64_t incy) {                                        \
-        spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);             \
+        spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy);            \
     }
 
 SPMV_LAUNCHER(float, rocblas_sspmv)
@@ -2071,10 +2071,10 @@ inline void spr(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n, 
     throw unimplemented("blas", "spr", "for row_major layout");
 }
 
-#define SPR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                               \
+#define SPR_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
     void spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,            \
              cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &a) { \
-        spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                   \
+        spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a);                  \
     }
 
 SPR_LAUNCHER(float, rocblas_sspr)
@@ -2089,11 +2089,11 @@ inline void spr2(Func func, cl::sycl::queue &queue, uplo upper_lower, int64_t n,
     throw unimplemented("blas", "spr2", "for row_major layout");
 }
 
-#define SPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SPR2_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                            \
     void spr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
               cl::sycl::buffer<TYPE, 1> &x, int64_t incx, cl::sycl::buffer<TYPE, 1> &y, \
               int64_t incy, cl::sycl::buffer<TYPE, 1> &a) {                             \
-        spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);        \
+        spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a);       \
     }
 
 SPR2_LAUNCHER(float, rocblas_sspr2)
@@ -2109,9 +2109,9 @@ inline void tbmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
 }
 
 #define TBMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                \
-    void tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,   \
-              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,             \
-              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                \
+    void tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,    \
+              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                 \
         tbmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx); \
     }
 
@@ -2130,9 +2130,9 @@ inline void tbsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
 }
 
 #define TBSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                \
-    void tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,   \
-              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,             \
-              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                \
+    void tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,    \
+              int64_t n, int64_t k, cl::sycl::buffer<TYPE, 1> &a, int64_t lda,              \
+              cl::sycl::buffer<TYPE, 1> &x, int64_t incx) {                                 \
         tbsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx); \
     }
 
@@ -2150,11 +2150,11 @@ inline void tpmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     throw unimplemented("blas", "tpmv", "for row_major layout");
 }
 
-#define TPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
+#define TPMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
     void tpmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag, \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x,     \
               int64_t incx) {                                                            \
-        tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);       \
+        tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);      \
     }
 
 TPMV_LAUNCHER(float, rocblas_stpmv)
@@ -2171,11 +2171,11 @@ inline void tpsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     throw unimplemented("blas", "tpsv", "for row_major layout");
 }
 
-#define TPSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                              \
+#define TPSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                             \
     void tpsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag, \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, cl::sycl::buffer<TYPE, 1> &x,     \
               int64_t incx) {                                                            \
-        tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);       \
+        tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx);      \
     }
 
 TPSV_LAUNCHER(float, rocblas_stpsv)
@@ -2192,11 +2192,11 @@ inline void trmv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     throw unimplemented("blas", "trmv", "for row_major layout");
 }
 
-#define TRMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
+#define TRMV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                      \
     void trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,          \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x, \
               int64_t incx) {                                                                     \
-        trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);           \
+        trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);          \
     }
 
 TRMV_LAUNCHER(float, rocblas_strmv)
@@ -2213,11 +2213,11 @@ inline void trsv(Func func, cl::sycl::queue &queue, uplo upper_lower, transpose 
     throw unimplemented("blas", "trsv", "for row_major layout");
 }
 
-#define TRSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                       \
+#define TRSV_LAUNCHER(TYPE, ROCBLAS_ROUTINE)                                                      \
     void trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans, diag unit_diag,          \
               int64_t n, cl::sycl::buffer<TYPE, 1> &a, int64_t lda, cl::sycl::buffer<TYPE, 1> &x, \
               int64_t incx) {                                                                     \
-        trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);           \
+        trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx);          \
     }
 
 TRSV_LAUNCHER(float, rocblas_strsv)
@@ -2238,12 +2238,12 @@ inline cl::sycl::event gemv(Func func, cl::sycl::queue &queue, transpose trans, 
 }
 
 #define GEMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,        \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event gemv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,         \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return gemv(ROCBLAS_ROUTINE, queue, trans, m, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                             \
+                    dependencies);                                                              \
     }
 
 GEMV_LAUNCHER_USM(float, rocblas_sgemv)
@@ -2261,12 +2261,12 @@ inline cl::sycl::event gbmv(Func func, cl::sycl::queue &queue, transpose trans, 
 }
 
 #define GBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,          \
-                         int64_t kl, int64_t ku, TYPE alpha, const TYPE *a, int64_t lda,         \
-                         const TYPE *x, int64_t incx, TYPE beta, TYPE *y, int64_t incy,          \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event gbmv(cl::sycl::queue &queue, transpose trans, int64_t m, int64_t n,           \
+                         int64_t kl, int64_t ku, TYPE alpha, const TYPE *a, int64_t lda,          \
+                         const TYPE *x, int64_t incx, TYPE beta, TYPE *y, int64_t incy,           \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return gbmv(ROCBLAS_ROUTINE, queue, trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                         \
+                    incy, dependencies);                                                          \
     }
 
 GBMV_LAUNCHER_USM(float, rocblas_sgbmv)
@@ -2283,10 +2283,10 @@ inline cl::sycl::event ger(Func func, cl::sycl::queue &queue, int64_t m, int64_t
 }
 
 #define GER_LAUNCHER_USM(EXT, TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,          \
-                             const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                             int64_t lda,                                                       \
-                             const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event ger##EXT(cl::sycl::queue &queue, int64_t m, int64_t n, TYPE alpha,           \
+                             const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                             int64_t lda,                                                        \
+                             const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return ger(ROCBLAS_ROUTINE, queue, m, n, alpha, x, incx, y, incy, a, lda, dependencies); \
     }
 
@@ -2307,12 +2307,12 @@ inline cl::sycl::event hbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define HBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,       \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event hbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,        \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return hbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                       \
+                    incy, dependencies);                                                        \
     }
 
 HBMV_LAUNCHER_USM(std::complex<float>, rocblas_chbmv)
@@ -2328,12 +2328,12 @@ inline cl::sycl::event hemv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define HEMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,      \
-                         TYPE *y, int64_t incy,                                                   \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event hemv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,       \
+                         TYPE *y, int64_t incy,                                                    \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return hemv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                                \
+                    dependencies);                                                                 \
     }
 
 HEMV_LAUNCHER_USM(std::complex<float>, rocblas_chemv)
@@ -2349,10 +2349,10 @@ inline cl::sycl::event her(Func func, cl::sycl::queue &queue, uplo upper_lower, 
 }
 
 #define HER_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                 \
-    cl::sycl::event her(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                     \
-                        const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a, \
-                        int64_t lda,                                                             \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event her(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                      \
+                        const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a,  \
+                        int64_t lda,                                                              \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return her(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda, dependencies); \
     }
 
@@ -2369,12 +2369,12 @@ inline cl::sycl::event her2(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define HER2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
-                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                         int64_t lda,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event her2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
+                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                         int64_t lda,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return her2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda, \
-                    dependencies);                                                          \
+                    dependencies);                                                           \
     }
 
 HER2_LAUNCHER_USM(std::complex<float>, rocblas_cher2)
@@ -2390,12 +2390,12 @@ inline cl::sycl::event hpmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define HPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,     \
-                         int64_t incy,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event hpmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,      \
+                         int64_t incy,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return hpmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy, \
-                    dependencies);                                                           \
+                    dependencies);                                                            \
     }
 
 HPMV_LAUNCHER_USM(std::complex<float>, rocblas_chpmv)
@@ -2410,11 +2410,11 @@ inline cl::sycl::event hpr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
     throw unimplemented("blas", "hpr", "for row_major layout");
 }
 
-#define HPR_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                 \
+#define HPR_LAUNCHER_USM(SCALAR_TYPE, DATA_TYPE, ROCBLAS_ROUTINE)                                \
     cl::sycl::event hpr(cl::sycl::queue &queue, uplo upper_lower, int64_t n,                     \
                         const SCALAR_TYPE alpha, const DATA_TYPE *x, int64_t incx, DATA_TYPE *a, \
                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
-        return hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies);      \
+        return hpr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies);     \
     }
 
 HPR_LAUNCHER_USM(float, std::complex<float>, rocblas_chpr)
@@ -2429,11 +2429,11 @@ inline cl::sycl::event hpr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
     throw unimplemented("blas", "hpr2", "for row_major layout");
 }
 
-#define HPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
+#define HPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
     cl::sycl::event hpr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
                          const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
-        return hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,      \
+        return hpr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,     \
                     dependencies);                                                          \
     }
 
@@ -2451,12 +2451,12 @@ inline cl::sycl::event sbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define SBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                \
-    cl::sycl::event sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,       \
-                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,  \
-                         TYPE beta, TYPE *y, int64_t incy,                                     \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
+    cl::sycl::event sbmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, int64_t k,        \
+                         TYPE alpha, const TYPE *a, int64_t lda, const TYPE *x, int64_t incx,   \
+                         TYPE beta, TYPE *y, int64_t incy,                                      \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {         \
         return sbmv(ROCBLAS_ROUTINE, queue, upper_lower, n, k, alpha, a, lda, x, incx, beta, y, \
-                    incy, dependencies);                                                       \
+                    incy, dependencies);                                                        \
     }
 
 SBMV_LAUNCHER_USM(float, rocblas_ssbmv)
@@ -2473,12 +2473,12 @@ inline cl::sycl::event symv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define SYMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,      \
-                         TYPE *y, int64_t incy,                                                   \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event symv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                         const TYPE *a, int64_t lda, const TYPE *x, int64_t incx, TYPE beta,       \
+                         TYPE *y, int64_t incy,                                                    \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return symv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, lda, x, incx, beta, y, incy, \
-                    dependencies);                                                                \
+                    dependencies);                                                                 \
     }
 
 SYMV_LAUNCHER_USM(float, rocblas_ssymv)
@@ -2494,9 +2494,9 @@ inline cl::sycl::event syr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
 }
 
 #define SYR_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                   \
-    cl::sycl::event syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,         \
-                        const TYPE *x, int64_t incx, TYPE *a, int64_t lda,                       \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
+    cl::sycl::event syr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,          \
+                        const TYPE *x, int64_t incx, TYPE *a, int64_t lda,                        \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {            \
         return syr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, lda, dependencies); \
     }
 
@@ -2515,12 +2515,12 @@ inline cl::sycl::event syr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define SYR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
-    cl::sycl::event syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
-                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
-                         int64_t lda,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
+    cl::sycl::event syr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
+                         const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a,  \
+                         int64_t lda,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
         return syr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a, lda, \
-                    dependencies);                                                          \
+                    dependencies);                                                           \
     }
 
 SYR2_LAUNCHER_USM(float, rocblas_ssyr2)
@@ -2539,12 +2539,12 @@ inline cl::sycl::event spmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define SPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,     \
-                         int64_t incy,                                                       \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event spmv(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                         const TYPE *a, const TYPE *x, int64_t incx, TYPE beta, TYPE *y,      \
+                         int64_t incy,                                                        \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return spmv(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, a, x, incx, beta, y, incy, \
-                    dependencies);                                                           \
+                    dependencies);                                                            \
     }
 
 SPMV_LAUNCHER_USM(float, rocblas_sspmv)
@@ -2560,9 +2560,9 @@ inline cl::sycl::event spr(Func func, cl::sycl::queue &queue, uplo upper_lower, 
 }
 
 #define SPR_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                              \
-    cl::sycl::event spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,    \
-                        const TYPE *x, int64_t incx, TYPE *a,                               \
-                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {      \
+    cl::sycl::event spr(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,     \
+                        const TYPE *x, int64_t incx, TYPE *a,                                \
+                        const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
         return spr(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, a, dependencies); \
     }
 
@@ -2578,11 +2578,11 @@ inline cl::sycl::event spr2(Func func, cl::sycl::queue &queue, uplo upper_lower,
     throw unimplemented("blas", "spr2", "for row_major layout");
 }
 
-#define SPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                             \
+#define SPR2_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                            \
     cl::sycl::event spr2(cl::sycl::queue &queue, uplo upper_lower, int64_t n, TYPE alpha,   \
                          const TYPE *x, int64_t incx, const TYPE *y, int64_t incy, TYPE *a, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {     \
-        return spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,      \
+        return spr2(ROCBLAS_ROUTINE, queue, upper_lower, n, alpha, x, incx, y, incy, a,     \
                     dependencies);                                                          \
     }
 
@@ -2600,12 +2600,12 @@ inline cl::sycl::event tbmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define TBMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,              \
-                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,       \
-                         TYPE *x, int64_t incx,                                                  \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event tbmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,               \
+                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,        \
+                         TYPE *x, int64_t incx,                                                   \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return tbmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx, \
-                    dependencies);                                                               \
+                    dependencies);                                                                \
     }
 
 TBMV_LAUNCHER_USM(float, rocblas_stbmv)
@@ -2624,12 +2624,12 @@ inline cl::sycl::event tbsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define TBSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                                  \
-    cl::sycl::event tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,              \
-                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,       \
-                         TYPE *x, int64_t incx,                                                  \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {          \
+    cl::sycl::event tbsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,               \
+                         diag unit_diag, int64_t n, int64_t k, const TYPE *a, int64_t lda,        \
+                         TYPE *x, int64_t incx,                                                   \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {           \
         return tbsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, k, a, lda, x, incx, \
-                    dependencies);                                                               \
+                    dependencies);                                                                \
     }
 
 TBSV_LAUNCHER_USM(float, rocblas_stbsv)
@@ -2646,11 +2646,11 @@ inline cl::sycl::event tpmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
     throw unimplemented("blas", "tpmv", "for row_major layout");
 }
 
-#define TPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                           \
+#define TPMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                          \
     cl::sycl::event tpmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,       \
                          diag unit_diag, int64_t n, const TYPE *a, TYPE *x, int64_t incx, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {   \
-        return tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx,  \
+        return tpmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx, \
                     dependencies);                                                        \
     }
 
@@ -2668,11 +2668,11 @@ inline cl::sycl::event tpsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
     throw unimplemented("blas", "tpsv", "for row_major layout");
 }
 
-#define TPSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                           \
+#define TPSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                          \
     cl::sycl::event tpsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,       \
                          diag unit_diag, int64_t n, const TYPE *a, TYPE *x, int64_t incx, \
                          const cl::sycl::vector_class<cl::sycl::event> &dependencies) {   \
-        return tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx,  \
+        return tpsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, x, incx, \
                     dependencies);                                                        \
     }
 
@@ -2691,12 +2691,12 @@ inline cl::sycl::event trmv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define TRMV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                               \
-    cl::sycl::event trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,           \
-                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,      \
-                         int64_t incx,                                                        \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
+    cl::sycl::event trmv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,            \
+                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,       \
+                         int64_t incx,                                                         \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
         return trmv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx, \
-                    dependencies);                                                            \
+                    dependencies);                                                             \
     }
 
 TRMV_LAUNCHER_USM(float, rocblas_strmv)
@@ -2714,12 +2714,12 @@ inline cl::sycl::event trsv(Func func, cl::sycl::queue &queue, uplo upper_lower,
 }
 
 #define TRSV_LAUNCHER_USM(TYPE, ROCBLAS_ROUTINE)                                               \
-    cl::sycl::event trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,           \
-                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,      \
-                         int64_t incx,                                                        \
-                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {       \
+    cl::sycl::event trsv(cl::sycl::queue &queue, uplo upper_lower, transpose trans,            \
+                         diag unit_diag, int64_t n, const TYPE *a, int64_t lda, TYPE *x,       \
+                         int64_t incx,                                                         \
+                         const cl::sycl::vector_class<cl::sycl::event> &dependencies) {        \
         return trsv(ROCBLAS_ROUTINE, queue, upper_lower, trans, unit_diag, n, a, lda, x, incx, \
-                    dependencies);                                                            \
+                    dependencies);                                                             \
     }
 
 TRSV_LAUNCHER_USM(float, rocblas_strsv)
