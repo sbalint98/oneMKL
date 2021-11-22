@@ -145,14 +145,14 @@ public:
     }
 };
 
-#define CUDA_ERROR_FUNC(name, err, ...)                                 \
-    err = name(__VA_ARGS__);                                            \
-    if (err != CUDA_SUCCESS) {                                          \
+#define CUDA_ERROR_FUNC(name, err, ...)                                \
+    err = name(__VA_ARGS__);                                           \
+    if (err != CUDA_SUCCESS) {                                         \
         throw hip_error(std::string(#name) + std::string(" : "), err); \
     }
 
 #define ROCBLAS_ERROR_FUNC(name, err, ...)                                 \
-    err = name(__VA_ARGS__);                                              \
+    err = name(__VA_ARGS__);                                               \
     if (err != rocblas_status_success) {                                   \
         throw rocblas_error(std::string(#name) + std::string(" : "), err); \
     }

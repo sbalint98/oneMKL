@@ -22,8 +22,8 @@ void herk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, float beta, cl::sycl::buffer<std::complex<float>, 1> &c,
           std::int64_t ldc) {
     herk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::herk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::herk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     herk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -32,8 +32,8 @@ void herk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda, double beta,
           cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
     herk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::herk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::herk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     herk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -84,7 +84,7 @@ void trmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -93,7 +93,7 @@ void trmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -102,7 +102,7 @@ void trmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -111,7 +111,7 @@ void trmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -120,7 +120,7 @@ void tpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -129,7 +129,7 @@ void tpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -138,7 +138,7 @@ void tpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -147,7 +147,7 @@ void tpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -158,8 +158,9 @@ void spr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int
     spr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
 }
 
-void spr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, double alpha,
-         cl::sycl::buffer<double, 1> &x, std::int64_t incx, cl::sycl::buffer<double, 1> &a) {
+void spr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+         double alpha, cl::sycl::buffer<double, 1> &x, std::int64_t incx,
+         cl::sycl::buffer<double, 1> &a) {
     spr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
     oneapi::mkl::blas::rocblas::MAJOR::spr(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
     spr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
@@ -174,8 +175,8 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemm_batch(selector.get_queue(), transa, transb, m, n, k,
-                                                 alpha, a, lda, stride_a, b, ldb, stride_b, beta, c,
-                                                 ldc, stride_c, batch_size);
+                                                  alpha, a, lda, stride_a, b, ldb, stride_b, beta,
+                                                  c, ldc, stride_c, batch_size);
     gemm_batch_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                              b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
 }
@@ -189,8 +190,8 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemm_batch(selector.get_queue(), transa, transb, m, n, k,
-                                                 alpha, a, lda, stride_a, b, ldb, stride_b, beta, c,
-                                                 ldc, stride_c, batch_size);
+                                                  alpha, a, lda, stride_a, b, ldb, stride_b, beta,
+                                                  c, ldc, stride_c, batch_size);
     gemm_batch_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                              b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
 }
@@ -205,8 +206,8 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemm_batch(selector.get_queue(), transa, transb, m, n, k,
-                                                 alpha, a, lda, stride_a, b, ldb, stride_b, beta, c,
-                                                 ldc, stride_c, batch_size);
+                                                  alpha, a, lda, stride_a, b, ldb, stride_b, beta,
+                                                  c, ldc, stride_c, batch_size);
     gemm_batch_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                              b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
 }
@@ -221,8 +222,8 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemm_batch(selector.get_queue(), transa, transb, m, n, k,
-                                                 alpha, a, lda, stride_a, b, ldb, stride_b, beta, c,
-                                                 ldc, stride_c, batch_size);
+                                                  alpha, a, lda, stride_a, b, ldb, stride_b, beta,
+                                                  c, ldc, stride_c, batch_size);
     gemm_batch_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                              b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
 }
@@ -236,8 +237,8 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemm_batch(selector.get_queue(), transa, transb, m, n, k,
-                                                 alpha, a, lda, stride_a, b, ldb, stride_b, beta, c,
-                                                 ldc, stride_c, batch_size);
+                                                  alpha, a, lda, stride_a, b, ldb, stride_b, beta,
+                                                  c, ldc, stride_c, batch_size);
     gemm_batch_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                              b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
 }
@@ -246,8 +247,8 @@ void syrk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t n, std::int64_t k, float alpha, cl::sycl::buffer<float, 1> &a,
           std::int64_t lda, float beta, cl::sycl::buffer<float, 1> &c, std::int64_t ldc) {
     syrk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     syrk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -255,8 +256,8 @@ void syrk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t n, std::int64_t k, double alpha, cl::sycl::buffer<double, 1> &a,
           std::int64_t lda, double beta, cl::sycl::buffer<double, 1> &c, std::int64_t ldc) {
     syrk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     syrk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -265,8 +266,8 @@ void syrk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda, std::complex<float> beta,
           cl::sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
     syrk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     syrk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -275,8 +276,8 @@ void syrk(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda, std::complex<double> beta,
           cl::sycl::buffer<std::complex<double>, 1> &c, std::int64_t ldc) {
     syrk_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha, a,
-                                           lda, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::syrk(selector.get_queue(), upper_lower, trans, n, k, alpha,
+                                            a, lda, beta, c, ldc);
     syrk_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, beta, c, ldc);
 }
 
@@ -287,8 +288,8 @@ void syrk_batch(backend_selector<backend::rocblas> selector, uplo upper_lower, t
     syrk_batch_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, stride_a,
                             beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::syrk_batch(selector.get_queue(), upper_lower, trans, n, k,
-                                                 alpha, a, lda, stride_a, beta, c, ldc, stride_c,
-                                                 batch_size);
+                                                  alpha, a, lda, stride_a, beta, c, ldc, stride_c,
+                                                  batch_size);
     syrk_batch_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda,
                              stride_a, beta, c, ldc, stride_c, batch_size);
 }
@@ -301,8 +302,8 @@ void syrk_batch(backend_selector<backend::rocblas> selector, uplo upper_lower, t
     syrk_batch_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, stride_a,
                             beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::syrk_batch(selector.get_queue(), upper_lower, trans, n, k,
-                                                 alpha, a, lda, stride_a, beta, c, ldc, stride_c,
-                                                 batch_size);
+                                                  alpha, a, lda, stride_a, beta, c, ldc, stride_c,
+                                                  batch_size);
     syrk_batch_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda,
                              stride_a, beta, c, ldc, stride_c, batch_size);
 }
@@ -316,8 +317,8 @@ void syrk_batch(backend_selector<backend::rocblas> selector, uplo upper_lower, t
     syrk_batch_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, stride_a,
                             beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::syrk_batch(selector.get_queue(), upper_lower, trans, n, k,
-                                                 alpha, a, lda, stride_a, beta, c, ldc, stride_c,
-                                                 batch_size);
+                                                  alpha, a, lda, stride_a, beta, c, ldc, stride_c,
+                                                  batch_size);
     syrk_batch_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda,
                              stride_a, beta, c, ldc, stride_c, batch_size);
 }
@@ -331,8 +332,8 @@ void syrk_batch(backend_selector<backend::rocblas> selector, uplo upper_lower, t
     syrk_batch_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, stride_a,
                             beta, c, ldc, stride_c, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::syrk_batch(selector.get_queue(), upper_lower, trans, n, k,
-                                                 alpha, a, lda, stride_a, beta, c, ldc, stride_c,
-                                                 batch_size);
+                                                  alpha, a, lda, stride_a, beta, c, ldc, stride_c,
+                                                  batch_size);
     syrk_batch_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda,
                              stride_a, beta, c, ldc, stride_c, batch_size);
 }
@@ -343,7 +344,7 @@ void her2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda) {
     her2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::her2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a, lda);
+                                            incy, a, lda);
     her2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -353,7 +354,7 @@ void her2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda) {
     her2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::her2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a, lda);
+                                            incy, a, lda);
     her2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -365,7 +366,7 @@ void hbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
     hbmv_precondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                       incy);
     oneapi::mkl::blas::rocblas::MAJOR::hbmv(selector.get_queue(), upper_lower, n, k, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+                                            x, incx, beta, y, incy);
     hbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -378,7 +379,7 @@ void hbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
     hbmv_precondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                       incy);
     oneapi::mkl::blas::rocblas::MAJOR::hbmv(selector.get_queue(), upper_lower, n, k, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+                                            x, incx, beta, y, incy);
     hbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -406,8 +407,9 @@ void rot(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s);
 }
 
-void rot(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<double, 1> &x,
-         std::int64_t incx, cl::sycl::buffer<double, 1> &y, std::int64_t incy, double c, double s) {
+void rot(backend_selector<backend::rocblas> selector, std::int64_t n,
+         cl::sycl::buffer<double, 1> &x, std::int64_t incx, cl::sycl::buffer<double, 1> &y,
+         std::int64_t incy, double c, double s) {
     rot_precondition(selector.get_queue(), n, x, incx, y, incy, c, s);
     oneapi::mkl::blas::rocblas::MAJOR::rot(selector.get_queue(), n, x, incx, y, incy, c, s);
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s);
@@ -452,7 +454,7 @@ void axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n, flo
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x, incx, stridex,
-                                                 y, incy, stridey, batch_size);
+                                                  y, incy, stridey, batch_size);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -464,7 +466,7 @@ void axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n, dou
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x, incx, stridex,
-                                                 y, incy, stridey, batch_size);
+                                                  y, incy, stridey, batch_size);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -477,7 +479,7 @@ void axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x, incx, stridex,
-                                                 y, incy, stridey, batch_size);
+                                                  y, incy, stridey, batch_size);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -490,7 +492,7 @@ void axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x, incx, stridex,
-                                                 y, incy, stridey, batch_size);
+                                                  y, incy, stridey, batch_size);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -499,7 +501,8 @@ void axpby(backend_selector<backend::rocblas> selector, std::int64_t n, float al
            cl::sycl::buffer<float, 1> &x, std::int64_t incx, float beta,
            cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
-    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y,
+                                             incy);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
 }
 
@@ -507,7 +510,8 @@ void axpby(backend_selector<backend::rocblas> selector, std::int64_t n, double a
            cl::sycl::buffer<double, 1> &x, std::int64_t incx, double beta,
            cl::sycl::buffer<double, 1> &y, std::int64_t incy) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
-    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y,
+                                             incy);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
 }
 
@@ -515,7 +519,8 @@ void axpby(backend_selector<backend::rocblas> selector, std::int64_t n, std::com
            cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx, std::complex<float> beta,
            cl::sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
-    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y,
+                                             incy);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
 }
 
@@ -524,7 +529,8 @@ void axpby(backend_selector<backend::rocblas> selector, std::int64_t n, std::com
            std::complex<double> beta, cl::sycl::buffer<std::complex<double>, 1> &y,
            std::int64_t incy) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
-    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx, beta, y,
+                                             incy);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy);
 }
 
@@ -532,7 +538,8 @@ void sdsdot(backend_selector<backend::rocblas> selector, std::int64_t n, float s
             cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
             std::int64_t incy, cl::sycl::buffer<float, 1> &result) {
     sdsdot_precondition(selector.get_queue(), n, sb, x, incx, y, incy, result);
-    oneapi::mkl::blas::rocblas::MAJOR::sdsdot(selector.get_queue(), n, sb, x, incx, y, incy, result);
+    oneapi::mkl::blas::rocblas::MAJOR::sdsdot(selector.get_queue(), n, sb, x, incx, y, incy,
+                                              result);
     sdsdot_postcondition(selector.get_queue(), n, sb, x, incx, y, incy, result);
 }
 
@@ -542,7 +549,7 @@ void gerc(backend_selector<backend::rocblas> selector, std::int64_t m, std::int6
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda) {
     gerc_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::gerc(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                           lda);
+                                            lda);
     gerc_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -552,7 +559,7 @@ void gerc(backend_selector<backend::rocblas> selector, std::int64_t m, std::int6
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda) {
     gerc_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::gerc(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                           lda);
+                                            lda);
     gerc_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -563,7 +570,7 @@ void syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -575,7 +582,7 @@ void syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -588,7 +595,7 @@ void syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -602,7 +609,7 @@ void syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -613,7 +620,7 @@ void gemv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -623,7 +630,7 @@ void gemv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           cl::sycl::buffer<double, 1> &y, std::int64_t incy) {
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -634,7 +641,7 @@ void gemv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           std::int64_t incy) {
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -645,7 +652,7 @@ void gemv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           std::int64_t incy) {
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -657,8 +664,8 @@ void gemv_batch(backend_selector<backend::rocblas> selector, transpose trans, st
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                             stridex, beta, y, incy, stridey, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n, alpha, a, lda,
-                                                 stridea, x, incx, stridex, beta, y, incy, stridey,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, beta, y, incy, stridey,
+                                                  batch_size);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                              stridex, beta, y, incy, stridey, batch_size);
 }
@@ -671,8 +678,8 @@ void gemv_batch(backend_selector<backend::rocblas> selector, transpose trans, st
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                             stridex, beta, y, incy, stridey, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n, alpha, a, lda,
-                                                 stridea, x, incx, stridex, beta, y, incy, stridey,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, beta, y, incy, stridey,
+                                                  batch_size);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                              stridex, beta, y, incy, stridey, batch_size);
 }
@@ -687,8 +694,8 @@ void gemv_batch(backend_selector<backend::rocblas> selector, transpose trans, st
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                             stridex, beta, y, incy, stridey, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n, alpha, a, lda,
-                                                 stridea, x, incx, stridex, beta, y, incy, stridey,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, beta, y, incy, stridey,
+                                                  batch_size);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                              stridex, beta, y, incy, stridey, batch_size);
 }
@@ -703,8 +710,8 @@ void gemv_batch(backend_selector<backend::rocblas> selector, transpose trans, st
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                             stridex, beta, y, incy, stridey, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n, alpha, a, lda,
-                                                 stridea, x, incx, stridex, beta, y, incy, stridey,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, beta, y, incy, stridey,
+                                                  batch_size);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, stridea, x, incx,
                              stridex, beta, y, incy, stridey, batch_size);
 }
@@ -717,8 +724,8 @@ void dgmm_batch(backend_selector<backend::rocblas> selector, side left_right, st
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                             stridex, c, ldc, stridec, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n, a, lda,
-                                                 stridea, x, incx, stridex, c, ldc, stridec,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, c, ldc, stridec,
+                                                  batch_size);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                              stridex, c, ldc, stridec, batch_size);
 }
@@ -731,8 +738,8 @@ void dgmm_batch(backend_selector<backend::rocblas> selector, side left_right, st
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                             stridex, c, ldc, stridec, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n, a, lda,
-                                                 stridea, x, incx, stridex, c, ldc, stridec,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, c, ldc, stridec,
+                                                  batch_size);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                              stridex, c, ldc, stridec, batch_size);
 }
@@ -746,8 +753,8 @@ void dgmm_batch(backend_selector<backend::rocblas> selector, side left_right, st
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                             stridex, c, ldc, stridec, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n, a, lda,
-                                                 stridea, x, incx, stridex, c, ldc, stridec,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, c, ldc, stridec,
+                                                  batch_size);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                              stridex, c, ldc, stridec, batch_size);
 }
@@ -761,8 +768,8 @@ void dgmm_batch(backend_selector<backend::rocblas> selector, side left_right, st
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                             stridex, c, ldc, stridec, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n, a, lda,
-                                                 stridea, x, incx, stridex, c, ldc, stridec,
-                                                 batch_size);
+                                                  stridea, x, incx, stridex, c, ldc, stridec,
+                                                  batch_size);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, stridea, x, incx,
                              stridex, c, ldc, stridec, batch_size);
 }
@@ -772,16 +779,16 @@ void her(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int
          cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda) {
     her_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::her(selector.get_queue(), upper_lower, n, alpha, x, incx, a,
-                                          lda);
+                                           lda);
     her_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
 }
 
-void her(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, double alpha,
-         cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx,
+void her(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+         double alpha, cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx,
          cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda) {
     her_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::her(selector.get_queue(), upper_lower, n, alpha, x, incx, a,
-                                          lda);
+                                           lda);
     her_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
 }
 
@@ -793,8 +800,8 @@ void hpr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int
     hpr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
 }
 
-void hpr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, double alpha,
-         cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx,
+void hpr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+         double alpha, cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx,
          cl::sycl::buffer<std::complex<double>, 1> &a) {
     hpr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
     oneapi::mkl::blas::rocblas::MAJOR::hpr(selector.get_queue(), upper_lower, n, alpha, x, incx, a);
@@ -839,7 +846,7 @@ void hpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy) {
     hpmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::hpmv(selector.get_queue(), upper_lower, n, alpha, a, x, incx,
-                                           beta, y, incy);
+                                            beta, y, incy);
     hpmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
 }
 
@@ -850,16 +857,16 @@ void hpmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           std::int64_t incy) {
     hpmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::hpmv(selector.get_queue(), upper_lower, n, alpha, a, x, incx,
-                                           beta, y, incy);
+                                            beta, y, incy);
     hpmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
 }
 
-void spmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, float alpha,
-          cl::sycl::buffer<float, 1> &a, cl::sycl::buffer<float, 1> &x, std::int64_t incx,
-          float beta, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
+void spmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+          float alpha, cl::sycl::buffer<float, 1> &a, cl::sycl::buffer<float, 1> &x,
+          std::int64_t incx, float beta, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
     spmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::spmv(selector.get_queue(), upper_lower, n, alpha, a, x, incx,
-                                           beta, y, incy);
+                                            beta, y, incy);
     spmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
 }
 
@@ -868,7 +875,7 @@ void spmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           std::int64_t incx, double beta, cl::sycl::buffer<double, 1> &y, std::int64_t incy) {
     spmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::spmv(selector.get_queue(), upper_lower, n, alpha, a, x, incx,
-                                           beta, y, incy);
+                                            beta, y, incy);
     spmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy);
 }
 
@@ -880,8 +887,9 @@ void gemm_bias(backend_selector<backend::rocblas> selector, transpose transa, tr
                cl::sycl::buffer<int32_t, 1> &co) {
     gemm_bias_precondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                            ao, b, ldb, bo, beta, c, ldc, co);
-    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m, n,
-                                                k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc, co);
+    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m,
+                                                 n, k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc,
+                                                 co);
     gemm_bias_postcondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                             ao, b, ldb, bo, beta, c, ldc, co);
 }
@@ -894,8 +902,9 @@ void gemm_bias(backend_selector<backend::rocblas> selector, transpose transa, tr
                cl::sycl::buffer<int32_t, 1> &co) {
     gemm_bias_precondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                            ao, b, ldb, bo, beta, c, ldc, co);
-    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m, n,
-                                                k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc, co);
+    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m,
+                                                 n, k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc,
+                                                 co);
     gemm_bias_postcondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                             ao, b, ldb, bo, beta, c, ldc, co);
 }
@@ -908,8 +917,9 @@ void gemm_bias(backend_selector<backend::rocblas> selector, transpose transa, tr
                cl::sycl::buffer<int32_t, 1> &co) {
     gemm_bias_precondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                            ao, b, ldb, bo, beta, c, ldc, co);
-    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m, n,
-                                                k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc, co);
+    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m,
+                                                 n, k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc,
+                                                 co);
     gemm_bias_postcondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                             ao, b, ldb, bo, beta, c, ldc, co);
 }
@@ -922,14 +932,16 @@ void gemm_bias(backend_selector<backend::rocblas> selector, transpose transa, tr
                cl::sycl::buffer<int32_t, 1> &co) {
     gemm_bias_precondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                            ao, b, ldb, bo, beta, c, ldc, co);
-    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m, n,
-                                                k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc, co);
+    oneapi::mkl::blas::rocblas::MAJOR::gemm_bias(selector.get_queue(), transa, transb, offsetc, m,
+                                                 n, k, alpha, a, lda, ao, b, ldb, bo, beta, c, ldc,
+                                                 co);
     gemm_bias_postcondition(selector.get_queue(), transa, transb, offsetc, m, n, k, alpha, a, lda,
                             ao, b, ldb, bo, beta, c, ldc, co);
 }
 
-void swap(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
+void swap(backend_selector<backend::rocblas> selector, std::int64_t n,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
+          std::int64_t incy) {
     swap_precondition(selector.get_queue(), n, x, incx, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::swap(selector.get_queue(), n, x, incx, y, incy);
     swap_postcondition(selector.get_queue(), n, x, incx, y, incy);
@@ -965,7 +977,7 @@ void geru(backend_selector<backend::rocblas> selector, std::int64_t m, std::int6
           cl::sycl::buffer<std::complex<float>, 1> &a, std::int64_t lda) {
     geru_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::geru(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                           lda);
+                                            lda);
     geru_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -975,7 +987,7 @@ void geru(backend_selector<backend::rocblas> selector, std::int64_t m, std::int6
           cl::sycl::buffer<std::complex<double>, 1> &a, std::int64_t lda) {
     geru_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::geru(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                           lda);
+                                            lda);
     geru_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -995,8 +1007,8 @@ void nrm2(backend_selector<backend::rocblas> selector, std::int64_t n,
     nrm2_postcondition(selector.get_queue(), n, x, incx, result);
 }
 
-void nrm2(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, cl::sycl::buffer<float, 1> &result) {
+void nrm2(backend_selector<backend::rocblas> selector, std::int64_t n,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &result) {
     nrm2_precondition(selector.get_queue(), n, x, incx, result);
     oneapi::mkl::blas::rocblas::MAJOR::nrm2(selector.get_queue(), n, x, incx, result);
     nrm2_postcondition(selector.get_queue(), n, x, incx, result);
@@ -1016,7 +1028,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1028,7 +1040,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1041,7 +1053,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1054,7 +1066,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1066,7 +1078,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1078,7 +1090,7 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
@@ -1090,17 +1102,18 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
-                                           lda, b, ldb, beta, c, ldc);
+                                            lda, b, ldb, beta, c, ldc);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
 }
 
-void syr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, float alpha,
-          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
-          std::int64_t incy, cl::sycl::buffer<float, 1> &a, std::int64_t lda) {
+void syr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+          float alpha, cl::sycl::buffer<float, 1> &x, std::int64_t incx,
+          cl::sycl::buffer<float, 1> &y, std::int64_t incy, cl::sycl::buffer<float, 1> &a,
+          std::int64_t lda) {
     syr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::syr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a, lda);
+                                            incy, a, lda);
     syr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -1110,7 +1123,7 @@ void syr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           std::int64_t lda) {
     syr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::syr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a, lda);
+                                            incy, a, lda);
     syr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -1119,7 +1132,7 @@ void ger(backend_selector<backend::rocblas> selector, std::int64_t m, std::int64
          std::int64_t incy, cl::sycl::buffer<float, 1> &a, std::int64_t lda) {
     ger_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                          lda);
+                                           lda);
     ger_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -1128,7 +1141,7 @@ void ger(backend_selector<backend::rocblas> selector, std::int64_t m, std::int64
          std::int64_t incy, cl::sycl::buffer<double, 1> &a, std::int64_t lda) {
     ger_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx, y, incy, a,
-                                          lda);
+                                           lda);
     ger_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda);
 }
 
@@ -1139,7 +1152,7 @@ void trsm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1151,7 +1164,7 @@ void trsm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1163,7 +1176,7 @@ void trsm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1175,7 +1188,7 @@ void trsm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1206,7 +1219,7 @@ void hemm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     hemm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::hemm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     hemm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1219,7 +1232,7 @@ void hemm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     hemm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::hemm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     hemm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1230,7 +1243,7 @@ void hpr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<float>, 1> &a) {
     hpr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
     oneapi::mkl::blas::rocblas::MAJOR::hpr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a);
+                                            incy, a);
     hpr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
 }
 
@@ -1240,7 +1253,7 @@ void hpr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<double>, 1> &a) {
     hpr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
     oneapi::mkl::blas::rocblas::MAJOR::hpr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a);
+                                            incy, a);
     hpr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
 }
 
@@ -1250,8 +1263,8 @@ void gbmv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           std::int64_t incx, float beta, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
     gbmv_precondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                       incy);
-    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
+                                            lda, x, incx, beta, y, incy);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1262,8 +1275,8 @@ void gbmv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           std::int64_t incx, double beta, cl::sycl::buffer<double, 1> &y, std::int64_t incy) {
     gbmv_precondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                       incy);
-    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
+                                            lda, x, incx, beta, y, incy);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1275,8 +1288,8 @@ void gbmv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           cl::sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy) {
     gbmv_precondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                       incy);
-    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
+                                            lda, x, incx, beta, y, incy);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1289,8 +1302,8 @@ void gbmv(backend_selector<backend::rocblas> selector, transpose trans, std::int
           std::int64_t incy) {
     gbmv_precondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                       incy);
-    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+    oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
+                                            lda, x, incx, beta, y, incy);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1300,7 +1313,7 @@ void tbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     tbmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1309,7 +1322,7 @@ void tbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     tbmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1319,7 +1332,7 @@ void tbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     tbmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1329,7 +1342,7 @@ void tbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     tbmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbmv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1340,7 +1353,7 @@ void symm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     symm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1352,7 +1365,7 @@ void symm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     symm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1365,7 +1378,7 @@ void symm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     symm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1378,7 +1391,7 @@ void symm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     symm_precondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                       beta, c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                           alpha, a, lda, b, ldb, beta, c, ldc);
+                                            alpha, a, lda, b, ldb, beta, c, ldc);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc);
 }
@@ -1406,16 +1419,16 @@ void syr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int
          std::int64_t lda) {
     syr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::syr(selector.get_queue(), upper_lower, n, alpha, x, incx, a,
-                                          lda);
+                                           lda);
     syr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
 }
 
-void syr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, double alpha,
-         cl::sycl::buffer<double, 1> &x, std::int64_t incx, cl::sycl::buffer<double, 1> &a,
-         std::int64_t lda) {
+void syr(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+         double alpha, cl::sycl::buffer<double, 1> &x, std::int64_t incx,
+         cl::sycl::buffer<double, 1> &a, std::int64_t lda) {
     syr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
     oneapi::mkl::blas::rocblas::MAJOR::syr(selector.get_queue(), upper_lower, n, alpha, x, incx, a,
-                                          lda);
+                                           lda);
     syr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda);
 }
 
@@ -1426,7 +1439,7 @@ void trmm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1438,7 +1451,7 @@ void trmm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1450,7 +1463,7 @@ void trmm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1462,7 +1475,7 @@ void trmm(backend_selector<backend::rocblas> selector, side left_right, uplo upp
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb);
     oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right, upper_lower, trans,
-                                           unit_diag, m, n, alpha, a, lda, b, ldb);
+                                            unit_diag, m, n, alpha, a, lda, b, ldb);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb);
 }
@@ -1488,7 +1501,7 @@ void tpsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -1497,7 +1510,7 @@ void tpsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -1506,7 +1519,7 @@ void tpsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -1515,7 +1528,7 @@ void tpsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, x, incx);
+                                            a, x, incx);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx);
 }
 
@@ -1524,7 +1537,7 @@ void trsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -1533,7 +1546,7 @@ void trsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -1542,7 +1555,7 @@ void trsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
@@ -1551,12 +1564,13 @@ void trsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           a, lda, x, incx);
+                                            a, lda, x, incx);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx);
 }
 
-void copy(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
+void copy(backend_selector<backend::rocblas> selector, std::int64_t n,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
+          std::int64_t incy) {
     copy_precondition(selector.get_queue(), n, x, incx, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::copy(selector.get_queue(), n, x, incx, y, incy);
     copy_postcondition(selector.get_queue(), n, x, incx, y, incy);
@@ -1592,8 +1606,8 @@ void copy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
                 std::int64_t batch_size) {
     copy_batch_precondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                             batch_size);
-    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y, incy,
-                                                 stridey, batch_size);
+    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y,
+                                                  incy, stridey, batch_size);
     copy_batch_postcondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -1604,8 +1618,8 @@ void copy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
                 std::int64_t batch_size) {
     copy_batch_precondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                             batch_size);
-    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y, incy,
-                                                 stridey, batch_size);
+    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y,
+                                                  incy, stridey, batch_size);
     copy_batch_postcondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -1616,8 +1630,8 @@ void copy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
     copy_batch_precondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                             batch_size);
-    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y, incy,
-                                                 stridey, batch_size);
+    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y,
+                                                  incy, stridey, batch_size);
     copy_batch_postcondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -1628,8 +1642,8 @@ void copy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
                 std::int64_t incy, std::int64_t stridey, std::int64_t batch_size) {
     copy_batch_precondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                             batch_size);
-    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y, incy,
-                                                 stridey, batch_size);
+    oneapi::mkl::blas::rocblas::MAJOR::copy_batch(selector.get_queue(), n, x, incx, stridex, y,
+                                                  incy, stridey, batch_size);
     copy_batch_postcondition(selector.get_queue(), n, x, incx, stridex, y, incy, stridey,
                              batch_size);
 }
@@ -1640,7 +1654,7 @@ void hemv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<std::complex<float>, 1> &y, std::int64_t incy) {
     hemv_precondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::hemv(selector.get_queue(), upper_lower, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     hemv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -1651,7 +1665,7 @@ void hemv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           std::int64_t incy) {
     hemv_precondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::hemv(selector.get_queue(), upper_lower, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     hemv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -1661,8 +1675,8 @@ void gemmt(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
            std::int64_t ldb, float beta, cl::sycl::buffer<float, 1> &c, std::int64_t ldc) {
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n, k,
-                                            alpha, a, lda, b, ldb, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n,
+                                             k, alpha, a, lda, b, ldb, beta, c, ldc);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc);
 }
@@ -1673,8 +1687,8 @@ void gemmt(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
            std::int64_t ldb, double beta, cl::sycl::buffer<double, 1> &c, std::int64_t ldc) {
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n, k,
-                                            alpha, a, lda, b, ldb, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n,
+                                             k, alpha, a, lda, b, ldb, beta, c, ldc);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc);
 }
@@ -1686,8 +1700,8 @@ void gemmt(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
            cl::sycl::buffer<std::complex<float>, 1> &c, std::int64_t ldc) {
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n, k,
-                                            alpha, a, lda, b, ldb, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n,
+                                             k, alpha, a, lda, b, ldb, beta, c, ldc);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc);
 }
@@ -1700,8 +1714,8 @@ void gemmt(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
            std::int64_t ldc) {
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc);
-    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n, k,
-                                            alpha, a, lda, b, ldb, beta, c, ldc);
+    oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa, transb, n,
+                                             k, alpha, a, lda, b, ldb, beta, c, ldc);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc);
 }
@@ -1722,8 +1736,8 @@ void asum(backend_selector<backend::rocblas> selector, std::int64_t n,
     asum_postcondition(selector.get_queue(), n, x, incx, result);
 }
 
-void asum(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, cl::sycl::buffer<float, 1> &result) {
+void asum(backend_selector<backend::rocblas> selector, std::int64_t n,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &result) {
     asum_precondition(selector.get_queue(), n, x, incx, result);
     oneapi::mkl::blas::rocblas::MAJOR::asum(selector.get_queue(), n, x, incx, result);
     asum_postcondition(selector.get_queue(), n, x, incx, result);
@@ -1743,7 +1757,7 @@ void sbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
     sbmv_precondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                       incy);
     oneapi::mkl::blas::rocblas::MAJOR::sbmv(selector.get_queue(), upper_lower, n, k, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+                                            x, incx, beta, y, incy);
     sbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1755,7 +1769,7 @@ void sbmv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
     sbmv_precondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                       incy);
     oneapi::mkl::blas::rocblas::MAJOR::sbmv(selector.get_queue(), upper_lower, n, k, alpha, a, lda,
-                                           x, incx, beta, y, incy);
+                                            x, incx, beta, y, incy);
     sbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy);
 }
@@ -1765,7 +1779,7 @@ void tbsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<float, 1> &x, std::int64_t incx) {
     tbsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1774,7 +1788,7 @@ void tbsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           std::int64_t lda, cl::sycl::buffer<double, 1> &x, std::int64_t incx) {
     tbsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1784,7 +1798,7 @@ void tbsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<float>, 1> &x, std::int64_t incx) {
     tbsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
@@ -1794,16 +1808,16 @@ void tbsv(backend_selector<backend::rocblas> selector, uplo upper_lower, transpo
           cl::sycl::buffer<std::complex<double>, 1> &x, std::int64_t incx) {
     tbsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
     oneapi::mkl::blas::rocblas::MAJOR::tbsv(selector.get_queue(), upper_lower, trans, unit_diag, n,
-                                           k, a, lda, x, incx);
+                                            k, a, lda, x, incx);
     tbsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, k, a, lda, x, incx);
 }
 
-void spr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, float alpha,
-          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
-          std::int64_t incy, cl::sycl::buffer<float, 1> &a) {
+void spr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+          float alpha, cl::sycl::buffer<float, 1> &x, std::int64_t incx,
+          cl::sycl::buffer<float, 1> &y, std::int64_t incy, cl::sycl::buffer<float, 1> &a) {
     spr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
     oneapi::mkl::blas::rocblas::MAJOR::spr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a);
+                                            incy, a);
     spr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
 }
 
@@ -1812,7 +1826,7 @@ void spr2(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<double, 1> &y, std::int64_t incy, cl::sycl::buffer<double, 1> &a) {
     spr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
     oneapi::mkl::blas::rocblas::MAJOR::spr2(selector.get_queue(), upper_lower, n, alpha, x, incx, y,
-                                           incy, a);
+                                            incy, a);
     spr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a);
 }
 
@@ -1848,9 +1862,9 @@ void iamax(backend_selector<backend::rocblas> selector, std::int64_t n,
     iamax_postcondition(selector.get_queue(), n, x, incx, result);
 }
 
-void rotm(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, cl::sycl::buffer<float, 1> &y, std::int64_t incy,
-          cl::sycl::buffer<float, 1> &param) {
+void rotm(backend_selector<backend::rocblas> selector, std::int64_t n,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, cl::sycl::buffer<float, 1> &y,
+          std::int64_t incy, cl::sycl::buffer<float, 1> &param) {
     rotm_precondition(selector.get_queue(), n, x, incx, y, incy, param);
     oneapi::mkl::blas::rocblas::MAJOR::rotm(selector.get_queue(), n, x, incx, y, incy, param);
     rotm_postcondition(selector.get_queue(), n, x, incx, y, incy, param);
@@ -1872,9 +1886,9 @@ void dot(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::
     dot_postcondition(selector.get_queue(), n, x, incx, y, incy, result);
 }
 
-void dot(backend_selector<backend::rocblas> selector, std::int64_t n, cl::sycl::buffer<double, 1> &x,
-         std::int64_t incx, cl::sycl::buffer<double, 1> &y, std::int64_t incy,
-         cl::sycl::buffer<double, 1> &result) {
+void dot(backend_selector<backend::rocblas> selector, std::int64_t n,
+         cl::sycl::buffer<double, 1> &x, std::int64_t incx, cl::sycl::buffer<double, 1> &y,
+         std::int64_t incy, cl::sycl::buffer<double, 1> &result) {
     dot_precondition(selector.get_queue(), n, x, incx, y, incy, result);
     oneapi::mkl::blas::rocblas::MAJOR::dot(selector.get_queue(), n, x, incx, y, incy, result);
     dot_postcondition(selector.get_queue(), n, x, incx, y, incy, result);
@@ -1896,8 +1910,8 @@ void trsm_batch(backend_selector<backend::rocblas> selector, side left_right, up
     trsm_batch_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                             alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::trsm_batch(selector.get_queue(), left_right, upper_lower,
-                                                 trans, unit_diag, m, n, alpha, a, lda, stride_a, b,
-                                                 ldb, stride_b, batch_size);
+                                                  trans, unit_diag, m, n, alpha, a, lda, stride_a,
+                                                  b, ldb, stride_b, batch_size);
     trsm_batch_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                              alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
 }
@@ -1910,8 +1924,8 @@ void trsm_batch(backend_selector<backend::rocblas> selector, side left_right, up
     trsm_batch_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                             alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::trsm_batch(selector.get_queue(), left_right, upper_lower,
-                                                 trans, unit_diag, m, n, alpha, a, lda, stride_a, b,
-                                                 ldb, stride_b, batch_size);
+                                                  trans, unit_diag, m, n, alpha, a, lda, stride_a,
+                                                  b, ldb, stride_b, batch_size);
     trsm_batch_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                              alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
 }
@@ -1925,8 +1939,8 @@ void trsm_batch(backend_selector<backend::rocblas> selector, side left_right, up
     trsm_batch_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                             alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::trsm_batch(selector.get_queue(), left_right, upper_lower,
-                                                 trans, unit_diag, m, n, alpha, a, lda, stride_a, b,
-                                                 ldb, stride_b, batch_size);
+                                                  trans, unit_diag, m, n, alpha, a, lda, stride_a,
+                                                  b, ldb, stride_b, batch_size);
     trsm_batch_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                              alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
 }
@@ -1940,8 +1954,8 @@ void trsm_batch(backend_selector<backend::rocblas> selector, side left_right, up
     trsm_batch_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                             alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
     oneapi::mkl::blas::rocblas::MAJOR::trsm_batch(selector.get_queue(), left_right, upper_lower,
-                                                 trans, unit_diag, m, n, alpha, a, lda, stride_a, b,
-                                                 ldb, stride_b, batch_size);
+                                                  trans, unit_diag, m, n, alpha, a, lda, stride_a,
+                                                  b, ldb, stride_b, batch_size);
     trsm_batch_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n,
                              alpha, a, lda, stride_a, b, ldb, stride_b, batch_size);
 }
@@ -1954,7 +1968,7 @@ void her2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     her2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::her2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     her2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -1967,7 +1981,7 @@ void her2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transp
     her2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc);
     oneapi::mkl::blas::rocblas::MAJOR::her2k(selector.get_queue(), upper_lower, trans, n, k, alpha,
-                                            a, lda, b, ldb, beta, c, ldc);
+                                             a, lda, b, ldb, beta, c, ldc);
     her2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc);
 }
@@ -2004,12 +2018,13 @@ void rotg(backend_selector<backend::rocblas> selector, cl::sycl::buffer<std::com
     rotg_postcondition(selector.get_queue(), a, b, c, s);
 }
 
-void symv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n, float alpha,
-          cl::sycl::buffer<float, 1> &a, std::int64_t lda, cl::sycl::buffer<float, 1> &x,
-          std::int64_t incx, float beta, cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
+void symv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::int64_t n,
+          float alpha, cl::sycl::buffer<float, 1> &a, std::int64_t lda,
+          cl::sycl::buffer<float, 1> &x, std::int64_t incx, float beta,
+          cl::sycl::buffer<float, 1> &y, std::int64_t incy) {
     symv_precondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::symv(selector.get_queue(), upper_lower, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     symv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -2019,7 +2034,7 @@ void symv(backend_selector<backend::rocblas> selector, uplo upper_lower, std::in
           cl::sycl::buffer<double, 1> &y, std::int64_t incy) {
     symv_precondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
     oneapi::mkl::blas::rocblas::MAJOR::symv(selector.get_queue(), upper_lower, n, alpha, a, lda, x,
-                                           incx, beta, y, incy);
+                                            incx, beta, y, incy);
     symv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, lda, x, incx, beta, y, incy);
 }
 
@@ -2032,7 +2047,7 @@ cl::sycl::event syr2(backend_selector<backend::rocblas> selector, uplo upper_low
     syr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::syr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, lda, dependencies);
+                                                        x, incx, y, incy, a, lda, dependencies);
     syr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                        dependencies);
     return done;
@@ -2045,7 +2060,7 @@ cl::sycl::event syr2(backend_selector<backend::rocblas> selector, uplo upper_low
     syr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::syr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, lda, dependencies);
+                                                        x, incx, y, incy, a, lda, dependencies);
     syr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                        dependencies);
     return done;
@@ -2056,7 +2071,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2066,7 +2081,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2076,7 +2091,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2086,7 +2101,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2096,7 +2111,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2106,7 +2121,7 @@ cl::sycl::event scal(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     scal_precondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::scal(selector.get_queue(), n, alpha, x, incx,
-                                                       dependencies);
+                                                        dependencies);
     scal_postcondition(selector.get_queue(), n, alpha, x, incx, dependencies);
     return done;
 }
@@ -2117,8 +2132,8 @@ cl::sycl::event trmv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -2130,8 +2145,8 @@ cl::sycl::event trmv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -2143,8 +2158,8 @@ cl::sycl::event trmv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -2156,8 +2171,8 @@ cl::sycl::event trmv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trmv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -2169,7 +2184,7 @@ cl::sycl::event tpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -2181,7 +2196,7 @@ cl::sycl::event tpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -2194,7 +2209,7 @@ cl::sycl::event tpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -2207,7 +2222,7 @@ cl::sycl::event tpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpmv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpmv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpmv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -2218,7 +2233,7 @@ cl::sycl::event spr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     spr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, dependencies);
+                                                       x, incx, a, dependencies);
     spr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     return done;
 }
@@ -2228,7 +2243,7 @@ cl::sycl::event spr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     spr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, dependencies);
+                                                       x, incx, a, dependencies);
     spr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     return done;
 }
@@ -2241,7 +2256,7 @@ cl::sycl::event hpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     hpmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpmv(selector.get_queue(), upper_lower, n, alpha,
-                                                       a, x, incx, beta, y, incy, dependencies);
+                                                        a, x, incx, beta, y, incy, dependencies);
     hpmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2255,7 +2270,7 @@ cl::sycl::event hpmv(backend_selector<backend::rocblas> selector, uplo upper_low
     hpmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpmv(selector.get_queue(), upper_lower, n, alpha,
-                                                       a, x, incx, beta, y, incy, dependencies);
+                                                        a, x, incx, beta, y, incy, dependencies);
     hpmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2451,7 +2466,7 @@ cl::sycl::event her2(backend_selector<backend::rocblas> selector, uplo upper_low
     her2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::her2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, lda, dependencies);
+                                                        x, incx, y, incy, a, lda, dependencies);
     her2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                        dependencies);
     return done;
@@ -2465,7 +2480,7 @@ cl::sycl::event her2(backend_selector<backend::rocblas> selector, uplo upper_low
     her2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::her2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, lda, dependencies);
+                                                        x, incx, y, incy, a, lda, dependencies);
     her2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a, lda,
                        dependencies);
     return done;
@@ -2480,7 +2495,7 @@ cl::sycl::event hbmv(backend_selector<backend::rocblas> selector, uplo upper_low
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::hbmv(selector.get_queue(), upper_lower, n, k, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     hbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -2495,7 +2510,7 @@ cl::sycl::event hbmv(backend_selector<backend::rocblas> selector, uplo upper_low
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::hbmv(selector.get_queue(), upper_lower, n, k, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     hbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -2507,7 +2522,7 @@ cl::sycl::event rot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rot_precondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rot(selector.get_queue(), n, x, incx, y, incy, c,
-                                                      s, dependencies);
+                                                       s, dependencies);
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     return done;
 }
@@ -2518,7 +2533,7 @@ cl::sycl::event rot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rot_precondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rot(selector.get_queue(), n, x, incx, y, incy, c,
-                                                      s, dependencies);
+                                                       s, dependencies);
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     return done;
 }
@@ -2528,7 +2543,7 @@ cl::sycl::event rot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rot_precondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rot(selector.get_queue(), n, x, incx, y, incy, c,
-                                                      s, dependencies);
+                                                       s, dependencies);
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     return done;
 }
@@ -2538,7 +2553,7 @@ cl::sycl::event rot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rot_precondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rot(selector.get_queue(), n, x, incx, y, incy, c,
-                                                      s, dependencies);
+                                                       s, dependencies);
     rot_postcondition(selector.get_queue(), n, x, incx, y, incy, c, s, dependencies);
     return done;
 }
@@ -2548,7 +2563,7 @@ cl::sycl::event axpy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpy_precondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy(selector.get_queue(), n, alpha, x, incx, y,
-                                                       incy, dependencies);
+                                                        incy, dependencies);
     axpy_postcondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     return done;
 }
@@ -2558,7 +2573,7 @@ cl::sycl::event axpy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpy_precondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy(selector.get_queue(), n, alpha, x, incx, y,
-                                                       incy, dependencies);
+                                                        incy, dependencies);
     axpy_postcondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     return done;
 }
@@ -2569,7 +2584,7 @@ cl::sycl::event axpy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpy_precondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy(selector.get_queue(), n, alpha, x, incx, y,
-                                                       incy, dependencies);
+                                                        incy, dependencies);
     axpy_postcondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     return done;
 }
@@ -2580,7 +2595,7 @@ cl::sycl::event axpy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpy_precondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy(selector.get_queue(), n, alpha, x, incx, y,
-                                                       incy, dependencies);
+                                                        incy, dependencies);
     axpy_postcondition(selector.get_queue(), n, alpha, x, incx, y, incy, dependencies);
     return done;
 }
@@ -2646,22 +2661,23 @@ cl::sycl::event axpy_batch(backend_selector<backend::rocblas> selector, std::int
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x,
-                                                             incx, stridex, y, incy, stridey,
-                                                             batch_size, dependencies);
+                                                              incx, stridex, y, incy, stridey,
+                                                              batch_size, dependencies);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size, dependencies);
     return done;
 }
 
-cl::sycl::event axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n, double alpha,
-                           const double *x, std::int64_t incx, std::int64_t stridex, double *y,
-                           std::int64_t incy, std::int64_t stridey, std::int64_t batch_size,
+cl::sycl::event axpy_batch(backend_selector<backend::rocblas> selector, std::int64_t n,
+                           double alpha, const double *x, std::int64_t incx, std::int64_t stridex,
+                           double *y, std::int64_t incy, std::int64_t stridey,
+                           std::int64_t batch_size,
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x,
-                                                             incx, stridex, y, incy, stridey,
-                                                             batch_size, dependencies);
+                                                              incx, stridex, y, incy, stridey,
+                                                              batch_size, dependencies);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size, dependencies);
     return done;
@@ -2675,8 +2691,8 @@ cl::sycl::event axpy_batch(backend_selector<backend::rocblas> selector, std::int
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x,
-                                                             incx, stridex, y, incy, stridey,
-                                                             batch_size, dependencies);
+                                                              incx, stridex, y, incy, stridey,
+                                                              batch_size, dependencies);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size, dependencies);
     return done;
@@ -2690,8 +2706,8 @@ cl::sycl::event axpy_batch(backend_selector<backend::rocblas> selector, std::int
     axpy_batch_precondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                             batch_size, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpy_batch(selector.get_queue(), n, alpha, x,
-                                                             incx, stridex, y, incy, stridey,
-                                                             batch_size, dependencies);
+                                                              incx, stridex, y, incy, stridey,
+                                                              batch_size, dependencies);
     axpy_batch_postcondition(selector.get_queue(), n, alpha, x, incx, stridex, y, incy, stridey,
                              batch_size, dependencies);
     return done;
@@ -2703,7 +2719,7 @@ cl::sycl::event axpby(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx,
-                                                        beta, y, incy, dependencies);
+                                                         beta, y, incy, dependencies);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     return done;
 }
@@ -2714,7 +2730,7 @@ cl::sycl::event axpby(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx,
-                                                        beta, y, incy, dependencies);
+                                                         beta, y, incy, dependencies);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     return done;
 }
@@ -2725,7 +2741,7 @@ cl::sycl::event axpby(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx,
-                                                        beta, y, incy, dependencies);
+                                                         beta, y, incy, dependencies);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     return done;
 }
@@ -2736,7 +2752,7 @@ cl::sycl::event axpby(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     axpby_precondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::axpby(selector.get_queue(), n, alpha, x, incx,
-                                                        beta, y, incy, dependencies);
+                                                         beta, y, incy, dependencies);
     axpby_postcondition(selector.get_queue(), n, alpha, x, incx, beta, y, incy, dependencies);
     return done;
 }
@@ -2748,7 +2764,7 @@ cl::sycl::event gerc(backend_selector<backend::rocblas> selector, std::int64_t m
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gerc_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gerc(selector.get_queue(), m, n, alpha, x, incx,
-                                                       y, incy, a, lda, dependencies);
+                                                        y, incy, a, lda, dependencies);
     gerc_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
@@ -2760,42 +2776,43 @@ cl::sycl::event gerc(backend_selector<backend::rocblas> selector, std::int64_t m
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gerc_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gerc(selector.get_queue(), m, n, alpha, x, incx,
-                                                       y, incy, a, lda, dependencies);
+                                                        y, incy, a, lda, dependencies);
     gerc_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
 
-cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, float alpha, const float *a, std::int64_t lda,
-                      const float *b, std::int64_t ldb, float beta, float *c, std::int64_t ldc,
-                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
-    syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
-                       c, ldc, dependencies);
-    auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
-    syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
-                        c, ldc, dependencies);
-    return done;
-}
-
-cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, double alpha, const double *a,
-                      std::int64_t lda, const double *b, std::int64_t ldb, double beta, double *c,
+cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, float alpha, const float *a,
+                      std::int64_t lda, const float *b, std::int64_t ldb, float beta, float *c,
                       std::int64_t ldc,
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, std::complex<float> alpha,
+cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, double alpha,
+                      const double *a, std::int64_t lda, const double *b, std::int64_t ldb,
+                      double beta, double *c, std::int64_t ldc,
+                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
+    syr2k_precondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
+                       c, ldc, dependencies);
+    auto done =
+        oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k,
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+    syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
+                        c, ldc, dependencies);
+    return done;
+}
+
+cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, std::complex<float> alpha,
                       const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                       std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
                       std::int64_t ldc,
@@ -2804,14 +2821,14 @@ cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lo
                        c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, std::complex<double> alpha,
+cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, std::complex<double> alpha,
                       const std::complex<double> *a, std::int64_t lda,
                       const std::complex<double> *b, std::int64_t ldb, std::complex<double> beta,
                       std::complex<double> *c, std::int64_t ldc,
@@ -2820,7 +2837,7 @@ cl::sycl::event syr2k(backend_selector<backend::rocblas> selector, uplo upper_lo
                        c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::syr2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     syr2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc, dependencies);
     return done;
@@ -2833,7 +2850,7 @@ cl::sycl::event gemv(backend_selector<backend::rocblas> selector, transpose tran
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a,
-                                                       lda, x, incx, beta, y, incy, dependencies);
+                                                        lda, x, incx, beta, y, incy, dependencies);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2846,7 +2863,7 @@ cl::sycl::event gemv(backend_selector<backend::rocblas> selector, transpose tran
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a,
-                                                       lda, x, incx, beta, y, incy, dependencies);
+                                                        lda, x, incx, beta, y, incy, dependencies);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2860,7 +2877,7 @@ cl::sycl::event gemv(backend_selector<backend::rocblas> selector, transpose tran
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a,
-                                                       lda, x, incx, beta, y, incy, dependencies);
+                                                        lda, x, incx, beta, y, incy, dependencies);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2874,7 +2891,7 @@ cl::sycl::event gemv(backend_selector<backend::rocblas> selector, transpose tran
     gemv_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv(selector.get_queue(), trans, m, n, alpha, a,
-                                                       lda, x, incx, beta, y, incy, dependencies);
+                                                        lda, x, incx, beta, y, incy, dependencies);
     gemv_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -2954,9 +2971,9 @@ cl::sycl::event gemv_batch(backend_selector<backend::rocblas> selector, transpos
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                             incy, group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n,
-                                                             alpha, a, lda, x, incx, beta, y, incy,
-                                                             group_count, group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(
+        selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy, group_count,
+        group_size, dependencies);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                              incy, group_count, group_size, dependencies);
     return done;
@@ -2970,9 +2987,9 @@ cl::sycl::event gemv_batch(backend_selector<backend::rocblas> selector, transpos
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                             incy, group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n,
-                                                             alpha, a, lda, x, incx, beta, y, incy,
-                                                             group_count, group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(
+        selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy, group_count,
+        group_size, dependencies);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                              incy, group_count, group_size, dependencies);
     return done;
@@ -2987,9 +3004,9 @@ cl::sycl::event gemv_batch(backend_selector<backend::rocblas> selector, transpos
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                             incy, group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n,
-                                                             alpha, a, lda, x, incx, beta, y, incy,
-                                                             group_count, group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(
+        selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy, group_count,
+        group_size, dependencies);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                              incy, group_count, group_size, dependencies);
     return done;
@@ -3004,9 +3021,9 @@ cl::sycl::event gemv_batch(backend_selector<backend::rocblas> selector, transpos
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemv_batch_precondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                             incy, group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(selector.get_queue(), trans, m, n,
-                                                             alpha, a, lda, x, incx, beta, y, incy,
-                                                             group_count, group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::gemv_batch(
+        selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y, incy, group_count,
+        group_size, dependencies);
     gemv_batch_postcondition(selector.get_queue(), trans, m, n, alpha, a, lda, x, incx, beta, y,
                              incy, group_count, group_size, dependencies);
     return done;
@@ -3083,9 +3100,9 @@ cl::sycl::event dgmm_batch(backend_selector<backend::rocblas> selector, side *le
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                             group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n,
-                                                             a, lda, x, incx, c, ldc, group_count,
-                                                             group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(
+        selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc, group_count, group_size,
+        dependencies);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                              group_count, group_size, dependencies);
     return done;
@@ -3098,9 +3115,9 @@ cl::sycl::event dgmm_batch(backend_selector<backend::rocblas> selector, side *le
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                             group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n,
-                                                             a, lda, x, incx, c, ldc, group_count,
-                                                             group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(
+        selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc, group_count, group_size,
+        dependencies);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                              group_count, group_size, dependencies);
     return done;
@@ -3114,9 +3131,9 @@ cl::sycl::event dgmm_batch(backend_selector<backend::rocblas> selector, side *le
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                             group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n,
-                                                             a, lda, x, incx, c, ldc, group_count,
-                                                             group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(
+        selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc, group_count, group_size,
+        dependencies);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                              group_count, group_size, dependencies);
     return done;
@@ -3130,9 +3147,9 @@ cl::sycl::event dgmm_batch(backend_selector<backend::rocblas> selector, side *le
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dgmm_batch_precondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                             group_count, group_size, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(selector.get_queue(), left_right, m, n,
-                                                             a, lda, x, incx, c, ldc, group_count,
-                                                             group_size, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::dgmm_batch(
+        selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc, group_count, group_size,
+        dependencies);
     dgmm_batch_postcondition(selector.get_queue(), left_right, m, n, a, lda, x, incx, c, ldc,
                              group_count, group_size, dependencies);
     return done;
@@ -3144,7 +3161,7 @@ cl::sycl::event her(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     her_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::her(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, lda, dependencies);
+                                                       x, incx, a, lda, dependencies);
     her_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     return done;
 }
@@ -3155,7 +3172,7 @@ cl::sycl::event her(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     her_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::her(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, lda, dependencies);
+                                                       x, incx, a, lda, dependencies);
     her_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     return done;
 }
@@ -3166,7 +3183,7 @@ cl::sycl::event hpr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     hpr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, dependencies);
+                                                       x, incx, a, dependencies);
     hpr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     return done;
 }
@@ -3177,7 +3194,7 @@ cl::sycl::event hpr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     hpr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, dependencies);
+                                                       x, incx, a, dependencies);
     hpr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, dependencies);
     return done;
 }
@@ -3187,7 +3204,7 @@ cl::sycl::event iamin(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamin_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamin(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamin_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3197,7 +3214,7 @@ cl::sycl::event iamin(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamin_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamin(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamin_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3207,7 +3224,7 @@ cl::sycl::event iamin(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamin_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamin(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamin_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3217,7 +3234,7 @@ cl::sycl::event iamin(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamin_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamin(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamin_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3398,7 +3415,7 @@ cl::sycl::event spmv(backend_selector<backend::rocblas> selector, uplo upper_low
     spmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spmv(selector.get_queue(), upper_lower, n, alpha,
-                                                       a, x, incx, beta, y, incy, dependencies);
+                                                        a, x, incx, beta, y, incy, dependencies);
     spmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -3411,7 +3428,7 @@ cl::sycl::event spmv(backend_selector<backend::rocblas> selector, uplo upper_low
     spmv_precondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spmv(selector.get_queue(), upper_lower, n, alpha,
-                                                       a, x, incx, beta, y, incy, dependencies);
+                                                        a, x, incx, beta, y, incy, dependencies);
     spmv_postcondition(selector.get_queue(), upper_lower, n, alpha, a, x, incx, beta, y, incy,
                        dependencies);
     return done;
@@ -3422,7 +3439,7 @@ cl::sycl::event swap(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     swap_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::swap(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     swap_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -3432,7 +3449,7 @@ cl::sycl::event swap(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     swap_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::swap(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     swap_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -3443,7 +3460,7 @@ cl::sycl::event swap(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     swap_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::swap(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     swap_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -3454,7 +3471,7 @@ cl::sycl::event swap(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     swap_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::swap(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     swap_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -3466,7 +3483,7 @@ cl::sycl::event geru(backend_selector<backend::rocblas> selector, std::int64_t m
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     geru_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::geru(selector.get_queue(), m, n, alpha, x, incx,
-                                                       y, incy, a, lda, dependencies);
+                                                        y, incy, a, lda, dependencies);
     geru_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
@@ -3478,7 +3495,7 @@ cl::sycl::event geru(backend_selector<backend::rocblas> selector, std::int64_t m
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     geru_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::geru(selector.get_queue(), m, n, alpha, x, incx,
-                                                       y, incy, a, lda, dependencies);
+                                                        y, incy, a, lda, dependencies);
     geru_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
@@ -3488,7 +3505,7 @@ cl::sycl::event nrm2(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     nrm2_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::nrm2(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     nrm2_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3498,7 +3515,7 @@ cl::sycl::event nrm2(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     nrm2_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::nrm2(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     nrm2_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3508,7 +3525,7 @@ cl::sycl::event nrm2(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     nrm2_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::nrm2(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     nrm2_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -3518,113 +3535,113 @@ cl::sycl::event nrm2(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     nrm2_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::nrm2(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     nrm2_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, float alpha, const float *a,
-                     std::int64_t lda, const float *b, std::int64_t ldb, float beta, float *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, float alpha,
+                     const float *a, std::int64_t lda, const float *b, std::int64_t ldb, float beta,
+                     float *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, double alpha, const double *a,
-                     std::int64_t lda, const double *b, std::int64_t ldb, double beta, double *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, double alpha,
+                     const double *a, std::int64_t lda, const double *b, std::int64_t ldb,
+                     double beta, double *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, std::complex<float> alpha,
-                     const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
-                     std::int64_t ldb, std::complex<float> beta, std::complex<float> *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k,
+                     std::complex<float> alpha, const std::complex<float> *a, std::int64_t lda,
+                     const std::complex<float> *b, std::int64_t ldb, std::complex<float> beta,
+                     std::complex<float> *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, std::complex<double> alpha,
-                     const std::complex<double> *a, std::int64_t lda, const std::complex<double> *b,
-                     std::int64_t ldb, std::complex<double> beta, std::complex<double> *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k,
+                     std::complex<double> alpha, const std::complex<double> *a, std::int64_t lda,
+                     const std::complex<double> *b, std::int64_t ldb, std::complex<double> beta,
+                     std::complex<double> *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, half alpha, const half *a,
-                     std::int64_t lda, const half *b, std::int64_t ldb, half beta, half *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, half alpha,
+                     const half *a, std::int64_t lda, const half *b, std::int64_t ldb, half beta,
+                     half *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, float alpha, const half *a,
-                     std::int64_t lda, const half *b, std::int64_t ldb, float beta, float *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, float alpha,
+                     const half *a, std::int64_t lda, const half *b, std::int64_t ldb, float beta,
+                     float *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                     std::int64_t m, std::int64_t n, std::int64_t k, float alpha, const bfloat16 *a,
-                     std::int64_t lda, const bfloat16 *b, std::int64_t ldb, float beta, float *c,
-                     std::int64_t ldc,
+cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, float alpha,
+                     const bfloat16 *a, std::int64_t lda, const bfloat16 *b, std::int64_t ldb,
+                     float beta, float *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
     auto done =
-        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha,
-                                               a, lda, b, ldb, beta, c, ldc, dependencies);
+        oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k,
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     gemm_postcondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta,
                        c, ldc, dependencies);
     return done;
@@ -3725,8 +3742,8 @@ cl::sycl::event ger(backend_selector<backend::rocblas> selector, std::int64_t m,
                     std::int64_t incy, float *a, std::int64_t lda,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     ger_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx, y,
-                                                      incy, a, lda, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx,
+                                                       y, incy, a, lda, dependencies);
     ger_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
@@ -3736,8 +3753,8 @@ cl::sycl::event ger(backend_selector<backend::rocblas> selector, std::int64_t m,
                     std::int64_t incy, double *a, std::int64_t lda,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     ger_precondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx, y,
-                                                      incy, a, lda, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::ger(selector.get_queue(), m, n, alpha, x, incx,
+                                                       y, incy, a, lda, dependencies);
     ger_postcondition(selector.get_queue(), m, n, alpha, x, incx, y, incy, a, lda, dependencies);
     return done;
 }
@@ -3749,8 +3766,8 @@ cl::sycl::event trsm(backend_selector<backend::rocblas> selector, side left_righ
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -3763,8 +3780,8 @@ cl::sycl::event trsm(backend_selector<backend::rocblas> selector, side left_righ
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -3778,8 +3795,8 @@ cl::sycl::event trsm(backend_selector<backend::rocblas> selector, side left_righ
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -3793,8 +3810,8 @@ cl::sycl::event trsm(backend_selector<backend::rocblas> selector, side left_righ
     trsm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trsm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trsm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -3937,7 +3954,7 @@ cl::sycl::event dotu(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dotu_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dotu(selector.get_queue(), n, x, incx, y, incy,
-                                                       result, dependencies);
+                                                        result, dependencies);
     dotu_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -3948,7 +3965,7 @@ cl::sycl::event dotu(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dotu_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dotu(selector.get_queue(), n, x, incx, y, incy,
-                                                       result, dependencies);
+                                                        result, dependencies);
     dotu_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -3963,7 +3980,7 @@ cl::sycl::event hemm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::hemm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     hemm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -3979,7 +3996,7 @@ cl::sycl::event hemm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::hemm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     hemm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -3992,7 +4009,7 @@ cl::sycl::event hpr2(backend_selector<backend::rocblas> selector, uplo upper_low
     hpr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, dependencies);
+                                                        x, incx, y, incy, a, dependencies);
     hpr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                        dependencies);
     return done;
@@ -4005,7 +4022,7 @@ cl::sycl::event hpr2(backend_selector<backend::rocblas> selector, uplo upper_low
     hpr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::hpr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, dependencies);
+                                                        x, incx, y, incy, a, dependencies);
     hpr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                        dependencies);
     return done;
@@ -4020,7 +4037,7 @@ cl::sycl::event gbmv(backend_selector<backend::rocblas> selector, transpose tran
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4035,7 +4052,7 @@ cl::sycl::event gbmv(backend_selector<backend::rocblas> selector, transpose tran
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4051,7 +4068,7 @@ cl::sycl::event gbmv(backend_selector<backend::rocblas> selector, transpose tran
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4067,7 +4084,7 @@ cl::sycl::event gbmv(backend_selector<backend::rocblas> selector, transpose tran
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::gbmv(selector.get_queue(), trans, m, n, kl, ku, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     gbmv_postcondition(selector.get_queue(), trans, m, n, kl, ku, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4133,7 +4150,7 @@ cl::sycl::event symm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -4148,7 +4165,7 @@ cl::sycl::event symm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -4164,7 +4181,7 @@ cl::sycl::event symm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -4180,7 +4197,7 @@ cl::sycl::event symm(backend_selector<backend::rocblas> selector, side left_righ
                       beta, c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::symm(selector.get_queue(), left_right, upper_lower, m, n,
-                                               alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     symm_postcondition(selector.get_queue(), left_right, upper_lower, m, n, alpha, a, lda, b, ldb,
                        beta, c, ldc, dependencies);
     return done;
@@ -4192,7 +4209,7 @@ cl::sycl::event dotc(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dotc_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dotc(selector.get_queue(), n, x, incx, y, incy,
-                                                       result, dependencies);
+                                                        result, dependencies);
     dotc_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -4203,7 +4220,7 @@ cl::sycl::event dotc(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dotc_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dotc(selector.get_queue(), n, x, incx, y, incy,
-                                                       result, dependencies);
+                                                        result, dependencies);
     dotc_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -4213,7 +4230,7 @@ cl::sycl::event syr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     syr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::syr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, lda, dependencies);
+                                                       x, incx, a, lda, dependencies);
     syr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     return done;
 }
@@ -4223,7 +4240,7 @@ cl::sycl::event syr(backend_selector<backend::rocblas> selector, uplo upper_lowe
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     syr_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::syr(selector.get_queue(), upper_lower, n, alpha,
-                                                      x, incx, a, lda, dependencies);
+                                                       x, incx, a, lda, dependencies);
     syr_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, a, lda, dependencies);
     return done;
 }
@@ -4235,8 +4252,8 @@ cl::sycl::event trmm(backend_selector<backend::rocblas> selector, side left_righ
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -4249,8 +4266,8 @@ cl::sycl::event trmm(backend_selector<backend::rocblas> selector, side left_righ
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -4264,8 +4281,8 @@ cl::sycl::event trmm(backend_selector<backend::rocblas> selector, side left_righ
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -4279,8 +4296,8 @@ cl::sycl::event trmm(backend_selector<backend::rocblas> selector, side left_righ
     trmm_precondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                       a, lda, b, ldb, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::trmm(selector.get_queue(), left_right,
-                                                       upper_lower, trans, unit_diag, m, n, alpha,
-                                                       a, lda, b, ldb, dependencies);
+                                                        upper_lower, trans, unit_diag, m, n, alpha,
+                                                        a, lda, b, ldb, dependencies);
     trmm_postcondition(selector.get_queue(), left_right, upper_lower, trans, unit_diag, m, n, alpha,
                        a, lda, b, ldb, dependencies);
     return done;
@@ -4290,8 +4307,8 @@ cl::sycl::event rotmg(backend_selector<backend::rocblas> selector, float *d1, fl
                       float y1, float *param,
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rotmg_precondition(selector.get_queue(), d1, d2, x1, y1, param, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::rotmg(selector.get_queue(), d1, d2, x1, y1, param,
-                                                        dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::rotmg(selector.get_queue(), d1, d2, x1, y1,
+                                                         param, dependencies);
     rotmg_postcondition(selector.get_queue(), d1, d2, x1, y1, param, dependencies);
     return done;
 }
@@ -4300,8 +4317,8 @@ cl::sycl::event rotmg(backend_selector<backend::rocblas> selector, double *d1, d
                       double *x1, double y1, double *param,
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rotmg_precondition(selector.get_queue(), d1, d2, x1, y1, param, dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::rotmg(selector.get_queue(), d1, d2, x1, y1, param,
-                                                        dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::rotmg(selector.get_queue(), d1, d2, x1, y1,
+                                                         param, dependencies);
     rotmg_postcondition(selector.get_queue(), d1, d2, x1, y1, param, dependencies);
     return done;
 }
@@ -4312,7 +4329,7 @@ cl::sycl::event tpsv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -4324,7 +4341,7 @@ cl::sycl::event tpsv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -4337,7 +4354,7 @@ cl::sycl::event tpsv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -4350,7 +4367,7 @@ cl::sycl::event tpsv(backend_selector<backend::rocblas> selector, uplo upper_low
     tpsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::tpsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, x, incx, dependencies);
+                                                        unit_diag, n, a, x, incx, dependencies);
     tpsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, x, incx,
                        dependencies);
     return done;
@@ -4362,8 +4379,8 @@ cl::sycl::event trsv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -4375,8 +4392,8 @@ cl::sycl::event trsv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -4388,8 +4405,8 @@ cl::sycl::event trsv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -4401,8 +4418,8 @@ cl::sycl::event trsv(backend_selector<backend::rocblas> selector, uplo upper_low
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     trsv_precondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                       dependencies);
-    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(selector.get_queue(), upper_lower, trans,
-                                                       unit_diag, n, a, lda, x, incx, dependencies);
+    auto done = oneapi::mkl::blas::rocblas::MAJOR::trsv(
+        selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx, dependencies);
     trsv_postcondition(selector.get_queue(), upper_lower, trans, unit_diag, n, a, lda, x, incx,
                        dependencies);
     return done;
@@ -4413,7 +4430,7 @@ cl::sycl::event copy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     copy_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::copy(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     copy_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -4423,7 +4440,7 @@ cl::sycl::event copy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     copy_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::copy(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     copy_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -4434,7 +4451,7 @@ cl::sycl::event copy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     copy_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::copy(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     copy_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -4445,7 +4462,7 @@ cl::sycl::event copy(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     copy_precondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::copy(selector.get_queue(), n, x, incx, y, incy,
-                                                       dependencies);
+                                                        dependencies);
     copy_postcondition(selector.get_queue(), n, x, incx, y, incy, dependencies);
     return done;
 }
@@ -4594,8 +4611,8 @@ cl::sycl::event gemmt(backend_selector<backend::rocblas> selector, uplo upper_lo
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa,
-                                                        transb, n, k, alpha, a, lda, b, ldb, beta,
-                                                        c, ldc, dependencies);
+                                                         transb, n, k, alpha, a, lda, b, ldb, beta,
+                                                         c, ldc, dependencies);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc, dependencies);
     return done;
@@ -4609,8 +4626,8 @@ cl::sycl::event gemmt(backend_selector<backend::rocblas> selector, uplo upper_lo
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa,
-                                                        transb, n, k, alpha, a, lda, b, ldb, beta,
-                                                        c, ldc, dependencies);
+                                                         transb, n, k, alpha, a, lda, b, ldb, beta,
+                                                         c, ldc, dependencies);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc, dependencies);
     return done;
@@ -4625,8 +4642,8 @@ cl::sycl::event gemmt(backend_selector<backend::rocblas> selector, uplo upper_lo
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa,
-                                                        transb, n, k, alpha, a, lda, b, ldb, beta,
-                                                        c, ldc, dependencies);
+                                                         transb, n, k, alpha, a, lda, b, ldb, beta,
+                                                         c, ldc, dependencies);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc, dependencies);
     return done;
@@ -4641,8 +4658,8 @@ cl::sycl::event gemmt(backend_selector<backend::rocblas> selector, uplo upper_lo
     gemmt_precondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                        ldb, beta, c, ldc, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::gemmt(selector.get_queue(), upper_lower, transa,
-                                                        transb, n, k, alpha, a, lda, b, ldb, beta,
-                                                        c, ldc, dependencies);
+                                                         transb, n, k, alpha, a, lda, b, ldb, beta,
+                                                         c, ldc, dependencies);
     gemmt_postcondition(selector.get_queue(), upper_lower, transa, transb, n, k, alpha, a, lda, b,
                         ldb, beta, c, ldc, dependencies);
     return done;
@@ -4656,7 +4673,7 @@ cl::sycl::event sbmv(backend_selector<backend::rocblas> selector, uplo upper_low
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::sbmv(selector.get_queue(), upper_lower, n, k, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     sbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4670,7 +4687,7 @@ cl::sycl::event sbmv(backend_selector<backend::rocblas> selector, uplo upper_low
                       incy, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::sbmv(selector.get_queue(), upper_lower, n, k, alpha, a,
-                                               lda, x, incx, beta, y, incy, dependencies);
+                                                lda, x, incx, beta, y, incy, dependencies);
     sbmv_postcondition(selector.get_queue(), upper_lower, n, k, alpha, a, lda, x, incx, beta, y,
                        incy, dependencies);
     return done;
@@ -4681,7 +4698,7 @@ cl::sycl::event asum(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     asum_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::asum(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     asum_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4691,7 +4708,7 @@ cl::sycl::event asum(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     asum_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::asum(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     asum_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4701,7 +4718,7 @@ cl::sycl::event asum(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     asum_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::asum(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     asum_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4711,7 +4728,7 @@ cl::sycl::event asum(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     asum_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::asum(selector.get_queue(), n, x, incx, result,
-                                                       dependencies);
+                                                        dependencies);
     asum_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4775,7 +4792,7 @@ cl::sycl::event spr2(backend_selector<backend::rocblas> selector, uplo upper_low
     spr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, dependencies);
+                                                        x, incx, y, incy, a, dependencies);
     spr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                        dependencies);
     return done;
@@ -4788,7 +4805,7 @@ cl::sycl::event spr2(backend_selector<backend::rocblas> selector, uplo upper_low
     spr2_precondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                       dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::spr2(selector.get_queue(), upper_lower, n, alpha,
-                                                       x, incx, y, incy, a, dependencies);
+                                                        x, incx, y, incy, a, dependencies);
     spr2_postcondition(selector.get_queue(), upper_lower, n, alpha, x, incx, y, incy, a,
                        dependencies);
     return done;
@@ -4799,7 +4816,7 @@ cl::sycl::event iamax(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamax_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamax(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamax_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4809,7 +4826,7 @@ cl::sycl::event iamax(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamax_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamax(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamax_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4819,7 +4836,7 @@ cl::sycl::event iamax(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamax_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamax(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamax_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4829,7 +4846,7 @@ cl::sycl::event iamax(backend_selector<backend::rocblas> selector, std::int64_t 
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     iamax_precondition(selector.get_queue(), n, x, incx, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::iamax(selector.get_queue(), n, x, incx, result,
-                                                        dependencies);
+                                                         dependencies);
     iamax_postcondition(selector.get_queue(), n, x, incx, result, dependencies);
     return done;
 }
@@ -4839,7 +4856,7 @@ cl::sycl::event rotm(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rotm_precondition(selector.get_queue(), n, x, incx, y, incy, param, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rotm(selector.get_queue(), n, x, incx, y, incy,
-                                                       param, dependencies);
+                                                        param, dependencies);
     rotm_postcondition(selector.get_queue(), n, x, incx, y, incy, param, dependencies);
     return done;
 }
@@ -4849,7 +4866,7 @@ cl::sycl::event rotm(backend_selector<backend::rocblas> selector, std::int64_t n
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     rotm_precondition(selector.get_queue(), n, x, incx, y, incy, param, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::rotm(selector.get_queue(), n, x, incx, y, incy,
-                                                       param, dependencies);
+                                                        param, dependencies);
     rotm_postcondition(selector.get_queue(), n, x, incx, y, incy, param, dependencies);
     return done;
 }
@@ -4897,13 +4914,13 @@ cl::sycl::event sdsdot(backend_selector<backend::rocblas> selector, std::int64_t
                        float *result, const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     sdsdot_precondition(selector.get_queue(), n, sb, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::sdsdot(selector.get_queue(), n, sb, x, incx, y,
-                                                         incy, result, dependencies);
+                                                          incy, result, dependencies);
     sdsdot_postcondition(selector.get_queue(), n, sb, x, incx, y, incy, result, dependencies);
     return done;
 }
 
-cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, std::complex<float> alpha,
+cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, std::complex<float> alpha,
                       const std::complex<float> *a, std::int64_t lda, const std::complex<float> *b,
                       std::int64_t ldb, float beta, std::complex<float> *c, std::int64_t ldc,
                       const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
@@ -4911,14 +4928,14 @@ cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lo
                        c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::her2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     her2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc, dependencies);
     return done;
 }
 
-cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lower, transpose trans,
-                      std::int64_t n, std::int64_t k, std::complex<double> alpha,
+cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lower,
+                      transpose trans, std::int64_t n, std::int64_t k, std::complex<double> alpha,
                       const std::complex<double> *a, std::int64_t lda,
                       const std::complex<double> *b, std::int64_t ldb, double beta,
                       std::complex<double> *c, std::int64_t ldc,
@@ -4927,7 +4944,7 @@ cl::sycl::event her2k(backend_selector<backend::rocblas> selector, uplo upper_lo
                        c, ldc, dependencies);
     auto done =
         oneapi::mkl::blas::rocblas::MAJOR::her2k(selector.get_queue(), upper_lower, trans, n, k,
-                                                alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
+                                                 alpha, a, lda, b, ldb, beta, c, ldc, dependencies);
     her2k_postcondition(selector.get_queue(), upper_lower, trans, n, k, alpha, a, lda, b, ldb, beta,
                         c, ldc, dependencies);
     return done;
@@ -4938,7 +4955,7 @@ cl::sycl::event dot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dot_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dot(selector.get_queue(), n, x, incx, y, incy,
-                                                      result, dependencies);
+                                                       result, dependencies);
     dot_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -4948,7 +4965,7 @@ cl::sycl::event dot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dot_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dot(selector.get_queue(), n, x, incx, y, incy,
-                                                      result, dependencies);
+                                                       result, dependencies);
     dot_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
@@ -4958,7 +4975,7 @@ cl::sycl::event dot(backend_selector<backend::rocblas> selector, std::int64_t n,
                     const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     dot_precondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     auto done = oneapi::mkl::blas::rocblas::MAJOR::dot(selector.get_queue(), n, x, incx, y, incy,
-                                                      result, dependencies);
+                                                       result, dependencies);
     dot_postcondition(selector.get_queue(), n, x, incx, y, incy, result, dependencies);
     return done;
 }
