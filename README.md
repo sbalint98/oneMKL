@@ -111,9 +111,7 @@ $> clang++ -fsycl –I$ONEMKL/include app.cpp
 $> clang++ -fsycl app.o –L$ONEMKL/lib –lonemkl_blas_mklcpu –lonemkl_blas_cublas
 ```
 
-*Refer to [Selection of Compilers](#selection-of-compilers) for the choice between `dpcpp` and `clang++` compilers.*
-
-### Supported Configurations:
+### Supported Configurations with DPC++:
 
 Supported domains: BLAS, LAPACK, RNG
 
@@ -223,6 +221,81 @@ Supported domains: BLAS, LAPACK, RNG
     </tbody>
 </table>
 
+### Supported Configurations with hipSYCL:
+
+Supported domains: BLAS
+
+#### Linux*
+
+<table>
+<thead>
+<tr  align="center">
+<th >Domain</th>
+<th >Backend</th>
+<th >Library</th>
+<th >Supported Link Type</th>
+</tr>
+</thead>
+<tbody>
+<tr >
+<td  rowspan="4" align="center">BLAS</td>
+<td  align="center">x86 CPU</td>
+<td  align="center">Intel(R) oneAPI Math Kernel Library</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+<tr >
+<td align="center">AMD GPU</td>
+<td align="center">rocBLAS </td>
+<td align="center">Dynamic, Static</td>
+</tr>
+<tr >
+<td  align="center">NVIDIA GPU</td>
+<td  align="center">NVIDIA cuBLAS</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+<tr >
+<td  align="center">x86 CPU</td>
+<td  align="center">NETLIB LAPACK</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+</tbody>
+</table>
+
+
+#### Windows*
+
+Windows support is **Experimental**
+
+<table>
+<thead>
+<tr  align="center">
+<th >Domain</th>
+<th >Backend</th>
+<th >Library</th>
+<th >Supported Link Type</th>
+</tr>
+</thead>
+<tbody>
+<tr >
+<td  rowspan="4" align="center">BLAS</td>
+<td  align="center">x86 CPU</td>
+<td  align="center">Intel(R) oneAPI Math Kernel Library</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+<tr >
+<td  align="center">NVIDIA GPU</td>
+<td  align="center">NVIDIA cuBLAS</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+<tr >
+<td  align="center">x86 CPU</td>
+<td  align="center">NETLIB LAPACK</td>
+<td  align="center">Dynamic, Static</td>
+</tr>
+</tbody>
+</table>
+
+
 ---
 
 ### Hardware Platform Support
@@ -234,6 +307,7 @@ Supported domains: BLAS, LAPACK, RNG
 - Accelerators
     - Intel(R) Processor Graphics GEN9
     - NVIDIA(R) TITAN RTX(TM) (Linux* only. cuRAND backend tested also with Quadro and A100 GPUs. Not tested with other NVIDIA GPU families and products.)
+    - ROCm enabled AMD GPUs see [here](https://github.com/RadeonOpenCompute/ROCm#hardware-and-software-support)
     
 ---
 ### Supported Operating Systems
@@ -298,6 +372,8 @@ Microsoft Windows* Server | 2016, 2019 | *Not supported*
     </tbody>
 </table>
 
+#### For compiling with hipSYCL:
+General, and installation of hipSYCL and the required dependencies for the selected backends. see [here](https://github.com/illuhad/hipSYCL/blob/develop/doc/installing.md#software-dependencies)
 
 #### Hardware and OS Specific:
 <table>
@@ -329,10 +405,16 @@ Microsoft Windows* Server | 2016, 2019 | *Not supported*
             <td> Intel(R) oneAPI Math Kernel Library </td>
             <td> Yes </td>
         </tr>
-        <td> Linux* only </td>
+        <td rowspan=2> Linux* only </td>
         <td> NVIDIA GPU </td>
         <td> Intel project for LLVM* technology </td>
         <td> No </td>
+        <tr>
+            <td>AMD GPU</td>
+            <td>hipSYCL with ROCm backend and dependencies </td>
+            <td>No</td>
+        </tr>
+        
     </tbody>
 </table>
 
@@ -356,10 +438,12 @@ Python | 3.6 or higher | No | *N/A* | *Pre-installed or Installed by user* | [PS
 [Ninja](https://ninja-build.org/) | 1.10.0 | Yes | conan-center | ~/.conan/data or $CONAN_USER_HOME/.conan/data | [Apache License v2.0](https://github.com/ninja-build/ninja/blob/master/COPYING)
 [GNU* FORTRAN Compiler](https://gcc.gnu.org/wiki/GFortran) | 7.4.0 or higher | Yes | apt | /usr/bin | [GNU General Public License, version 3](https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gfortran/Copying.html)
 [Intel(R) oneAPI DPC++ Compiler](https://software.intel.com/en-us/oneapi/dpc-compiler) | latest | No | *N/A* | *Installed by user* | [End User License Agreement for the Intel(R) Software Development Products](https://software.intel.com/en-us/license/eula-for-intel-software-development-products)
+[hipSYCL](https://github.com/illuhad/hipSYCL/) | later than [2cfa530](https://github.com/illuhad/hipSYCL/commit/2cfa5303fd88b8f84e539b5bb6ed41e49c6d6118) | No | *N/A* | *Installed by user* | [BSD-2-Clause License ](https://github.com/illuhad/hipSYCL/blob/develop/LICENSE)
 [Intel project for LLVM* technology binary for x86 CPU](https://github.com/intel/llvm/releases) | Daily builds (experimental) tested with [20200331](https://github.com/intel/llvm/releases/download/20200331/dpcpp-compiler.tar.gz) | No | *N/A* | *Installed by user* | [Apache License v2](https://github.com/intel/llvm/blob/sycl/sycl/LICENSE.TXT)
 [Intel project for LLVM* technology source for NVIDIA GPU](https://github.com/intel/llvm/releases) | Daily source releases: tested with [20200421](https://github.com/intel/llvm/tree/20200421) | No | *N/A* | *Installed by user* | [Apache License v2](https://github.com/intel/llvm/blob/sycl/sycl/LICENSE.TXT)
 [Intel(R) oneAPI Math Kernel Library](https://software.intel.com/en-us/oneapi/onemkl) | latest | Yes | apt | /opt/intel/inteloneapi/mkl | [Intel Simplified Software License](https://software.intel.com/en-us/license/intel-simplified-software-license)
 [NVIDIA CUDA SDK](https://developer.nvidia.com/cublas) | 10.2 | No | *N/A* | *Installed by user* |[End User License Agreement](https://docs.nvidia.com/cuda/eula/index.html)
+[rocBLAS](https://rocmdocs.amd.com/en/latest/ROCm_Tools/rocblas.html) | 4.5 | No | *N/A* | *Installed by user* |[AMD License](https://github.com/ROCmSoftwarePlatform/rocBLAS/blob/develop/LICENSE.md)
 [NETLIB LAPACK](https://www.netlib.org/) | 3.7.1 | Yes | conan-community | ~/.conan/data or $CONAN_USER_HOME/.conan/data | [BSD like license](http://www.netlib.org/lapack/LICENSE.txt)
 [Sphinx](https://www.sphinx-doc.org/en/master/) | 2.4.4 | Yes | pip | ~/.local/bin (or similar user local directory) | [BSD License](https://github.com/sphinx-doc/sphinx/blob/3.x/LICENSE)
 
@@ -369,17 +453,7 @@ Python | 3.6 or higher | No | *N/A* | *Pre-installed or Installed by user* | [PS
 
 ---
 
-## Selection of Compilers
-
-A compiler needs to be chosen according to the required backend of your application.
-
-- If your application requires Intel GPU, use [Intel(R) oneAPI DPC++ Compiler](https://software.intel.com/en-us/oneapi/dpc-compiler) `dpcpp`.
-- If your application requires NVIDIA GPU, use the latest release of `clang++` from [Intel project for LLVM* technology](https://github.com/intel/llvm/releases).
-- If neither Intel GPU nor NVIDIA GPU is required, you can use either [Intel(R) oneAPI DPC++ Compiler](https://software.intel.com/en-us/oneapi/dpc-compiler) `dpcpp` or `clang++` on Linux and `clang-cl` on Windows from [Intel project for LLVM* technology](https://github.com/intel/llvm/releases).
-
----
-
-## Build Setup
+## Build Setup with DPC++
 
 1. Install Intel(R) oneAPI DPC++ Compiler (select variant as per requirement).
 
@@ -388,6 +462,17 @@ A compiler needs to be chosen according to the required backend of your applicat
 3. You can [Build with Conan](#building-with-conan) to automate the process of getting dependencies or you can download and install the required dependencies manually and [Build with CMake](#building-with-cmake) directly.
 
 *Note: Conan package manager automates the process of getting required packages, so that you do not have to go to different web location and follow different instructions to install them.*
+
+---
+## Build Setup with HipSYCL
+
+1. Install hipSYCL with the prefered backends enabled see the [hipSYCL documentation](https://github.com/illuhad/hipSYCL/blob/develop/doc/installing.md) for instructions
+
+2. Install an appropriate version of rocBLAS see instructions [here](https://rocblas.readthedocs.io/en/master/install.html)
+
+4. Clone this project to `<path to onemkl>`, where `<path to onemkl>` is the root directory of this repository.
+
+3. Download and install the required dependencies manually and [Build with CMake](#building-with-cmake).
 
 ---
 
@@ -581,6 +666,26 @@ With:
 -DENABLE_CURAND_BACKEND=True   \
 ```
 
+### Building for rocBLAS with hipSYCL
+with the rocBLAS backend:
+
+```bash
+# Inside <path to onemkl>
+mkdir build && cd build
+cmake .. -DENABLE_CUBLAS_BACKEND=False                     \
+         -DENABLE_MKLCPU_BACKEND=False                     \   # disable Intel MKL CPU backend
+         -DENABLE_MKLGPU_BACKEND=False                     \   # disable Intel MKL GPU backend
+         -DENABLE_ROCBLAS_BACKEND=True                     \
+         -DTARGET_DOMAINS=blas                             \   # hipSYCL only supports the BLAS domain
+         -DHIPSYCL_TARGETS=omp\;hip:gfx906                 \   # Specify the targetted device architectures
+         -DONEMKL_SYCL_IMPLEMENTATION=hipSYCL              \   # Use the hipSYCL cmake integration
+         [-DREF_BLAS_ROOT=<reference_blas_install_prefix>] \   # required only for testing
+cmake --build .
+ctest
+cmake --install . --prefix <path_to_install_dir>
+```
+
+
 ### Build Options
 All options specified in the Conan section are available to CMake. You can specify these options using `-D<cmake_option>=<value>`.
 
@@ -594,6 +699,8 @@ enable_mklgpu_backend    | ENABLE_MKLGPU_BACKEND    | True, False         | True
 *Not Supported*          | ENABLE_CUBLAS_BACKEND    | True, False         | False
 *Not Supported*          | ENABLE_CURAND_BACKEND    | True, False         | False
 *Not Supported*          | ENABLE_NETLIB_BACKEND    | True, False         | False
+*Not Supported*          | ENABLE_ROCBLAS_BACKEND   | True, False         | False
+*Not Supported*          | ONEMKL_SYCL_IMPLEMENTATION| dpc++, hipsycl     | dpc++
 enable_mklcpu_thread_tbb | ENABLE_MKLCPU_THREAD_TBB | True, False         | True
 build_functional_tests   | BUILD_FUNCTIONAL_TESTS   | True, False         | True
 build_doc                | BUILD_DOC                | True, False         | False
