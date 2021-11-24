@@ -413,7 +413,6 @@ General, and installation of hipSYCL and the required dependencies for the selec
             <td>hipSYCL with ROCm backend and dependencies </td>
             <td>No</td>
         </tr>
-        
     </tbody>
 </table>
 
