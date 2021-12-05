@@ -218,10 +218,20 @@ static inline void range_transform_fp(cl::sycl::queue& queue, T a, T b, std::int
 template <typename T>
 static inline cl::sycl::event range_transform_fp(cl::sycl::queue& queue, T a, T b, std::int64_t n,
                                                  T* r) {
-    return queue.submit([&](cl::sycl::handler& cgh) {
+    queue.wait();
+    cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
         cgh.parallel_for(cl::sycl::range<1>(n),
-                         [=](cl::sycl::id<1> id) { r[id] = r[id] * (b - a) + a; });
+                         [=](cl::sycl::id<1> id) {
+                              //printf("%f ", r[id[0]]);
+                              //printf("%f ", r[id[0]]    );
+                              //printf("%f ", a);
+                              //printf("%f ", b);
+                              r[id[0]] = r[id[0]] * (b - a) + a; 
+                              //printf("%f |", r[id[0]]);
+                        });
     });
+    ev.wait();
+    return ev;
 }
 template <typename T>
 static inline void range_transform_fp_accurate(cl::sycl::queue& queue, T a, T b, std::int64_t n,
@@ -242,17 +252,22 @@ static inline void range_transform_fp_accurate(cl::sycl::queue& queue, T a, T b,
 template <typename T>
 static inline cl::sycl::event range_transform_fp_accurate(cl::sycl::queue& queue, T a, T b,
                                                           std::int64_t n, T* r) {
-    return queue.submit([&](cl::sycl::handler& cgh) {
+    cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
         cgh.parallel_for(cl::sycl::range<1>(n), [=](cl::sycl::id<1> id) {
-            r[id] = r[id] * (b - a) + a;
-            if (r[id] < a) {
-                r[id] = a;
+            //printf("%f ", a);
+            //printf("%f ", r[id[0]]);
+            //printf("%f ", b);
+            r[id[0]] = r[id[0]] * (b - a) + a;
+            if (r[id[0]] < a) {
+                r[id[0]] = a;
             }
-            else if (r[id] > b) {
-                r[id] = b;
+            else if (r[id[0]] > b) {
+                r[id[0]] = b;
             }
         });
     });
+    ev.wait();
+    return ev;
 }
 
 // Static template functions oneapi::mkl::rng::curand::range_transform_int for
@@ -285,10 +300,12 @@ inline void range_transform_int(cl::sycl::queue& queue, T a, T b, std::int64_t n
 template <typename T>
 inline cl::sycl::event range_transform_int(cl::sycl::queue& queue, T a, T b, std::int64_t n,
                                            std::uint32_t* in, T* out) {
-    return queue.submit([&](cl::sycl::handler& cgh) {
+    cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
         cgh.parallel_for(cl::sycl::range<1>(n),
-                         [=](cl::sycl::id<1> id) { out[id] = a + in[id] % (b - a); });
+                         [=](cl::sycl::id<1> id) { out[id[0]] = a + in[id[0]] % (b - a); });
     });
+    ev.wait();
+    return ev;
 }
 
 // Static template functions oneapi::mkl::rng::curand::sample_bernoulli for
@@ -321,9 +338,11 @@ static inline void sample_bernoulli_from_uniform(cl::sycl::queue& queue, float p
 template <typename T>
 static inline cl::sycl::event sample_bernoulli_from_uniform(cl::sycl::queue& queue, float p,
                                                             std::int64_t n, float* in, T* out) {
-    return queue.submit([&](cl::sycl::handler& cgh) {
-        cgh.parallel_for(cl::sycl::range<1>(n), [=](cl::sycl::id<1> id) { out[id] = in[id] < p; });
+    cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
+        cgh.parallel_for(cl::sycl::range<1>(n), [=](cl::sycl::id<1> id) { out[id[0]] = in[id[0]] < p; });
     });
+    ev.wait();
+    return ev;
 }
 
 } // namespace curand

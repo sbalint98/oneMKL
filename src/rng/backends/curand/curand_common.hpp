@@ -17,33 +17,36 @@
 * SPDX-License-Identifier: Apache-2.0
 *******************************************************************************/
 
-#ifndef _RNG_CPU_COMMON_HPP_
-#define _RNG_CPU_COMMON_HPP_
+#ifndef _RNG_CURAND_COMMON_HPP_
+#define _RNG_CURAND_COMMON_HPP_
 
 #include <CL/sycl.hpp>
 
 namespace oneapi {
 namespace mkl {
 namespace rng {
-namespace mklcpu {
+namespace curand {
 
-// host_task automatically uses run_on_host_intel if it is supported by the
-//  compiler. Otherwise, it falls back to single_task.
-template <typename K, typename H, typename F>
-static inline auto host_task_internal(H &cgh, F f, int) -> decltype(cgh.run_on_host_intel(f)) {
-    return cgh.run_on_host_intel(f);
-}
 
-template <typename K, typename H, typename F>
+
+#ifdef __HIPSYCL__
+template <typename H, typename F>
 static inline void host_task_internal(H &cgh, F f, long) {
-#ifndef __SYCL_DEVICE_ONLY__
-    cgh.template single_task<K>(f);
-#endif
+    cgh.hipSYCL_enqueue_custom_operation([f](cl::sycl::interop_handle ih) {
+        f(ih);
+    });
+}
+#else
+template <typename H, typename F>
+static inline void host_task_internal(H &cgh, F f, long) {
+    //cgh.template single_task(f);
+    cgh.host_task(f);
 }
 
-template <typename K, typename H, typename F>
+#endif
+template <typename H, typename F>
 static inline void host_task(H &cgh, F f) {
-    (void)host_task_internal<K>(cgh, f, 0);
+    (void)host_task_internal(cgh, f, 0);
 }
 
 template <typename Engine, typename Distr>
@@ -57,4 +60,4 @@ class kernel_name_usm {};
 } // namespace mkl
 } // namespace oneapi
 
-#endif //_RNG_CPU_COMMON_HPP_
+#endif //_RNG_CURAND_COMMON_HPP_

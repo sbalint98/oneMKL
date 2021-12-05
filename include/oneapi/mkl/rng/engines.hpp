@@ -55,10 +55,10 @@ class philox4x32x10 {
 public:
     static constexpr std::uint64_t default_seed = 0;
 
-    philox4x32x10(sycl::queue queue, std::uint64_t seed = default_seed)
+    philox4x32x10(cl::sycl::queue queue, std::uint64_t seed = default_seed)
             : pimpl_(detail::create_philox4x32x10(get_device_id(queue), queue, seed)) {}
 
-    philox4x32x10(sycl::queue queue, std::initializer_list<std::uint64_t> seed)
+    philox4x32x10(cl::sycl::queue queue, std::initializer_list<std::uint64_t> seed)
             : pimpl_(detail::create_philox4x32x10(get_device_id(queue), queue, seed)) {}
 
 #ifdef ENABLE_MKLCPU_BACKEND
@@ -121,12 +121,12 @@ private:
 
     template <typename Distr, typename Engine>
     friend void generate(const Distr& distr, Engine& engine, std::int64_t n,
-                         sycl::buffer<typename Distr::result_type, 1>& r);
+                         cl::sycl::buffer<typename Distr::result_type, 1>& r);
 
     template <typename Distr, typename Engine>
-    friend sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
+    friend cl::sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
                                 typename Distr::result_type* r,
-                                const std::vector<sycl::event>& dependencies);
+                                const std::vector<cl::sycl::event>& dependencies);
 };
 
 // Class oneapi::mkl::rng::mrg32k3a
@@ -139,10 +139,10 @@ class mrg32k3a {
 public:
     static constexpr std::uint32_t default_seed = 1;
 
-    mrg32k3a(sycl::queue queue, std::uint32_t seed = default_seed)
+    mrg32k3a(cl::sycl::queue queue, std::uint32_t seed = default_seed)
             : pimpl_(detail::create_mrg32k3a(get_device_id(queue), queue, seed)) {}
 
-    mrg32k3a(sycl::queue queue, std::initializer_list<std::uint32_t> seed)
+    mrg32k3a(cl::sycl::queue queue, std::initializer_list<std::uint32_t> seed)
             : pimpl_(detail::create_mrg32k3a(get_device_id(queue), queue, seed)) {}
 
 #ifdef ENABLE_MKLCPU_BACKEND
@@ -202,12 +202,12 @@ private:
 
     template <typename Distr, typename Engine>
     friend void generate(const Distr& distr, Engine& engine, std::int64_t n,
-                         sycl::buffer<typename Distr::result_type, 1>& r);
+                         cl::sycl::buffer<typename Distr::result_type, 1>& r);
 
     template <typename Distr, typename Engine>
-    friend sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
+    friend cl::sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
                                 typename Distr::result_type* r,
-                                const std::vector<sycl::event>& dependencies);
+                                const std::vector<cl::sycl::event>& dependencies);
 };
 
 // Default engine to be used for common cases
