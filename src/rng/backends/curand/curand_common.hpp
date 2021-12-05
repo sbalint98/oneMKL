@@ -27,14 +27,10 @@ namespace mkl {
 namespace rng {
 namespace curand {
 
-
-
 #ifdef __HIPSYCL__
 template <typename H, typename F>
 static inline void host_task_internal(H &cgh, F f, long) {
-    cgh.hipSYCL_enqueue_custom_operation([f](cl::sycl::interop_handle ih) {
-        f(ih);
-    });
+    cgh.hipSYCL_enqueue_custom_operation([f](cl::sycl::interop_handle ih) { f(ih); });
 }
 #else
 template <typename H, typename F>
@@ -55,7 +51,7 @@ class kernel_name {};
 template <typename Engine, typename Distr>
 class kernel_name_usm {};
 
-} // namespace mklcpu
+} // namespace curand
 } // namespace rng
 } // namespace mkl
 } // namespace oneapi

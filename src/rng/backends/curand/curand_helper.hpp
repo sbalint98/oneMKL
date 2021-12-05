@@ -220,15 +220,14 @@ static inline cl::sycl::event range_transform_fp(cl::sycl::queue& queue, T a, T 
                                                  T* r) {
     queue.wait();
     cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
-        cgh.parallel_for(cl::sycl::range<1>(n),
-                         [=](cl::sycl::id<1> id) {
-                              //printf("%f ", r[id[0]]);
-                              //printf("%f ", r[id[0]]    );
-                              //printf("%f ", a);
-                              //printf("%f ", b);
-                              r[id[0]] = r[id[0]] * (b - a) + a; 
-                              //printf("%f |", r[id[0]]);
-                        });
+        cgh.parallel_for(cl::sycl::range<1>(n), [=](cl::sycl::id<1> id) {
+            //printf("%f ", r[id[0]]);
+            //printf("%f ", r[id[0]]    );
+            //printf("%f ", a);
+            //printf("%f ", b);
+            r[id[0]] = r[id[0]] * (b - a) + a;
+            //printf("%f |", r[id[0]]);
+        });
     });
     ev.wait();
     return ev;
@@ -339,7 +338,8 @@ template <typename T>
 static inline cl::sycl::event sample_bernoulli_from_uniform(cl::sycl::queue& queue, float p,
                                                             std::int64_t n, float* in, T* out) {
     cl::sycl::event ev = queue.submit([&](cl::sycl::handler& cgh) {
-        cgh.parallel_for(cl::sycl::range<1>(n), [=](cl::sycl::id<1> id) { out[id[0]] = in[id[0]] < p; });
+        cgh.parallel_for(cl::sycl::range<1>(n),
+                         [=](cl::sycl::id<1> id) { out[id[0]] = in[id[0]] < p; });
     });
     ev.wait();
     return ev;

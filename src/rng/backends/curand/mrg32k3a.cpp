@@ -108,7 +108,7 @@ public:
                         reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniform, status, engine_, r_ptr, n);
                 });
             })
@@ -127,7 +127,7 @@ public:
                         reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniformDouble, status, engine_, r_ptr, n);
                 });
             })
@@ -147,7 +147,7 @@ public:
                         ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerate, status, engine_, ib_ptr, n);
                 });
             })
@@ -166,7 +166,7 @@ public:
                         reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniform, status, engine_, r_ptr, n);
                 });
             })
@@ -185,7 +185,7 @@ public:
                         reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniformDouble, status, engine_, r_ptr, n);
                 });
             })
@@ -204,7 +204,7 @@ public:
                         reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateNormal, status, engine_, r_ptr, n, distr.mean(),
                                 distr.stddev());
                 });
@@ -223,7 +223,7 @@ public:
                         reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateNormalDouble, status, engine_, r_ptr, n, distr.mean(),
                                 distr.stddev());
                 });
@@ -258,7 +258,7 @@ public:
                         reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateLogNormal, status, engine_, r_ptr, n, distr.m(),
                                 distr.s());
                 });
@@ -277,7 +277,7 @@ public:
                         reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateLogNormalDouble, status, engine_, r_ptr, n, distr.m(),
                                 distr.s());
                 });
@@ -339,7 +339,7 @@ public:
                         ih.get_native_mem<cl::sycl::backend::cuda>(acc));
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerate, status, engine_, r_ptr, n);
                 });
             })
@@ -357,7 +357,7 @@ public:
                 host_task(cgh, [=](cl::sycl::interop_handle ih) {
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniform, status, engine_, r, n);
                 });
             })
@@ -374,7 +374,7 @@ public:
                 host_task(cgh, [=](cl::sycl::interop_handle ih) {
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniformDouble, status, engine_, r, n);
                 });
             })
@@ -394,7 +394,7 @@ public:
                 host_task(cgh, [=](cl::sycl::interop_handle ih) {
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerate, status, engine_, ib, n);
                 });
             })
@@ -411,7 +411,7 @@ public:
                 host_task(cgh, [=](cl::sycl::interop_handle ih) {
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniform, status, engine_, r, n);
                 });
             })
@@ -428,7 +428,7 @@ public:
                 host_task(cgh, [=](cl::sycl::interop_handle ih) {
                     curandStatus_t status;
                     auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                    CURAND_CALL(curandSetStream, status, engine_, stream);
                     CURAND_CALL(curandGenerateUniformDouble, status, engine_, r, n);
                 });
             })
@@ -444,8 +444,8 @@ public:
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, [=](cl::sycl::interop_handle ih) {
                 curandStatus_t status;
-                    auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                auto stream = ih.get_native_queue<sycl::backend::cuda>();
+                CURAND_CALL(curandSetStream, status, engine_, stream);
                 CURAND_CALL(curandGenerateNormal, status, engine_, r, n, distr.mean(),
                             distr.stddev());
             });
@@ -460,8 +460,8 @@ public:
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, [=](cl::sycl::interop_handle ih) {
                 curandStatus_t status;
-                    auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                auto stream = ih.get_native_queue<sycl::backend::cuda>();
+                CURAND_CALL(curandSetStream, status, engine_, stream);
                 CURAND_CALL(curandGenerateNormalDouble, status, engine_, r, n, distr.mean(),
                             distr.stddev());
             });
@@ -494,8 +494,8 @@ public:
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, [=](cl::sycl::interop_handle ih) {
                 curandStatus_t status;
-                    auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                auto stream = ih.get_native_queue<sycl::backend::cuda>();
+                CURAND_CALL(curandSetStream, status, engine_, stream);
                 CURAND_CALL(curandGenerateLogNormal, status, engine_, r, n, distr.m(), distr.s());
             });
         });
@@ -509,8 +509,8 @@ public:
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, [=](cl::sycl::interop_handle ih) {
                 curandStatus_t status;
-                    auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                auto stream = ih.get_native_queue<sycl::backend::cuda>();
+                CURAND_CALL(curandSetStream, status, engine_, stream);
                 CURAND_CALL(curandGenerateLogNormalDouble, status, engine_, r, n, distr.m(),
                             distr.s());
             });
@@ -578,8 +578,8 @@ public:
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, [=](cl::sycl::interop_handle ih) {
                 curandStatus_t status;
-                    auto stream = ih.get_native_queue<sycl::backend::cuda>();
-                    CURAND_CALL(curandSetStream,status, engine_, stream);
+                auto stream = ih.get_native_queue<sycl::backend::cuda>();
+                CURAND_CALL(curandSetStream, status, engine_, stream);
                 CURAND_CALL(curandGenerate, status, engine_, r, n);
             });
         });

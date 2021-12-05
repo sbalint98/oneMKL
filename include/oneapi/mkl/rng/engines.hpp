@@ -125,8 +125,8 @@ private:
 
     template <typename Distr, typename Engine>
     friend cl::sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
-                                typename Distr::result_type* r,
-                                const std::vector<cl::sycl::event>& dependencies);
+                                    typename Distr::result_type* r,
+                                    const std::vector<cl::sycl::event>& dependencies);
 };
 
 // Class oneapi::mkl::rng::mrg32k3a
@@ -206,8 +206,8 @@ private:
 
     template <typename Distr, typename Engine>
     friend cl::sycl::event generate(const Distr& distr, Engine& engine, std::int64_t n,
-                                typename Distr::result_type* r,
-                                const std::vector<cl::sycl::event>& dependencies);
+                                    typename Distr::result_type* r,
+                                    const std::vector<cl::sycl::event>& dependencies);
 };
 
 // Default engine to be used for common cases
