@@ -99,9 +99,13 @@ int main(int argc, char** argv) {
                     if (dev.is_gpu() && plat.get_info<cl::sycl::info::platform::name>().find(
                                             "OpenCL") != std::string::npos)
                         continue;
-                    if (unique_devices.find(dev.get_info<cl::sycl::info::device::name>()) ==
+                    if (unique_devices.find(dev.get_info<cl::sycl::info::device::name>()+"dev") ==
                         unique_devices.end()) {
-                        unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
+                        unique_devices.insert(dev.get_info<cl::sycl::info::device::name>() + "dev");
+                        for ( auto a : unique_devices){
+                            std::cout << "dev: " << a << std::endl;
+                        }
+                        //unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
                         unsigned int vendor_id = static_cast<unsigned int>(
                             dev.get_info<cl::sycl::info::device::vendor_id>());
 #ifndef ENABLE_MKLCPU_BACKEND
@@ -112,7 +116,7 @@ int main(int argc, char** argv) {
                         if (dev.is_gpu() && vendor_id == INTEL_ID)
                             continue;
 #endif
-#if !defined(ENABLE_CUBLAS_BACKEND) && !defined(ENABLE_CURAND_BACKEND)
+#if !defined(ENABLE_ROCBLAS_BACKEND) && !defined(ENABLE_CUBLAS_BACKEND) && !defined(ENABLE_CURAND_BACKEND) && !defined(ENABLE_ROCRAND_BACKEND)
                         if (dev.is_gpu() && vendor_id == NVIDIA_ID)
                             continue;
 #endif

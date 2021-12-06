@@ -62,6 +62,7 @@
 #endif
 #include <iostream>
 
+#include "curand_common.hpp"
 #include "curand_helper.hpp"
 #include "curand_common.hpp"
 #include "oneapi/mkl/exceptions.hpp"
