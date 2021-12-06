@@ -29,8 +29,8 @@
 #include <CL/sycl.hpp>
 
 namespace std {
-static sycl::half abs(sycl::half v) {
-    if (v < sycl::half(0))
+static cl::sycl::half abs(cl::sycl::half v) {
+    if (v < cl::sycl::half(0))
         return -v;
     else
         return v;
@@ -142,8 +142,8 @@ uint8_t rand_scalar() {
 }
 
 template <>
-sycl::half rand_scalar() {
-    return sycl::half(std::rand() % 32000) / sycl::half(32000) - sycl::half(0.5);
+cl::sycl::half rand_scalar() {
+    return cl::sycl::half(std::rand() % 32000) / cl::sycl::half(32000) - cl::sycl::half(0.5);
 }
 
 template <typename fp>

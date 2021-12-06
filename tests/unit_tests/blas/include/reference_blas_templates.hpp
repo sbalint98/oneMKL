@@ -227,9 +227,9 @@ static void gemm(CBLAS_LAYOUT layout, CBLAS_TRANSPOSE transa, CBLAS_TRANSPOSE tr
 
 template <>
 void gemm(CBLAS_LAYOUT layout, CBLAS_TRANSPOSE transa, CBLAS_TRANSPOSE transb, const int *m,
-          const int *n, const int *k, const sycl::half *alpha, const sycl::half *a, const int *lda,
-          const sycl::half *b, const int *ldb, const sycl::half *beta, sycl::half *c,
-          const int *ldc) {
+          const int *n, const int *k, const cl::sycl::half *alpha, const cl::sycl::half *a,
+          const int *lda, const cl::sycl::half *b, const int *ldb, const cl::sycl::half *beta,
+          cl::sycl::half *c, const int *ldc) {
     // Not supported in NETLIB. SGEMM is used as reference.
     int sizea, sizeb, sizec;
     const float alphaf = *alpha;
@@ -295,8 +295,8 @@ static void gemm(CBLAS_LAYOUT layout, CBLAS_TRANSPOSE transa, CBLAS_TRANSPOSE tr
 
 template <>
 void gemm(CBLAS_LAYOUT layout, CBLAS_TRANSPOSE transa, CBLAS_TRANSPOSE transb, const int *m,
-          const int *n, const int *k, const float *alpha, const sycl::half *a, const int *lda,
-          const sycl::half *b, const int *ldb, const float *beta, float *c, const int *ldc) {
+          const int *n, const int *k, const float *alpha, const cl::sycl::half *a, const int *lda,
+          const cl::sycl::half *b, const int *ldb, const float *beta, float *c, const int *ldc) {
     // Not supported in NETLIB. SGEMM is used as reference.
     int sizea, sizeb;
     if (layout == CblasColMajor) {
