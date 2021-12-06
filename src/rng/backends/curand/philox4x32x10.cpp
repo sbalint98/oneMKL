@@ -63,9 +63,9 @@
 #include <iostream>
 
 #include "oneapi/mkl/rng/detail/engine_impl.hpp"
-// #include "oneapi/mkl/rng/engines.hpp"
 #include "curand_helper.hpp"
 #include "curand_common.hpp"
+#include "curand_helper.hpp"
 #include "oneapi/mkl/exceptions.hpp"
 #include "oneapi/mkl/rng/detail/curand/onemkl_rng_curand.hpp"
 

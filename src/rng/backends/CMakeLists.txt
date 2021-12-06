@@ -28,3 +28,7 @@ endif()
 if(ENABLE_CURAND_BACKEND AND UNIX)
   add_subdirectory(curand)
 endif()
+
+if(ENABLE_ROCRAND_BACKEND AND UNIX)
+  add_subdirectory(rocrand)
+endif()
