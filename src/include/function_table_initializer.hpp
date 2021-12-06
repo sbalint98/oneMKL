@@ -91,9 +91,18 @@ private:
 #endif
 
     function_table_t &add_table(oneapi::mkl::device key) {
+        if (key == oneapi::mkl::device::amdgpu){
+            std::cout <<  "amdgpu!!" << std::endl;
+            for (auto i : libraries[domain::rng][oneapi::mkl::device::amdgpu]){
+                std::cout << i << std::endl;
+
+            }
+        }
+        
         dlhandle handle;
         // check all available libraries for the key(device)
         for (const char *libname : libraries[domain_id][key]) {
+            std::cout << libname << std::endl;
             handle = dlhandle{ ::GET_LIB_HANDLE(libname) };
             if (handle)
                 break;
