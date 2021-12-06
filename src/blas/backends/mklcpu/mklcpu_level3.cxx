@@ -98,11 +98,12 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
 }
 
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
-          int64_t k, sycl::half alpha, cl::sycl::buffer<sycl::half, 1> &a, int64_t lda,
-          cl::sycl::buffer<sycl::half, 1> &b, int64_t ldb, sycl::half beta,
-          cl::sycl::buffer<sycl::half, 1> &c, int64_t ldc) {
+          int64_t k, cl::sycl::half alpha, cl::sycl::buffer<cl::sycl::half, 1> &a, int64_t lda,
+          cl::sycl::buffer<cl::sycl::half, 1> &b, int64_t ldb, cl::sycl::half beta,
+          cl::sycl::buffer<cl::sycl::half, 1> &c, int64_t ldc) {
     queue.submit([&](cl::sycl::handler &cgh) {
-        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue, cl::sycl::aspect::fp16)) {
+        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue,
+                                                                    cl::sycl::aspect::fp16)) {
             throw oneapi::mkl::unimplemented(
                 "blas", "cl::sycl::half",
                 "half is not supported by the device or the sycl compiler");
@@ -136,9 +137,9 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
             ::cblas_sgemm(CBLASMAJOR, transa_, transb_, m, n, k, f32_alpha, f32_a, lda, f32_b, ldb,
                           f32_beta, f32_c, ldc);
             // copy C back to half
-            sycl::half co = 0.0f;
+            cl::sycl::half co = 0.0f;
             copy_mat(f32_c, MKLMAJOR, m, n, ldc, offset::F, &co,
-                     (sycl::half *)accessor_c.get_pointer());
+                     (cl::sycl::half *)accessor_c.get_pointer());
             ::free(f32_a);
             ::free(f32_b);
             ::free(f32_c);
@@ -147,12 +148,13 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
 }
 
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
-          int64_t k, float alpha, cl::sycl::buffer<sycl::half, 1> &a, int64_t lda,
-          cl::sycl::buffer<sycl::half, 1> &b, int64_t ldb, float beta,
+          int64_t k, float alpha, cl::sycl::buffer<cl::sycl::half, 1> &a, int64_t lda,
+          cl::sycl::buffer<cl::sycl::half, 1> &b, int64_t ldb, float beta,
           cl::sycl::buffer<float, 1> &c, int64_t ldc) {
     if (!verify_support<cl::sycl::half, cl::sycl::half>(queue, cl::sycl::aspect::fp16)) {
         throw oneapi::mkl::unimplemented(
-            "blas", "cl::sycl::half", "half is not supported by the device or the sycl compiler");
+            "blas", "cl::sycl::half",
+            "half is not supported by the device or the sycl compiler");
     }
     queue.submit([&](cl::sycl::handler &cgh) {
         CBLAS_TRANSPOSE transa_ = cblas_convert(transa);
@@ -782,11 +784,13 @@ cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb,
 }
 
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
-                     int64_t n, int64_t k, sycl::half alpha, const sycl::half *a, int64_t lda,
-                     const sycl::half *b, int64_t ldb, sycl::half beta, sycl::half *c, int64_t ldc,
+                     int64_t n, int64_t k, cl::sycl::half alpha, const cl::sycl::half *a,
+                     int64_t lda, const cl::sycl::half *b, int64_t ldb, cl::sycl::half beta,
+                     cl::sycl::half *c, int64_t ldc,
                      const std::vector<cl::sycl::event> &dependencies) {
     auto done = queue.submit([&](cl::sycl::handler &cgh) {
-        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue, cl::sycl::aspect::fp16)) {
+        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue,
+                                                                    cl::sycl::aspect::fp16)) {
             throw oneapi::mkl::unimplemented(
                 "blas", "cl::sycl::half",
                 "half is not supported by the device or the sycl compiler");
@@ -821,7 +825,7 @@ cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb,
             ::cblas_sgemm(CBLASMAJOR, transa_, transb_, m, n, k, f32_alpha, f32_a, lda, f32_b, ldb,
                           f32_beta, f32_c, ldc);
             // copy C back to half
-            sycl::half co = 0.0f;
+            cl::sycl::half co = 0.0f;
             copy_mat(f32_c, MKLMAJOR, m, n, ldc, offset::F, &co, c);
             ::free(f32_a);
             ::free(f32_b);
@@ -832,11 +836,12 @@ cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb,
 }
 
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
-                     int64_t n, int64_t k, float alpha, const sycl::half *a, int64_t lda,
-                     const sycl::half *b, int64_t ldb, float beta, float *c, int64_t ldc,
+                     int64_t n, int64_t k, float alpha, const cl::sycl::half *a, int64_t lda,
+                     const cl::sycl::half *b, int64_t ldb, float beta, float *c, int64_t ldc,
                      const std::vector<cl::sycl::event> &dependencies) {
     auto done = queue.submit([&](cl::sycl::handler &cgh) {
-        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue, cl::sycl::aspect::fp16)) {
+        if (!verify_support<cl::sycl::half, cl::sycl::half>(queue,
+                                                                    cl::sycl::aspect::fp16)) {
             throw oneapi::mkl::unimplemented(
                 "blas", "cl::sycl::half",
                 "half is not supported by the device or the sycl compiler");
