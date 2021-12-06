@@ -99,14 +99,11 @@ int main(int argc, char** argv) {
                     if (dev.is_gpu() && plat.get_info<cl::sycl::info::platform::name>().find(
                                             "OpenCL") != std::string::npos)
                         continue;
-                    if (unique_devices.find(dev.get_info<cl::sycl::info::device::name>()) ==
+                    if (unique_devices.find(dev.get_info<cl::sycl::info::device::name>()+"dev") ==
                         unique_devices.end()) {
-                        if(!dev.get_info<cl::sycl::info::device::name>().empty()){
-                            std::cout << dev.get_info<cl::sycl::info::device::name>() << " <- we got this" << std::endl;
-                            unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
-                        }else {
-                            std::cout << "no no" << std::endl;
-                            unique_devices.insert("Unknown device");
+                        unique_devices.insert(dev.get_info<cl::sycl::info::device::name>() + "dev");
+                        for ( auto a : unique_devices){
+                            std::cout << "dev: " << a << std::endl;
                         }
                         //unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
                         unsigned int vendor_id = static_cast<unsigned int>(

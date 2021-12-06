@@ -26,7 +26,7 @@
 namespace oneapi {
 namespace mkl {
 
-enum class backend { mklcpu, mklgpu, cublas, curand, netlib, rocblas, unsupported };
+enum class backend { mklcpu, mklgpu, cublas, curand, rocrand, netlib, rocblas, unsupported };
 
 typedef std::map<backend, std::string> backendmap;
 
@@ -34,6 +34,7 @@ static backendmap backend_map = {
     { backend::mklcpu, "mklcpu" }, { backend::mklgpu, "mklgpu" },
     { backend::cublas, "cublas" }, { backend::curand, "curand" },
     { backend::netlib, "netlib" }, { backend::rocblas, "rocblas" },
+    { backend::rocrand, "rocrand"},
     { backend::unsupported, "unsupported" }
 };
 

@@ -99,7 +99,7 @@ static std::map<domain, std::map<device, std::vector<const char*>>> libraries = 
         { device::amdgpu,
           {
 #ifdef ENABLE_ROCRAND_BACKEND
-              LIB_NAME("blas_rocblas")
+              LIB_NAME("rng_rocrand")
 #endif
           } },
         { device::nvidiagpu,

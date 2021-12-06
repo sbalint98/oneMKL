@@ -126,7 +126,7 @@ public:
             if (!isalnum(dev_name[i]))
                 dev_name[i] = '_';
         }
-        return dev_name;
+        return dev_name+"dev";
     }
 };
 
