@@ -56,8 +56,8 @@
  * so.
  ******************************************************************************/
 
-#ifndef _ONEMKL_RNG_ROCRAND_HPP_
-#define _ONEMKL_RNG_ROCRAND_HPP_
+#ifndef _ONEMKL_RNG_CURAND_HPP_
+#define _ONEMKL_RNG_CURAND_HPP_
 
 #include <CL/sycl.hpp>
 #include <cstdint>
@@ -87,4 +87,4 @@ ONEMKL_EXPORT oneapi::mkl::rng::detail::engine_impl* create_mrg32k3a(
 } // namespace mkl
 } // namespace oneapi
 
-#endif //_ONEMKL_RNG_ROCRAND_HPP_
+#endif //_ONEMKL_RNG_CURAND_HPP_

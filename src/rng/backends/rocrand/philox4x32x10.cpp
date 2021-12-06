@@ -64,21 +64,21 @@
 
 #include "oneapi/mkl/rng/detail/engine_impl.hpp"
 // #include "oneapi/mkl/rng/engines.hpp"
-#include "../common/curand_helper.hpp"
-#include "curand_common.hpp"
-#include "curand_helper.hpp"
+#include "../common/hiplike_helper.hpp"
+#include "rocrand_common.hpp"
+#include "rocrand_helper.hpp"
 #include "oneapi/mkl/exceptions.hpp"
-#include "oneapi/mkl/rng/detail/curand/onemkl_rng_curand.hpp"
+#include "oneapi/mkl/rng/detail/rocrand/onemkl_rng_rocrand.hpp"
 
 namespace oneapi {
 namespace mkl {
 namespace rng {
-namespace curand {
+namespace rocrand {
 
 #if !defined(_WIN64)
 /*
  * Note that cuRAND consists of two pieces: a host (CPU) API and a device (GPU)
- * API. The host API acts like any standard library; the `curand.h' header is
+ * API. The host API acts like any standard library; the `rocrand.h' header is
  * included and the functions can be called as usual. The generator is
  * instantiated on the host and random numbers can be generated on either the
  * host CPU or device. For device-side generation, calls to the library happen
@@ -88,7 +88,7 @@ namespace curand {
  * host for further processing. For host-side generation, everything is done on
  * the host, and the random numbers are stored in host memory.
  *
- * The second piece is the device header, `curand_kernel.h'. Using this file
+ * The second piece is the device header, `rocrand_kernel.h'. Using this file
  * permits setting up random number generator states and generating sequences of
  * random numbers. This allows random numbers to be generated and immediately
  * consumed in other kernels without requiring the random numbers to be written
@@ -102,8 +102,9 @@ class philox4x32x10_impl : public oneapi::mkl::rng::detail::engine_impl {
 public:
     philox4x32x10_impl(cl::sycl::queue queue, std::uint64_t seed)
             : oneapi::mkl::rng::detail::engine_impl(queue) {
-        curandStatus_t status;        CURAND_CALL(curandCreateGenerator, status, &engine_, CURAND_RNG_PSEUDO_PHILOX4_32_10);
-        CURAND_CALL(curandSetPseudoRandomGeneratorSeed, status, engine_, (unsigned long long)seed);
+        rocrand_status status;        
+        ROCRAND_CALL(rocrand_create_generator, status, &engine_, ROCRAND_RNG_PSEUDO_PHILOX4_32_10);
+        ROCRAND_CALL(rocrand_set_seed, status, engine_, (unsigned long long)seed);
     }
 
     philox4x32x10_impl(cl::sycl::queue queue, std::initializer_list<std::uint64_t> seed)
@@ -128,9 +129,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniform, status, engine_, r_ptr, n);
+                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -145,9 +146,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniformDouble, status, engine_, r_ptr, n);
+                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform_double, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -163,9 +164,9 @@ public:
                 auto acc = ib.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr = reinterpret_cast<std::uint32_t*>(
-                        ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerate, status, engine_, r_ptr, n);
+                        ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -180,9 +181,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniform, status, engine_, r_ptr, n);
+                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -197,9 +198,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniformDouble, status, engine_, r_ptr, n);
+                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform_double, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -214,9 +215,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateNormal, status, engine_, r_ptr, n, distr.mean(),
+                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_normal, status, engine_, r_ptr, n, distr.mean(),
                                 distr.stddev());
                 });
             })
@@ -231,9 +232,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateNormalDouble, status, engine_, r_ptr, n, distr.mean(),
+                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_normal_double, status, engine_, r_ptr, n, distr.mean(),
                                 distr.stddev());
                 });
             })
@@ -264,9 +265,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateLogNormal, status, engine_, r_ptr, n, distr.m(),
+                        reinterpret_cast<float*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_log_normal, status, engine_, r_ptr, n, distr.m(),
                                 distr.s());
                 });
             })
@@ -281,9 +282,9 @@ public:
                 auto acc = r.get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr =
-                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateLogNormalDouble, status, engine_, r_ptr, n, distr.m(),
+                        reinterpret_cast<double*>(ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_log_normal_double, status, engine_, r_ptr, n, distr.m(),
                                 distr.s());
                 });
             })
@@ -341,9 +342,9 @@ public:
                 auto acc = r.template get_access<cl::sycl::access::mode::read_write>(cgh);
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
                     auto r_ptr = reinterpret_cast<std::uint32_t*>(
-                        ih.get_native_mem<cl::sycl::backend::cuda>(acc));
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerate, status, engine_, r_ptr, n);
+                        ih.get_native_mem<cl::sycl::backend::hip>(acc));
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate, status, engine_, r_ptr, n);
                 });
             })
             .wait_and_throw();
@@ -358,8 +359,8 @@ public:
         queue_
             .submit([&](cl::sycl::handler& cgh) {
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniform, status, engine_, r, n);
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform, status, engine_, r, n);
                 });
             })
             .wait_and_throw();
@@ -373,8 +374,8 @@ public:
         queue_
             .submit([&](cl::sycl::handler& cgh) {
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniformDouble, status, engine_, r, n);
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform_double, status, engine_, r, n);
                 });
             })
             .wait_and_throw();
@@ -391,8 +392,8 @@ public:
         queue_
             .submit([&](cl::sycl::handler& cgh) {
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerate, status, engine_, ib, n);
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate, status, engine_, ib, n);
                 });
             })
             .wait_and_throw();
@@ -406,8 +407,8 @@ public:
         queue_
             .submit([&](cl::sycl::handler& cgh) {
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniform, status, engine_, r, n);
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform, status, engine_, r, n);
                 });
             })
             .wait_and_throw();
@@ -421,8 +422,8 @@ public:
         queue_
             .submit([&](cl::sycl::handler& cgh) {
                 host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                    curandStatus_t status;
-                    CURAND_CALL(curandGenerateUniformDouble, status, engine_, r, n);
+                    rocrand_status status;
+                    ROCRAND_CALL(rocrand_generate_uniform_double, status, engine_, r, n);
                 });
             })
             .wait_and_throw();
@@ -436,8 +437,8 @@ public:
         cl::sycl::event::wait_and_throw(dependencies);
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                curandStatus_t status;
-                CURAND_CALL(curandGenerateNormal, status, engine_, r, n, distr.mean(),
+                rocrand_status status;
+                ROCRAND_CALL(rocrand_generate_normal, status, engine_, r, n, distr.mean(),
                             distr.stddev());
             });
         });
@@ -450,8 +451,8 @@ public:
         cl::sycl::event::wait_and_throw(dependencies);
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                curandStatus_t status;
-                CURAND_CALL(curandGenerateNormalDouble, status, engine_, r, n, distr.mean(),
+                rocrand_status status;
+                ROCRAND_CALL(rocrand_generate_normal_double, status, engine_, r, n, distr.mean(),
                             distr.stddev());
             });
         });
@@ -482,8 +483,8 @@ public:
         cl::sycl::event::wait_and_throw(dependencies);
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                curandStatus_t status;
-                CURAND_CALL(curandGenerateLogNormal, status, engine_, r, n, distr.m(), distr.s());
+                rocrand_status status;
+                ROCRAND_CALL(rocrand_generate_log_normal, status, engine_, r, n, distr.m(), distr.s());
             });
         });
     }
@@ -495,8 +496,8 @@ public:
         cl::sycl::event::wait_and_throw(dependencies);
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                curandStatus_t status;
-                CURAND_CALL(curandGenerateLogNormalDouble, status, engine_, r, n, distr.m(),
+                rocrand_status status;
+                ROCRAND_CALL(rocrand_generate_log_normal_double, status, engine_, r, n, distr.m(),
                             distr.s());
             });
         });
@@ -562,8 +563,8 @@ public:
         cl::sycl::event::wait_and_throw(dependencies);
         return queue_.submit([&](cl::sycl::handler& cgh) {
             host_task(cgh, engine_, [=](cl::sycl::interop_handle ih) {
-                curandStatus_t status;
-                CURAND_CALL(curandGenerate, status, engine_, r, n);
+                rocrand_status status;
+                ROCRAND_CALL(rocrand_generate, status, engine_, r, n);
             });
         });
     }
@@ -573,7 +574,8 @@ public:
     }
 
     virtual void skip_ahead(std::uint64_t num_to_skip) override {
-        curandStatus_t status;        CURAND_CALL(curandSetGeneratorOffset, status, engine_, num_to_skip);
+        rocrand_status status;     
+        ROCRAND_CALL(rocrand_set_offset, status, engine_, num_to_skip);
     }
 
     virtual void skip_ahead(std::initializer_list<std::uint64_t> num_to_skip) override {
@@ -586,11 +588,11 @@ public:
     }
 
     virtual ~philox4x32x10_impl() override {
-        curandDestroyGenerator(engine_);
+        rocrand_destroy_generator(engine_);
     }
 
 private:
-    curandGenerator_t engine_;
+    rocrand_generator engine_;
 };
 #else // cuRAND backend is currently not supported on Windows
 class philox4x32x10_impl : public oneapi::mkl::rng::detail::engine_impl {
@@ -872,7 +874,8 @@ public:
 
 oneapi::mkl::rng::detail::engine_impl* create_philox4x32x10(cl::sycl::queue queue,
                                                             std::uint64_t seed) {
-    return new philox4x32x10_impl(queue, seed);
+    auto a = new philox4x32x10_impl(queue, seed);
+    return a;
 }
 
 oneapi::mkl::rng::detail::engine_impl* create_philox4x32x10(
@@ -880,7 +883,7 @@ oneapi::mkl::rng::detail::engine_impl* create_philox4x32x10(
     return new philox4x32x10_impl(queue, seed);
 }
 
-} // namespace curand
+} // namespace rocrand
 } // namespace rng
 } // namespace mkl
 } // namespace oneapi

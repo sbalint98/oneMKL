@@ -101,7 +101,14 @@ int main(int argc, char** argv) {
                         continue;
                     if (unique_devices.find(dev.get_info<cl::sycl::info::device::name>()) ==
                         unique_devices.end()) {
-                        unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
+                        if(!dev.get_info<cl::sycl::info::device::name>().empty()){
+                            std::cout << dev.get_info<cl::sycl::info::device::name>() << " <- we got this" << std::endl;
+                            unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
+                        }else {
+                            std::cout << "no no" << std::endl;
+                            unique_devices.insert("Unknown device");
+                        }
+                        //unique_devices.insert(dev.get_info<cl::sycl::info::device::name>());
                         unsigned int vendor_id = static_cast<unsigned int>(
                             dev.get_info<cl::sycl::info::device::vendor_id>());
 #ifndef ENABLE_MKLCPU_BACKEND
@@ -112,7 +119,7 @@ int main(int argc, char** argv) {
                         if (dev.is_gpu() && vendor_id == INTEL_ID)
                             continue;
 #endif
-#if !defined(ENABLE_ROCBLAS_BACKEND) && !defined(ENABLE_CUBLAS_BACKEND) && !defined(ENABLE_CURAND_BACKEND)
+#if !defined(ENABLE_ROCBLAS_BACKEND) && !defined(ENABLE_CUBLAS_BACKEND) && !defined(ENABLE_CURAND_BACKEND) && !defined(ENABLE_ROCRAND_BACKEND)
                         if (dev.is_gpu() && vendor_id == NVIDIA_ID)
                             continue;
 #endif

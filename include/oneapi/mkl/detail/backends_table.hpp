@@ -96,6 +96,12 @@ static std::map<domain, std::map<device, std::vector<const char*>>> libraries = 
               LIB_NAME("rng_mklgpu")
 #endif
           } },
+        { device::amdgpu,
+          {
+#ifdef ENABLE_ROCRAND_BACKEND
+              LIB_NAME("blas_rocblas")
+#endif
+          } },
         { device::nvidiagpu,
           {
 #ifdef ENABLE_CURAND_BACKEND
