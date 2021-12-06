@@ -92,9 +92,9 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
 }
 
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
-          int64_t k, sycl::half alpha, cl::sycl::buffer<sycl::half, 1> &a, int64_t lda,
-          cl::sycl::buffer<sycl::half, 1> &b, int64_t ldb, sycl::half beta,
-          cl::sycl::buffer<sycl::half, 1> &c, int64_t ldc) {
+          int64_t k, cl::sycl::half alpha, cl::sycl::buffer<cl::sycl::half, 1> &a, int64_t lda,
+          cl::sycl::buffer<cl::sycl::half, 1> &b, int64_t ldb, cl::sycl::half beta,
+          cl::sycl::buffer<cl::sycl::half, 1> &c, int64_t ldc) {
 #ifdef COLUMN_MAJOR
     throw unimplemented("blas", "gemm", "for column_major layout");
 #endif
@@ -104,8 +104,8 @@ void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
 }
 
 void gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m, int64_t n,
-          int64_t k, float alpha, cl::sycl::buffer<sycl::half, 1> &a, int64_t lda,
-          cl::sycl::buffer<sycl::half, 1> &b, int64_t ldb, float beta,
+          int64_t k, float alpha, cl::sycl::buffer<cl::sycl::half, 1> &a, int64_t lda,
+          cl::sycl::buffer<cl::sycl::half, 1> &b, int64_t ldb, float beta,
           cl::sycl::buffer<float, 1> &c, int64_t ldc) {
 #ifdef COLUMN_MAJOR
     throw unimplemented("blas", "gemm", "for column_major layout");
@@ -640,8 +640,9 @@ cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb,
 }
 
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
-                     int64_t n, int64_t k, sycl::half alpha, const sycl::half *a, int64_t lda,
-                     const sycl::half *b, int64_t ldb, sycl::half beta, sycl::half *c, int64_t ldc,
+                     int64_t n, int64_t k, cl::sycl::half alpha, const cl::sycl::half *a,
+                     int64_t lda, const cl::sycl::half *b, int64_t ldb, cl::sycl::half beta,
+                     cl::sycl::half *c, int64_t ldc,
                      const std::vector<cl::sycl::event> &dependencies) {
 #ifdef COLUMN_MAJOR
     throw unimplemented("blas", "gemm", "for column_major layout");
@@ -652,8 +653,8 @@ cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb,
 }
 
 cl::sycl::event gemm(cl::sycl::queue &queue, transpose transa, transpose transb, int64_t m,
-                     int64_t n, int64_t k, float alpha, const sycl::half *a, int64_t lda,
-                     const sycl::half *b, int64_t ldb, float beta, float *c, int64_t ldc,
+                     int64_t n, int64_t k, float alpha, const cl::sycl::half *a, int64_t lda,
+                     const cl::sycl::half *b, int64_t ldb, float beta, float *c, int64_t ldc,
                      const std::vector<cl::sycl::event> &dependencies) {
 #ifdef COLUMN_MAJOR
     throw unimplemented("blas", "gemm", "for column_major layout");
