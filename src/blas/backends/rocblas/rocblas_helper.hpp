@@ -205,7 +205,7 @@ struct CudaEquivalentType<std::complex<double>> {
     using Type = rocblas_double_complex;
 };
 template <>
-struct CudaEquivalentType<half> {
+struct CudaEquivalentType<cl::sycl::half> {
     using Type = rocblas_half;
 };
 

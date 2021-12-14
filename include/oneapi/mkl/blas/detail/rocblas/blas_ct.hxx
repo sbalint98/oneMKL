@@ -229,10 +229,10 @@ void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, t
 }
 
 void gemm_batch(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-                std::int64_t m, std::int64_t n, std::int64_t k, half alpha,
-                cl::sycl::buffer<half, 1> &a, std::int64_t lda, std::int64_t stride_a,
-                cl::sycl::buffer<half, 1> &b, std::int64_t ldb, std::int64_t stride_b, half beta,
-                cl::sycl::buffer<half, 1> &c, std::int64_t ldc, std::int64_t stride_c,
+                std::int64_t m, std::int64_t n, std::int64_t k, cl::sycl::half alpha,
+                cl::sycl::buffer<cl::sycl::half, 1> &a, std::int64_t lda, std::int64_t stride_a,
+                cl::sycl::buffer<cl::sycl::half, 1> &b, std::int64_t ldb, std::int64_t stride_b, cl::sycl::half beta,
+                cl::sycl::buffer<cl::sycl::half, 1> &c, std::int64_t ldc, std::int64_t stride_c,
                 std::int64_t batch_size) {
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
                             b, ldb, stride_b, beta, c, ldc, stride_c, batch_size);
@@ -1072,9 +1072,9 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
 }
 
 void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-          std::int64_t m, std::int64_t n, std::int64_t k, half alpha, cl::sycl::buffer<half, 1> &a,
-          std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, half beta,
-          cl::sycl::buffer<half, 1> &c, std::int64_t ldc) {
+          std::int64_t m, std::int64_t n, std::int64_t k, cl::sycl::half alpha, cl::sycl::buffer<cl::sycl::half, 1> &a,
+          std::int64_t lda, cl::sycl::buffer<cl::sycl::half, 1> &b, std::int64_t ldb, cl::sycl::half beta,
+          cl::sycl::buffer<cl::sycl::half, 1> &c, std::int64_t ldc) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
     oneapi::mkl::blas::rocblas::MAJOR::gemm(selector.get_queue(), transa, transb, m, n, k, alpha, a,
@@ -1084,8 +1084,8 @@ void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpo
 }
 
 void gemm(backend_selector<backend::rocblas> selector, transpose transa, transpose transb,
-          std::int64_t m, std::int64_t n, std::int64_t k, float alpha, cl::sycl::buffer<half, 1> &a,
-          std::int64_t lda, cl::sycl::buffer<half, 1> &b, std::int64_t ldb, float beta,
+          std::int64_t m, std::int64_t n, std::int64_t k, float alpha, cl::sycl::buffer<cl::sycl::half, 1> &a,
+          std::int64_t lda, cl::sycl::buffer<cl::sycl::half, 1> &b, std::int64_t ldb, float beta,
           cl::sycl::buffer<float, 1> &c, std::int64_t ldc) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc);
@@ -3307,8 +3307,8 @@ cl::sycl::event gemm_batch(backend_selector<backend::rocblas> selector, transpos
 
 cl::sycl::event gemm_batch(backend_selector<backend::rocblas> selector, transpose *transa,
                            transpose *transb, std::int64_t *m, std::int64_t *n, std::int64_t *k,
-                           half *alpha, const half **a, std::int64_t *lda, const half **b,
-                           std::int64_t *ldb, half *beta, half **c, std::int64_t *ldc,
+                           cl::sycl::half *alpha, const cl::sycl::half **a, std::int64_t *lda, const cl::sycl::half **b,
+                           std::int64_t *ldb, cl::sycl::half *beta, cl::sycl::half **c, std::int64_t *ldc,
                            std::int64_t group_count, std::int64_t *group_size,
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb,
@@ -3393,9 +3393,9 @@ cl::sycl::event gemm_batch(backend_selector<backend::rocblas> selector, transpos
 
 cl::sycl::event gemm_batch(backend_selector<backend::rocblas> selector, transpose transa,
                            transpose transb, std::int64_t m, std::int64_t n, std::int64_t k,
-                           half alpha, const half *a, std::int64_t lda, std::int64_t stride_a,
-                           const half *b, std::int64_t ldb, std::int64_t stride_b, half beta,
-                           half *c, std::int64_t ldc, std::int64_t stride_c,
+                           cl::sycl::half alpha, const cl::sycl::half *a, std::int64_t lda, std::int64_t stride_a,
+                           const cl::sycl::half *b, std::int64_t ldb, std::int64_t stride_b, cl::sycl::half beta,
+                           cl::sycl::half *c, std::int64_t ldc, std::int64_t stride_c,
                            std::int64_t batch_size,
                            const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_batch_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, stride_a,
@@ -3603,9 +3603,9 @@ cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose tran
 }
 
 cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
-                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, half alpha,
-                     const half *a, std::int64_t lda, const half *b, std::int64_t ldb, half beta,
-                     half *c, std::int64_t ldc,
+                     transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, cl::sycl::half alpha,
+                     const cl::sycl::half *a, std::int64_t lda, const cl::sycl::half *b, std::int64_t ldb, cl::sycl::half beta,
+                     cl::sycl::half *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
                       ldc, dependencies);
@@ -3619,7 +3619,7 @@ cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose tran
 
 cl::sycl::event gemm(backend_selector<backend::rocblas> selector, transpose transa,
                      transpose transb, std::int64_t m, std::int64_t n, std::int64_t k, float alpha,
-                     const half *a, std::int64_t lda, const half *b, std::int64_t ldb, float beta,
+                     const cl::sycl::half *a, std::int64_t lda, const cl::sycl::half *b, std::int64_t ldb, float beta,
                      float *c, std::int64_t ldc,
                      const cl::sycl::vector_class<cl::sycl::event> &dependencies) {
     gemm_precondition(selector.get_queue(), transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c,
