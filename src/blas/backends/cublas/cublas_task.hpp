@@ -10,9 +10,6 @@
 #include <CL/sycl/detail/pi.hpp>
 #else
 #include "cublas_scope_handle_hipsycl.hpp"
-namespace sycl {
-using interop_handler = sycl::interop_handle;
-}
 #endif
 namespace oneapi {
 namespace mkl {

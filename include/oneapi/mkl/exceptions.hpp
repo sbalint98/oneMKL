@@ -24,6 +24,10 @@
 #include <exception>
 #include <string>
 
+#ifdef __HIPSYCL__
+namespace sycl = cl::sycl;
+#endif
+
 // These are oneAPI oneMKL Specification exceptions
 
 namespace oneapi {
