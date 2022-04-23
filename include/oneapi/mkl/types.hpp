@@ -27,6 +27,12 @@
 namespace sycl = cl::sycl;
 #endif
 
+// #ifdef __HIPSYCL__
+// using sycl::backend::cuda = cl::sycl::backend::hip;
+// #else
+// using sycl::backend::cuda = sycl::backend::ext_oneapi_cuda;
+// #endif
+
 namespace oneapi {
 namespace mkl {
 

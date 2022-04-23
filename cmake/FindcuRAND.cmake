@@ -69,16 +69,28 @@ ${SYCL_BINARY_DIR}/../include/sycl/
 add_compile_definitions(CUDA_NO_HALF)
 
 find_package(Threads REQUIRED)
-
 include(FindPackageHandleStandardArgs)
+
+if(${ONEMKL_SYCL_IMPLEMENTATION} STREQUAL "dpc++")
 find_package_handle_standard_args(cuRAND
     REQUIRED_VARS
 	CUDA_TOOLKIT_INCLUDE
-	CUDA_curand_LIBRARY
+	CUDA_curand_LIBRARY 
         CUDA_LIBRARIES
-        $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},dpc++>:CUDA_CUDA_LIBRARY>
-        $<$<STREQUAL:${ONEMKL_SYCL_IMPLEMENTATION},dpc++>:OPENCL_INCLUDE_DIR>
+        CUDA_CUDA_LIBRARY
+        OPENCL_INCLUDE_DIR
 )
+else()
+find_package_handle_standard_args(cuRAND
+    REQUIRED_VARS
+	CUDA_TOOLKIT_INCLUDE
+	CUDA_curand_LIBRARY 
+        CUDA_LIBRARIES
+)
+set(OPENCL_INCLUDE_DIR "")
+set(CUDA_CUDA_LIBRARY "")
+endif()
+
 if(NOT TARGET ONEMKL::cuRAND::cuRAND)
   add_library(ONEMKL::cuRAND::cuRAND SHARED IMPORTED)
   set_target_properties(ONEMKL::cuRAND::cuRAND PROPERTIES
