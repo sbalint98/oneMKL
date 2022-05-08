@@ -26,7 +26,6 @@
 
 #include "oneapi/mkl/types.hpp"
 
-
 // These are oneAPI oneMKL Specification exceptions
 
 namespace oneapi {
